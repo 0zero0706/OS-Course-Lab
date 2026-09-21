@@ -472,7 +472,7 @@ writes, an entire burst collapses into a single render.
 
 ### Reveal-on-Enter
 
-In `--watch` mode a page's body starts dimmed (grey). Press **Enter** to reveal
+With `--watch --reveal` a page's body starts dimmed (grey). Press **Enter** to reveal
 the next block; once every block on the page is shown, Enter pages to the next
 slide. Paging back shows a slide fully. The reveal unit is the block — a `slide`
 block reveals in one Enter, not line by line; a `side_image` background is always
@@ -500,12 +500,16 @@ This is live-preview only: `render`, non-watch `view`, and the PDF/PNG exports a
 unaffected and always render fully. The controller is injected into the served
 `slides.html` in memory, so it never touches the on-disk deck.
 
-Pass `--no-reveal` with `--watch` for a plain live preview (live-reload only, no
-dimming or stepping):
+It is off by default: a plain `--watch` is a live preview only (live-reload, no
+dimming or stepping). Turn it on for rehearsing a talk:
 
 ```bash
-python3 -m lecturekit.cli view "$LEC" --watch --no-reveal
+python3 -m lecturekit.cli view "$LEC" --watch --reveal
 ```
+
+Bespoke's arrow-key paging does not fire `hashchange`, so only Enter paging and
+opening a page from the outline dim the page they arrive on; a slide reached
+with the arrow keys shows fully.
 
 ## Test
 

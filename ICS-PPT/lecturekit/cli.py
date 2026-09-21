@@ -76,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.watch:
                 serve(
                     lecture_dir, output_dir,
-                    port=args.port, reveal=not args.no_reveal,
+                    port=args.port, reveal=args.reveal,
                     debounce_ms=args.debounce,
                     lang=args.lang, strict=args.strict,
                     demo_timeout_s=args.demo_timeout,
@@ -154,9 +154,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="live-reload: re-render and refresh the browser on save",
     )
     view_parser.add_argument(
-        "--no-reveal",
+        "--reveal",
         action="store_true",
-        help="with --watch, disable reveal-on-Enter (plain live preview)",
+        help="with --watch, dim each page and reveal its blocks one Enter at a time",
     )
     view_parser.add_argument(
         "--debounce",

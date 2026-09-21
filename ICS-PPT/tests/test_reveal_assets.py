@@ -68,3 +68,11 @@ def test_item_reveal_contract_holds_across_the_three_files():
     assert "data-reveal-items" in js, "reveal.js must read the flag it is sent"
     assert 'ITEM = "reveal-item"' in js, "reveal.js must dim items by this class"
     assert ".reveal-item.reveal-dim" in css, "reveal.css must style dimmed items"
+
+
+def test_dim_lands_once_on_a_gap_page_block():
+    """A `p.gap` page keeps the wrapper's box, so a dim on the wrapper and on
+    its children would multiply and blank the page. Only the children dim."""
+    css = REVEAL_CSS.read_text()
+    assert "[data-reveal]:not(.reveal-block).reveal-dim" in css
+    assert "\n[data-reveal].reveal-dim" not in css

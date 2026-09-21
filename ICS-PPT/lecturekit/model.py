@@ -745,6 +745,8 @@ def check_block(
         check_highlight(block.content, page_id)
     if block.kind == "code":
         check_code(block.content, page_id)
+    if block.kind == "demo":
+        check_demo(block.content, page_id)
     if block.kind == "bridge":
         check_bridge(block, page_id)
     check_marks(block, page_id)
@@ -991,6 +993,38 @@ def check_code(content: dict, page_id: str) -> None:
         if not lines[number - 1].strip():
             raise ValidationError(
                 f"Code mark on {page_id} names line {number}, which is blank"
+            )
+
+
+def check_demo(content: dict, page_id: str) -> None:
+    """A bold output line names a line of the recorded output that exists.
+
+    Numbered the way `check_code` numbers a marked line — 1-based, over the
+    output with its leading and trailing blank lines stripped — and refused on
+    the same grounds: a number that points nowhere would otherwise surface on
+    the projector as a row that quietly stopped being bold.
+    """
+    if "bold" not in content:
+        return
+    output = content.get("output")
+    if not output or not str(output).strip():
+        raise ValidationError(f"Demo bold on {page_id} needs an output= to bold")
+    lines = str(output).strip("\n").split("\n")
+    for number in content["bold"]:
+        # bool is an int subclass; reject it so True/False can't pass as a line.
+        if type(number) is not int or number < 1:
+            raise ValidationError(
+                f"Demo bold on {page_id} must be a 1-based line number, "
+                f"got {number!r}"
+            )
+        if number > len(lines):
+            raise ValidationError(
+                f"Demo bold on {page_id} names line {number}, but the output has "
+                f"{len(lines)} line{'' if len(lines) == 1 else 's'}"
+            )
+        if not lines[number - 1].strip():
+            raise ValidationError(
+                f"Demo bold on {page_id} names line {number}, which is blank"
             )
 
 
