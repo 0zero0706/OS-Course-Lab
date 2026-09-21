@@ -238,16 +238,16 @@ class HandleChangesTest(unittest.TestCase):
 
     def test_slides_html_change_broadcasts_reload(self):
         lecture_dir, out, bc = self._setup()
-        sub = bc.subscribe()
+        before = bc.generation
 
         changes = {(dev_server.Change.modified, str(out / "slides.html"))}
         dev_server.handle_changes(changes, lecture_dir, out, bc)
 
-        self.assertEqual(sub.get_nowait(), dev_server.RELOAD_MESSAGE)
+        self.assertEqual(bc.generation, before + 1)
 
     def test_broken_source_does_not_raise_or_broadcast(self):
         lecture_dir, out, bc = self._setup()
-        sub = bc.subscribe()
+        before = bc.generation
         (lecture_dir / "lecture.py").write_text("syntax ((( error", encoding="utf-8")
 
         import io
@@ -258,7 +258,7 @@ class HandleChangesTest(unittest.TestCase):
             changes = {(dev_server.Change.modified, str(lecture_dir / "lecture.py"))}
             dev_server.handle_changes(changes, lecture_dir, out, bc)
 
-        self.assertTrue(sub.empty())
+        self.assertEqual(bc.generation, before)
         self.assertIn("render failed", err.getvalue())
         self.assertIn("Lecture source error", (out / "lecture.json").read_text("utf-8"))
         self.assertIn("syntax", (out / "slides.md").read_text("utf-8"))
@@ -525,24 +525,14 @@ class PumpMarpOutputTest(unittest.TestCase):
 
 
 class ReloadBroadcasterTest(unittest.TestCase):
-    def test_broadcast_reaches_all_subscribers(self):
+    def test_broadcast_advances_the_generation(self):
         bc = dev_server.ReloadBroadcaster()
-        a = bc.subscribe()
-        b = bc.subscribe()
+        self.assertEqual(bc.generation, 0)
 
         bc.broadcast()
-
-        self.assertEqual(a.get_nowait(), dev_server.RELOAD_MESSAGE)
-        self.assertEqual(b.get_nowait(), dev_server.RELOAD_MESSAGE)
-
-    def test_unsubscribe_stops_delivery(self):
-        bc = dev_server.ReloadBroadcaster()
-        a = bc.subscribe()
-        bc.unsubscribe(a)
-
         bc.broadcast()
 
-        self.assertTrue(a.empty())
+        self.assertEqual(bc.generation, 2)
 
 
 class HandlerTest(unittest.TestCase):
@@ -568,7 +558,7 @@ class HandlerTest(unittest.TestCase):
                     urllib.request.urlopen(f"http://127.0.0.1:{port}{path}", timeout=5)
                 ) as resp:
                     body = resp.read().decode("utf-8")
-                self.assertIn("EventSource", body)
+                self.assertIn(dev_server.LIVERELOAD_PATH, body)
                 self.assertIn("hi", body)
 
     def test_other_files_are_served_unmodified(self):
@@ -582,7 +572,7 @@ class HandlerTest(unittest.TestCase):
             ) as resp:
                 body = resp.read().decode("utf-8")
             self.assertEqual(body, "# raw markdown")
-            self.assertNotIn("EventSource", body)
+            self.assertNotIn(dev_server.LIVERELOAD_PATH, body)
 
     def test_static_files_are_never_cached(self):
         # Regression: with stdlib caching, a rebuild within the same wall-clock
@@ -613,62 +603,55 @@ class HandlerTest(unittest.TestCase):
                 self.assertEqual(resp.getcode(), 200)
                 self.assertIn("v2", resp.read().decode("utf-8"))
 
-    def test_livereload_endpoint_streams_reload_event(self):
+    def test_livereload_endpoint_answers_at_once_with_the_generation(self):
+        # Regression: the endpoint used to be an SSE stream held open per page.
+        # Two per viewer tab (shell and deck) ran the browser out of its six
+        # connections per host, and the next outline click never got its deck.
         with tempfile.TemporaryDirectory() as tmp:
             broadcaster = dev_server.ReloadBroadcaster()
             port = self._server(Path(tmp), broadcaster)
+            url = f"http://127.0.0.1:{port}{dev_server.LIVERELOAD_PATH}"
 
-            with closing(socket.create_connection(("127.0.0.1", port), timeout=5)) as sock:
-                sock.sendall(
-                    f"GET {dev_server.LIVERELOAD_PATH} HTTP/1.1\r\n"
-                    f"Host: 127.0.0.1\r\n\r\n".encode()
-                )
-                # let the handler subscribe before we broadcast
-                header = sock.recv(4096).decode("utf-8", "replace")
-                self.assertIn("text/event-stream", header)
+            with closing(urllib.request.urlopen(url, timeout=5)) as resp:
+                self.assertEqual(resp.read().decode("ascii"), "0")
+                self.assertEqual(resp.headers.get("Cache-Control"), "no-store")
 
-                # broadcast until the event lands (handler subscribe may race)
-                sock.settimeout(5)
-                deadline = threading.Event()
+            broadcaster.broadcast()
+            with closing(urllib.request.urlopen(url, timeout=5)) as resp:
+                self.assertEqual(resp.read().decode("ascii"), "1")
 
-                def pump():
-                    while not deadline.is_set():
-                        broadcaster.broadcast()
-                        deadline.wait(0.1)
+    def test_pages_are_served_knowing_the_current_generation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "index.html").write_text("<body></body>", encoding="utf-8")
+            broadcaster = dev_server.ReloadBroadcaster()
+            broadcaster.broadcast()
+            port = self._server(root, broadcaster)
 
-                pumper = threading.Thread(target=pump, daemon=True)
-                pumper.start()
-                try:
-                    data = b""
-                    while b"data: reload" not in data:
-                        chunk = sock.recv(4096)
-                        if not chunk:
-                            break
-                        data += chunk
-                finally:
-                    deadline.set()
-                    pumper.join(timeout=2)
-
-                self.assertIn("data: reload", data.decode("utf-8", "replace"))
+            with closing(
+                urllib.request.urlopen(f"http://127.0.0.1:{port}/", timeout=5)
+            ) as resp:
+                body = resp.read().decode("utf-8")
+            self.assertIn("var seen=1;", body)
 
 
 class InjectLiveReloadTest(unittest.TestCase):
-    def test_inserts_event_source_client_before_body_close(self):
+    def test_inserts_polling_client_before_body_close(self):
         html = "<html><body><div id='app'></div></body></html>"
 
-        result = dev_server.inject_livereload(html)
+        result = dev_server.inject_livereload(html, 7)
 
-        self.assertIn("EventSource", result)
-        self.assertIn(dev_server.LIVERELOAD_PATH, result)
+        self.assertNotIn("EventSource", result)
+        self.assertIn("var seen=7;", result)
         # client goes before the closing body tag, not after it
-        self.assertLess(result.index("EventSource"), result.index("</body>"))
+        self.assertLess(result.index(dev_server.LIVERELOAD_PATH), result.index("</body>"))
 
     def test_appends_client_when_no_body_close(self):
         html = "<div id='app'></div>"
 
         result = dev_server.inject_livereload(html)
 
-        self.assertIn("EventSource", result)
+        self.assertIn(dev_server.LIVERELOAD_PATH, result)
         self.assertTrue(result.startswith(html))
 
 
@@ -717,7 +700,7 @@ class ServeSlideTest(unittest.TestCase):
             self.assertIn("slide", body)
 
     def test_reveal_off_drops_reveal_but_keeps_svg_scope(self):
-        # `--no-reveal` turns off the preview feature, not the SVG scoper: the
+        # Reveal off (the default) drops the preview feature, not the SVG scoper: the
         # polyfill it tames costs Safari a full-document layout per slide per
         # frame, which is not a preview nicety to opt out of.
         with tempfile.TemporaryDirectory() as tmp:

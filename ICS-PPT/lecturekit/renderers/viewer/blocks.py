@@ -520,9 +520,31 @@ def _demo(block):
     if output:
         # No newline between the two: inside a `pre` that would be a blank row,
         # and a slide cannot spare one. The gap is CSS's to draw.
-        parts.append(f'<code class="lk-demo-out">{_escape(str(output))}</code>')
+        bold = content.get("bold")
+        # The attribute lets the theme draw the lines `bold=` leaves out lighter,
+        # so the named ones stand out by contrast from both sides.
+        attr = " data-lk-demo-bold" if bold else ""
+        out = _demo_output(str(output), bold)
+        parts.append(f'<code class="lk-demo-out"{attr}>{out}</code>')
     parts.append("</pre></div>")
     return ["".join(parts), ""]
+
+
+def _demo_output(output, bold):
+    """The recorded output, escaped, with the lines ``bold=`` names in <strong>.
+
+    The numbers count the output with its leading blank lines stripped (see
+    ``model.check_demo``); those lines stay in the text, so a demo without
+    ``bold`` renders exactly as it did before the option existed.
+    """
+    if not bold:
+        return _escape(output)
+    skip = len(output) - len(output.lstrip("\n"))
+    wanted = {number + skip - 1 for number in bold}
+    return "\n".join(
+        f"<strong>{_escape(line)}</strong>" if index in wanted else _escape(line)
+        for index, line in enumerate(output.split("\n"))
+    )
 
 
 def _demo_files(files):

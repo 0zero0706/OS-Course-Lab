@@ -113,7 +113,7 @@ inline notebook rendering; it is inert for the CLI build. See
     consecutively numbered — the same machinery as an animation's held frames.
   - **Deck only.** The book and the transcript sheet never print it
     (`book="skip"` is forced); PPTX draws it as a centered text box.
-  - In `--watch` reveal mode it arrives fully lit — one Enter and it is gone.
+  - In `--watch --reveal` mode it arrives fully lit — one Enter and it is gone.
 
   `id` defaults to `bridge-1`, `bridge-2`, … (numbered lecture-wide); pass one
   to name the page for `--pages`. A pure-number `--pages` index still counts
@@ -326,7 +326,7 @@ handle for chaining (see [Footnotes](#footnotes) and
 | `p.spacer(px)` | `spacer` | A fixed vertical gap between blocks (see [Spacer](#spacer)). |
 | `p.notes(content)` | `notes` | Speaker notes — emitted as a Marp presenter note (speaker view only), never shown on the slide. |
 | `p.prose(content)` | `prose` | Textbook prose — rendered by the book, never by the deck (see [book.md](book.md)). |
-| `p.demo(name, command, output=…, timeout=…, files=…)` | `demo` | A command, shown as a transcript; the deck can [run it and stream the output](usage.md#running-a-demo-from-the-deck) and [show the files it names](usage.md#showing-a-source-file-from-the-deck). |
+| `p.demo(name, command, output=…, bold=…, timeout=…, files=…)` | `demo` | A command, shown as a transcript; the deck can [run it and stream the output](usage.md#running-a-demo-from-the-deck) and [show the files it names](usage.md#showing-a-source-file-from-the-deck). |
 
 `slide`, `aside`, and the inline `**bold**`/`*italic*`/`` `code` ``/`[label](url)`
 markdown inside cells and callouts pass straight through to the renderer.
@@ -516,7 +516,7 @@ It is a `slide` keyword and needs something to step through: `reveal="items"` on
 a block with no list item is a `ValidationError` at build time, rather than a
 step that quietly does nothing.
 
-**Live preview only.** The split exists in `--watch` reveal mode; `render`, a
+**Live preview only.** The split exists in `--watch --reveal` mode; `render`, a
 non-watch `view`, and every export render the block whole, exactly as they do
 without it.
 
@@ -603,6 +603,11 @@ p.slide(r"""
 **Indent a `$$` fence by one space**, as above. A flush-left `$$` is an ordinary
 prose line to the [auto-bold](#auto-bold-on-slide) rule, which turns it into
 `**$$**` — no longer a fence. The one-space indent is auto-bold's escape hatch.
+
+Inside a list, indent the fence to the text column of the item it belongs to —
+two spaces under a `- ` item, four under a nested one. A fence indented less
+than that closes the list it sits in, and the items after it render one or more
+levels too shallow.
 
 A [`p.highlight(...)`](#highlight) chip takes the same `$…$` / `$$…$$`, and
 needs no indent — see there for how a `$$` fence lands on one row of the chip.
@@ -824,7 +829,7 @@ everything downstream treats them as such. What differs:
 | slide number | one number for the whole animation — every frame prints it, and the count advances once (see [usage.md](usage.md#two-numberings)) |
 | `--pages` | the authored id selects the whole animation (`--pages commit-logging`), `commit-logging-2` one frame, a number is still a deck index |
 | book | one section printing the **last** frame — the finished picture, post-animation blocks included — so a `ref` names that figure; the earlier frames drop out like `book="skip"` (see [book.md](book.md)) |
-| `--watch` reveal | frame 1 steps through the blocks before the animation; the last frame steps through the blocks after it; the frames in between arrive fully lit, one Enter apiece (see [usage.md](usage.md#reveal-on-enter)) |
+| `--watch --reveal` | frame 1 steps through the blocks before the animation; the last frame steps through the blocks after it; the frames in between arrive fully lit, one Enter apiece (see [usage.md](usage.md#reveal-on-enter)) |
 | `p.notes(...)` | rides every frame, so the speaker view has the script whichever frame is up |
 | `p.cite(...)` | the animation is one slide to a reference: the backref reads `(P2)`, not `(P2, P3, P4)` |
 
@@ -1021,7 +1026,7 @@ claiming one of its own.
 
 ### Demos
 
-`p.demo(name, command, output=None, description=None, timeout=None, files=None)`
+`p.demo(name, command, output=None, bold=None, description=None, timeout=None, files=None)`
 is a command the lecture runs on stage.
 
 ```python
@@ -1048,6 +1053,25 @@ output goes to a drawer and the slide holds still.
 p.demo("列出相关进程", "ps -eo pid,comm,args | grep '[o]llama'",
        output="""1832  ollama         /usr/local/bin/ollama serve
 1904  ollama-runner  ... --model ~/.ollama/models/blobs/sha256-...""")
+```
+
+`bold=` names the lines of `output=` the page is about, when the command prints
+more than the point needs. The numbers are 1-based and count the output as
+written, leading and trailing blank lines stripped — the same count `mark=`
+uses for code. Every target sets those lines in bold. The deck and the book also
+draw the rest of the output in a light weight, since bold against regular is too
+small a step to read across a room; the PPTX only bolds, because PowerPoint takes
+a weight from the typeface name and a light cut of the mono face is not one it
+can count on. A number past the end, or one that names a blank line, fails the
+build.
+
+```python
+p.demo("对比几种量化", "./quant_compare ext/w-final-norm.bf16",
+       output="""  scheme        bytes  bits/w   rmse
+  per-tensor     1026   4.01   0.094299
+  Q4_0           1152   4.50   0.100460
+  Q4_1           1280   5.00   0.022288""",
+       bold=[3, 4])
 ```
 
 `timeout=` is in seconds. `timeout=0` says the command has no natural end
@@ -1107,7 +1131,7 @@ Like any block it accepts `only=` / `except_=`. It is meant for normal pages;
 combining it with `p.gap(...)` on the same page mixes two spacing policies and
 is not recommended. The viewer/Marp deck (HTML, PDF, PNG, live preview) honors
 it; PPTX ignores it, like the other geometry-only blocks. A spacer is pure
-whitespace, so in `--watch` reveal mode it is always visible and never claims a
+whitespace, so in `--watch --reveal` mode it is always visible and never claims a
 reveal step of its own.
 
 ### Figure refs (book only)

@@ -804,6 +804,13 @@ span.lk-highlight {
   color: var(--color-fg);
 }
 
+/* `p.demo(..., bold=[…])`: bold against the output's regular weight is too
+   small a step to read across a room, so the lines left out drop to a light
+   weight and the named ones meet them at the other end of the scale. */
+.lk-demo-out[data-lk-demo-bold] {
+  font-weight: 300;
+}
+
 /* Set by `demo.js` while a command is in flight, so the room can see that the
    press landed on a command that takes a second to answer. */
 .lk-demo[data-lk-demo-state="running"] .lk-demo-run {

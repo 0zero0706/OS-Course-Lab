@@ -546,26 +546,24 @@ class DemoQuietTest(unittest.TestCase):
             out = Path(tmp)
             Path(out, "slides.html").write_text("deck", encoding="utf-8")
             broadcaster = dev_server.ReloadBroadcaster()
-            subscriber = broadcaster.subscribe()
             quiet = dev_server.DemoQuiet(window_s=5)
             quiet.touch()
 
             dev_server.handle_changes(
                 self._changes(out), Path(tmp), out, broadcaster, demo_quiet=quiet
             )
-            self.assertTrue(subscriber.empty())
+            self.assertEqual(broadcaster.generation, 0)
 
     def test_a_rebuild_outside_the_window_reloads_as_always(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp)
             Path(out, "slides.html").write_text("deck", encoding="utf-8")
             broadcaster = dev_server.ReloadBroadcaster()
-            subscriber = broadcaster.subscribe()
 
             dev_server.handle_changes(
                 self._changes(out), Path(tmp), out, broadcaster, demo_quiet=None
             )
-            self.assertFalse(subscriber.empty())
+            self.assertEqual(broadcaster.generation, 1)
 
     def test_running_a_demo_opens_the_window(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -646,7 +644,7 @@ class DemoInjectionTest(unittest.TestCase):
     def test_arming_moves_the_deck_onto_our_own_reload_channel(self):
         # marp's WebSocket client reloads on any rebuild, including the one a
         # demo's build artifacts cause -- which would wipe the demo's output off
-        # the screen. Armed, the deck rides the SSE channel that knows better.
+        # the screen. Armed, the deck polls our own channel, which knows better.
         with tempfile.TemporaryDirectory() as tmp:
             armed = self._serve_slides(Path(tmp))
         self.assertNotIn("__marpCliWatchWS", armed)

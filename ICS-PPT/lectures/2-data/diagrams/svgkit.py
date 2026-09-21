@@ -7,6 +7,7 @@ Keeping the shapes in one place is what makes the figures look like one set.
 
 FONT = "PingFang SC, Noto Sans CJK SC, Source Han Sans SC, sans-serif"
 MONO = "SFMono-Regular, Menlo, Consolas, monospace"
+SERIF = "Latin Modern Math, STIX Two Math, Cambria Math, Times New Roman, serif"
 
 BLUE, ORANGE, INK = "#156082", "#e97132", "#0e2841"
 LINE, MUTED = "#9fb5c3", "#5a6b78"
@@ -60,3 +61,30 @@ def brace(x0, x1, y, color, label, size=12.5, depth=7, below=True):
     ty = y + s * depth + (size + 3 if below else -5)
     return [f'<path d="{d}" fill="none" stroke="{color}" stroke-width="1.4"/>',
             text((x0 + x1) / 2, ty, label, size, color, "bold")]
+
+
+def rich(x, y, parts, size=14, fill=INK, weight="normal", anchor="middle"):
+    """One text line mixing plain runs, italic variables and subscripts.
+
+    parts: str for a plain run, ("v", s) for an italic variable, ("_", s) for
+    a subscript of the variable before it.
+    """
+    spans, low = [], 0.0
+    for p in parts:
+        kind, s = ("", p) if isinstance(p, str) else p
+        drop = size * 0.28 if kind == "_" else 0.0
+        dy = f' dy="{drop - low:.1f}"' if drop != low else ""
+        low = drop
+        if kind == "v":
+            spans.append(f'<tspan font-family="{SERIF}" font-style="italic" '
+                         f'font-size="{size * 1.12:.1f}"{dy}>{esc(s)}</tspan>')
+        elif kind == "_":
+            spans.append(f'<tspan font-family="{SERIF}" font-size="{size * 0.75:.1f}"'
+                         f'{dy}>{esc(s)}</tspan>')
+        else:
+            spans.append(f'<tspan{dy}>{esc(s)}</tspan>')
+    # preserve: the spaces at the edges of a run are part of the text
+    return (f'<text xml:space="preserve" x="{x:.1f}" y="{y:.1f}" '
+            f'font-family="{FONT}" font-size="{size}" '
+            f'font-weight="{weight}" fill="{fill}" text-anchor="{anchor}">'
+            + "".join(spans) + "</text>")

@@ -2701,29 +2701,2334 @@ Denormalized values take $E = -126$ rather than $-127$ so that the largest denor
 # 可表示值里，非规格化数占了相当一部分。
 
 ['bridge-5.title']
-src_hash = '5ea00915'
-text = 'Part five · Floating-point precision and low-precision formats'
-# src: 第五部分 · 浮点数的精度与低精度格式
+src_hash = '0e569ca5'
+text = 'Part five · Floating-point precision, rounding, and modern format extensions'
+# src: 第五部分 · 浮点数的精度特性、舍入机制与现代格式扩展
 
 ['bridge-5.bridge.1']
-src_hash = '24d2c1b8'
+src_hash = '0e569ca5'
 text = '''
-Part five · Floating-point precision and low-precision formats
-The distribution of representable values, rounding, and floating-point formats with fewer bits
+Part five · Floating-point precision, rounding, and modern format extensions
+'''
+# src: 第五部分 · 浮点数的精度特性、舍入机制与现代格式扩展
+
+['section.float-precision.title']
+src_hash = '0e569ca5'
+text = ''
+# src: 第五部分 · 浮点数的精度特性、舍入机制与现代格式扩展
+
+['ulp-distribution.title']
+src_hash = 'c8ecf186'
+text = ''
+# src: 实数轴上的非均匀离散分布与相对精度
+
+['ulp-distribution.slide.1']
+src_hash = '795ff563'
+text = ''
+# src:
+# 
+# - **几何分布特征**：
+#   - 阶码 $E$ 确定基准区间 $[2^E, 2^{E+1})$；尾数字段（23 位）将该区间均分为 $2^{23}$ 等份。
+#   - 每越过一个 2 的整次幂，相邻可表示值的间距翻倍，实数轴上的网格密度呈指数级衰减。
+# - **末位单元 ULP 与绝对误差**：
+#   - 区间 $[2^E, 2^{E+1})$ 内的网格间距为 $\text{ULP} = 2^{E-23}$。
+#   - 绝对误差上界随数值量级的增大呈指数增长。
+# - **相对精度的恒定性**：
+#   - 相对分辨率上限保持恒定：$\frac{\text{步长}}{\text{区间起点}} = \frac{2^{E-23}}{2^E} = 2^{-23} \approx 1.19 \times 10^{-7}$。
+#   - 对应十进制约 7 位有效数字。
+
+['ulp-distribution.notes.1']
+src_hash = '4f76257e'
+text = ''
+# src:
+# 
+# 章节定位：本讲承接 IEEE 754 标准的基础编码格式（符号位 $s$、阶码字段 $\exp$、尾数字段 $\text{frac}$，以及规格化、非规格化与特殊值的划分），深入探讨浮点数在硬件实现中的离散特性、舍入判决逻辑、高阶编程语言中的行为陷阱，以及现代计算体系结构面向深度学习对该格式的演化与扩展。
+# 
+# 核心教学目标：建立浮点数在实数轴上呈分段等比缩放分布的几何直觉，严格区分绝对精度与相对精度的数学定义。
+
+['ulp-distribution-cont.title']
+src_hash = 'c8ecf186'
+text = ''
+# src: 实数轴上的非均匀离散分布与相对精度
+
+['ulp-distribution-cont.image.1.alt']
+src_hash = '73ae072a'
+text = ''
+# src: 浮点数在实数轴上的刻度：每跨过一个 2 的幂，间距翻倍
+
+['ulp-distribution-cont.slide.1']
+src_hash = 'aa66346c'
+text = ''
+# src: - **量化对比表格**：
+
+['ulp-distribution-cont.table.1.cell.0.0']
+src_hash = 'b098d7f0'
+text = ''
+# src: 数值区间
+
+['ulp-distribution-cont.table.1.cell.0.1']
+src_hash = '492ebd39'
+text = ''
+# src: 阶码 $E$
+
+['ulp-distribution-cont.table.1.cell.0.2']
+src_hash = 'f2e802cb'
+text = ''
+# src: 绝对精度
+
+['ulp-distribution-cont.table.1.cell.0.3']
+src_hash = '44316a6d'
+text = ''
+# src: 相对精度 = 绝对精度 / 区间起点
+
+['ulp-distribution-cont.table.1.cell.1.0']
+src_hash = '9d20b5d5'
+text = ''
+# src: $[1, 2)$
+
+['ulp-distribution-cont.table.1.cell.1.1']
+src_hash = '04059783'
+text = ''
+# src: $0$
+
+['ulp-distribution-cont.table.1.cell.1.2']
+src_hash = 'fdadeed6'
+text = ''
+# src: $2^{-23} \approx 1.19 \times 10^{-7}$
+
+['ulp-distribution-cont.table.1.cell.1.3']
+src_hash = 'feb83cc3'
+text = ''
+# src: $2^{-23}$
+
+['ulp-distribution-cont.table.1.cell.2.0']
+src_hash = 'd96a20c0'
+text = ''
+# src: $[2^{10}, 2^{11})$
+
+['ulp-distribution-cont.table.1.cell.2.1']
+src_hash = 'bd53ccc9'
+text = ''
+# src: $10$
+
+['ulp-distribution-cont.table.1.cell.2.2']
+src_hash = 'a84a9a7b'
+text = ''
+# src: $2^{-13} \approx 1.22 \times 10^{-4}$
+
+['ulp-distribution-cont.table.1.cell.2.3']
+src_hash = 'feb83cc3'
+text = ''
+# src: $2^{-23}$
+
+['ulp-distribution-cont.table.1.cell.3.0']
+src_hash = 'c6272995'
+text = ''
+# src: $[2^{24}, 2^{25})$
+
+['ulp-distribution-cont.table.1.cell.3.1']
+src_hash = '85d749be'
+text = ''
+# src: $24$
+
+['ulp-distribution-cont.table.1.cell.3.2']
+src_hash = '0696f499'
+text = ''
+# src: $2^1 = 2.0$
+
+['ulp-distribution-cont.table.1.cell.3.3']
+src_hash = 'feb83cc3'
+text = ''
+# src: $2^{-23}$
+
+['ulp-distribution-cont.notes.1']
+src_hash = '0e650ca0'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“请关注区间 $[2^{24}, 2^{25})$：在此区间内，相邻浮点数的间距已经达到了 2。这意味着所有奇数整数在此范围内均无法被精确表示。若对处于该区间的数值进行细粒度累加，硬件底层将发生什么现象？”
+
+['fp-absorption.title']
+src_hash = '6200751f'
+text = ''
+# src: 阶码对齐截断与浮点吸收现象
+
+['fp-absorption.slide.1']
+src_hash = 'ee7caa8c'
+text = ''
+# src:
+# 
+# - **浮点加法的微架构对齐过程**：
+#   - 浮点加法执行前必须先进行阶码对齐：较小阶码的操作数尾数需向右移位。
+#   - 移位超出尾数寄存器物理位宽的部分将被移出并舍弃。
+# - **浮点吸收现象**：
+#   - 当两个操作数阶码差值 $\Delta E \ge 24$ 时，较小操作数的有效位在右移对齐后彻底丢失。
+#   - 数学表现：存在非零正数 $y > 0$，使得硬件计算结果满足 $x \oplus y = x$。
+
+['fp-absorption.image.1.alt']
+src_hash = 'aeb6458f'
+text = ''
+# src: 2^24 加 1.0：对阶时 1.0 的尾数右移 24 位，唯一的 1 被移出窗口
+
+['fp-absorption.notes.1']
+src_hash = '7ad7f621'
+text = ''
+# src:
+# 
+# 核心教学目标：从浮点加法的微架构执行过程（阶码对齐至大阶码、小阶码尾数右移），解释小增量在数值计算中被完全忽略的机理，说明机器精度的物理界限。
+
+['fp-absorption-cont.title']
+src_hash = '6200751f'
+text = ''
+# src: 阶码对齐截断与浮点吸收现象
+
+['fp-absorption-cont.slide.1']
+src_hash = '31171ed6'
+text = ''
+# src:
+# 
+# - **软件系统中的异常隐患**：
+#   - 浮点计数器停滞：若单精度浮点累加器数值达到 $16,777,216$（即 $2^{24}$），增量为 $1$ 的累加运算将不再改变变量值，导致依赖浮点步长递增的循环无法终止。
+# - **代码示例与行为剖析**：
+
+['fp-absorption-cont.notes.1']
+src_hash = '1baaf011'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“既然实数运算的中间结果往往无法精确对齐到离散的网格点上，硬件就必须依据严格的规则将其映射到最近的可表示值上。这就是 IEEE 754 规定的舍入系统。”
+
+['ieee-rounding-modes.title']
+src_hash = 'af8b1c8b'
+text = ''
+# src: IEEE 754 舍入模式与无偏性机制
+
+['ieee-rounding-modes.slide.1']
+src_hash = '99f781db'
+text = ''
+# src:
+# 
+# - **IEEE 754 标准规定的四种舍入模式**：
+#   1. **向零截断**：直接舍弃小数，方向始终朝向原点。
+#   2. **向下舍入**：取不大于真值的最大浮点数。
+#   3. **向上舍入**：取不小于真值的最小浮点数。
+#   4. **向最近偶数舍入**：系统默认工作模式。
+# - **传统四舍五入的系统缺陷**：
+#   - 当真值恰好落在正中时一律向上取整，在对大规模正数序列进行持续累加时，会引入正向的系统性统计偏差。
+# - **向偶数舍入的无偏性设计**：
+#   - 仅在真值恰好处于两个可表示值正中时生效：强制选择最低有效位为 0（偶数）的一侧。
+#   - 在统计上，中点边界处向上与向下舍入的概率各为 50%，使累积舍入误差的数学期望为 0。
+
+['ieee-rounding-modes.notes.1']
+src_hash = 'e6b868b2'
+text = ''
+# src:
+# 
+# 核心教学目标：掌握 IEEE 754 的四种法定舍入模式，从统计学角度阐明为何系统默认采用向最近偶数舍入，而非传统的四舍五入。
+
+['ieee-rounding-modes-cont.title']
+src_hash = 'af8b1c8b'
+text = ''
+# src: IEEE 754 舍入模式与无偏性机制
+
+['ieee-rounding-modes-cont.image.1.alt']
+src_hash = '26220c07'
+text = ''
+# src: 中点 1.5 至 8.5 的舍入误差：四舍五入一路累积，向偶数舍入在 0 附近振荡
+
+['ieee-rounding-modes-cont.slide.1']
+src_hash = '0b9028cf'
+text = ''
+# src: - **舍入效果对比表**：
+
+['ieee-rounding-modes-cont.table.1.cell.0.0']
+src_hash = '903803db'
+text = ''
+# src: 实数真值
+
+['ieee-rounding-modes-cont.table.1.cell.0.1']
+src_hash = '04a42da0'
+text = ''
+# src: 向零截断
+
+['ieee-rounding-modes-cont.table.1.cell.0.2']
+src_hash = '3490e7f3'
+text = ''
+# src: 向上舍入
+
+['ieee-rounding-modes-cont.table.1.cell.0.3']
+src_hash = '2a46ef18'
+text = ''
+# src: 传统四舍五入
+
+['ieee-rounding-modes-cont.table.1.cell.0.4']
+src_hash = '35ea9c67'
+text = ''
+# src: **向最近偶数舍入（IEEE 默认）**
+
+['ieee-rounding-modes-cont.table.1.cell.1.0']
+src_hash = '1179d640'
+text = ''
+# src: `1.4`
+
+['ieee-rounding-modes-cont.table.1.cell.1.1']
+src_hash = '14381611'
+text = ''
+# src: `1`
+
+['ieee-rounding-modes-cont.table.1.cell.1.2']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.1.3']
+src_hash = '14381611'
+text = ''
+# src: `1`
+
+['ieee-rounding-modes-cont.table.1.cell.1.4']
+src_hash = '14381611'
+text = ''
+# src: `1`
+
+['ieee-rounding-modes-cont.table.1.cell.2.0']
+src_hash = '57539fb6'
+text = ''
+# src: `1.6`
+
+['ieee-rounding-modes-cont.table.1.cell.2.1']
+src_hash = '14381611'
+text = ''
+# src: `1`
+
+['ieee-rounding-modes-cont.table.1.cell.2.2']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.2.3']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.2.4']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.3.0']
+src_hash = '67aebdc4'
+text = ''
+# src: **`1.5`（中点）**
+
+['ieee-rounding-modes-cont.table.1.cell.3.1']
+src_hash = '14381611'
+text = ''
+# src: `1`
+
+['ieee-rounding-modes-cont.table.1.cell.3.2']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.3.3']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.3.4']
+src_hash = '3c509c1f'
+text = ''
+# src: **`2`**（偶数）
+
+['ieee-rounding-modes-cont.table.1.cell.4.0']
+src_hash = '4950cfc6'
+text = ''
+# src: **`2.5`（中点）**
+
+['ieee-rounding-modes-cont.table.1.cell.4.1']
+src_hash = '7725d4c8'
+text = ''
+# src: `2`
+
+['ieee-rounding-modes-cont.table.1.cell.4.2']
+src_hash = '2ce9ffc9'
+text = ''
+# src: `3`
+
+['ieee-rounding-modes-cont.table.1.cell.4.3']
+src_hash = '2ce9ffc9'
+text = ''
+# src: `3`
+
+['ieee-rounding-modes-cont.table.1.cell.4.4']
+src_hash = '3ca46dae'
+text = ''
+# src: **`2`**（偶数，向下取整）
+
+['ieee-rounding-modes-cont.notes.1']
+src_hash = '4e56c3bf'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“向偶数舍入在数学统计上是优雅的。但从微架构与组合逻辑的角度来看，处理器电路是如何在流水线内判定‘精确中点’并执行进位的？”
+
+['round-bits.title']
+src_hash = 'f77f921b'
+text = ''
+# src: 微架构视角：二进制小数的位级舍入判决
+
+['round-bits.slide.1']
+src_hash = '5b6e5158'
+text = ''
+# src:
+# 
+# - **位级中点的物理表示**：
+#   - 设保留位数截止于某一位。若被截断部分的最高位为 `1`，且后续所有位全为 `0`（即位模式 `1000..._2`），该状态即为数学上的精确中点。
+# - **硬件的三级裁决状态机**：
+#   - 截断部分最高位为 `0` $\to$ 小于中点，直接舍弃。
+#   - 截断部分大于 `1000..._2` $\to$ 大于中点，向最低有效位进位（$+1$）。
+#   - 截断部分恰好为 `1000..._2` $\to$ 检查保留位末位：若为 `1` 则进位使其变为偶数（`0`）；若已为 `0` 则直接舍弃。
+# - **进位传播机制**：
+#   - 若尾数各位全为 `1`，舍入进位会导致尾数字段溢出清零，同时触发阶码字段自动加 1，数值跨入下一个 2 的幂次区间。
+
+['round-bits.notes.1']
+src_hash = '3fa53294'
+text = ''
+# src:
+# 
+# 核心教学目标：使学生掌握硬件判断精确中点的位模式规则，理解舍入进位跨越字段边界对阶码的影响。
+
+['round-bits-cont.title']
+src_hash = 'f77f921b'
+text = ''
+# src: 微架构视角：二进制小数的位级舍入判决
+
+['round-bits-cont.image.1.alt']
+src_hash = '8c483540'
+text = ''
+# src: 尾数末位 LSB 与保护位 G、舍入位 R、粘滞位 S，以及判定进位的逻辑门
+
+['round-bits-cont.slide.1']
+src_hash = '6ed2ff9f'
+text = ''
+# src: - **二进制位级推演示例**（保留至小数点后第 2 位）：
+
+['round-bits-cont.notes.1']
+src_hash = '3b91ffad'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“硬件正是通过这些位级组合逻辑完成了上述判决。然而，有限位宽带来的持续舍入，直接导致了传统代数公理在计算机上的彻底失效。”
+
+['cancellation.title']
+src_hash = '65c55979'
+text = ''
+# src: 浮点算术对代数公理的违背与灾难性抵消
+
+['cancellation.slide.1']
+src_hash = '4d6417c6'
+text = ''
+# src:
+# 
+# - **加法结合律的失效**：
+#   - $(a \oplus b) \oplus c \neq a \oplus (b \oplus c)$。运算顺序改变了中间结果的阶码对齐截断量，破坏了结合律与分配律。
+#   - 编译器优化限制：除非显式启用宽松浮点优化编译选项，编译器严禁重排浮点指令执行顺序。
+# - **灾难性抵消**：
+#   - 当两个相近的浮点数执行减法时，高位有效数字完全抵消，尾部因有限精度产生的舍入误差被提升为主导有效位，导致有效数字位数断崖式下跌。
+
+['cancellation.image.1.alt']
+src_hash = '5c165b43'
+text = ''
+# src: 两个前 21 位相同的数相减，规格化后只剩 3 位有效精度
+
+['cancellation.notes.1']
+src_hash = 'c886d168'
+text = ''
+# src:
+# 
+# 核心教学目标：剖析浮点运算中加法结合律失效的原因，阐明灾难性抵消的物理机理与数值风险，确立浮点比较的防御性编程规范。
+
+['cancellation-cont.title']
+src_hash = '65c55979'
+text = ''
+# src: 浮点算术对代数公理的违背与灾难性抵消
+
+['cancellation-cont.slide.1']
+src_hash = 'dcee3cc5'
+text = ''
+# src:
+# 
+# - **十进制有限小数与二进制循环小数的鸿沟**：
+#   - $0.1_{10} = 0.0001100110011\dots_2$。字面量 `0.1` 存储在内存中即为不可逆的近似截断值。
+# - **代码验证与防御性规范**：
+
+['cancellation-cont.notes.1']
+src_hash = 'bf17be4d'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“除了算术运算不满足结合律之外，在 C/C++ 等系统级语言中，浮点数与整型之间的混合交互还存在着由硬件与编译器联合构成的未定义行为陷阱。”
+
+['casts-ub.title']
+src_hash = '311934e6'
+text = ''
+# src: C 语言浮点转换规则、精度损失与未定义行为
+
+['casts-ub.slide.1']
+src_hash = 'f2002f5d'
+text = ''
+# src:
+# 
+# - **转换矩阵与精度保真度分析**：
+#   - `int` 转 `double`：保真。`int` 具有 31 位精度，`double` 尾数位宽为 53 位，可精确容纳。
+#   - `int` 转 `float`：有损。`float` 仅提供 24 位有效精度，超过 $2^{24}$（16,777,216）的整型值将发生舍入。
+#   - `float` 转 `double`：精确无损扩展；`double` 转 `float`：面临数值溢出或低位舍入。
+#   - 浮点数转整数：统一采用向零截断。
+# - **越界未定义行为与底层硬件处理**：
+#   - 当浮点数数值超出目标整型表示范围（如 `(int)3e9`）时，ISO C 标准定义其为未定义行为。
+#   - x86-64 体系结构下，转换指令对越界或无效浮点数统一输出固定的特殊值：`0x80000000`（即 $-2147483648$）。正向越界反转为负极大值。
+
+['casts-ub.notes.1']
+src_hash = '6d766cbe'
+text = ''
+# src:
+# 
+# 核心教学目标：建立完整的类型转换行为矩阵，理解浮点转整数溢出时 C 标准未定义行为与 x86-64 指令集的硬件响应。
+
+['casts-ub-cont.title']
+src_hash = '311934e6'
+text = ''
+# src: C 语言浮点转换规则、精度损失与未定义行为
+
+['casts-ub-cont.image.1.alt']
+src_hash = '9b528319'
+text = ''
+# src: int、float、double 之间的六条转换：绿色精确，黄色舍入，红色截断或越界
+
+['casts-ub-cont.slide.1']
+src_hash = '65f598d6'
+text = ''
+# src: - **测试代码与汇编级行为映射**：
+
+['casts-ub-cont.notes.1']
+src_hash = '6b1f09f7'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“如果说未定义行为在日常开发中可能仅导致异常崩溃，那么当不可避免的截断误差被物理时间与空间系统性放大时，将演变为灾难性的系统故障。”
+
+['patriot.title']
+src_hash = 'd24378fc'
+text = ''
+# src: 系统工程案例：爱国者防空系统时钟截断累积事故
+
+['patriot.slide.1']
+src_hash = '13e2196f'
+text = ''
+# src:
+# 
+# - **事故背景**：1991 年 2 月海湾战争期间，美军部署于宰赫兰的爱国者防空系统未能拦截来袭的飞毛腿导弹，造成 28 名士兵丧生。
+# - **误差根源：时钟基准的二进制截断**：
+#   - 系统内部依靠每 0.1 秒递增一次的整型计数器计算运行时间，将计数乘以 0.1 转换为浮点秒数。
+#   - $0.1_{10}$ 展开为二进制无限循环小数，存入 24 位定点寄存器时发生截断，单步时钟截断误差 $\Delta t \approx 9.54 \times 10^{-8}\text{ s}$。
+# - **连续时间积分下的宏观漂移推导**：
+#   - 系统连续无重启运行 100 小时：
+#   - 计数器累加脉冲总数：$N = 100 \times 3600 \times 10 = 3,600,000$ 次。
+#   - 绝对时间漂移量：$\Delta T = 3.6 \times 10^6 \times 9.54 \times 10^{-8}\text{ s} \approx \mathbf{0.3433\text{ 秒}}$。
+
+['patriot.notes.1']
+src_hash = 'fe9ae86f'
+text = ''
+# src:
+# 
+# 核心教学目标：通过真实工程事故，严密推导微小的单步浮点截断误差如何在时间积分与物理速度耦合下造成致命的系统性失效。
+
+['patriot-cont.title']
+src_hash = 'd24378fc'
+text = ''
+# src: 系统工程案例：爱国者防空系统时钟截断累积事故
+
+['patriot-cont.slide.1']
+src_hash = '550cb1f2'
+text = ''
+# src:
+# 
+# - **目标跟踪测距失效机制**：
+#   - 飞毛腿导弹末端飞行速度达 $v \approx 2000\text{ m/s}$。
+#   - 空间位置预测漂移：$\Delta S = v \times \Delta T \approx 2000 \times 0.3433 \approx \mathbf{687\text{ 米}}$。
+#   - 目标落入雷达测距跟踪窗口之外，雷达判定目标虚标并不予引导发射。
+# - **系统工程教训**：
+#   - 研发团队在事故前修改了部分子程序的高精度时间转换例程，但未同步更新所有调用模块，导致混合精度模块间残差无法相互抵消。
+
+['patriot-cont.row.1.item.1.alt']
+src_hash = '6a82120a'
+text = ''
+# src: 时钟误差随运行时间线性增长，100 小时后为 0.3433 秒
+
+['patriot-cont.row.1.item.2.alt']
+src_hash = '6c109aa5'
+text = ''
+# src: 雷达按滞后 0.3433 秒的时钟计算跟踪窗口，导弹实际位置在窗口前方 687 米
+
+['patriot-cont.notes.1']
+src_hash = 'bc67ea8b'
+text = ''
+# src:
+# 
+# 讲师点拨与过渡：“爱国者导弹案例警示我们：高精度是复杂系统可靠性的基石。但在近十年的计算体系结构演进中，一个全新的领域——现代深度学习——却对这一传统认知发起了挑战，催生了一场‘牺牲精度换取动态范围与吞吐’的格式演化。”
+
+['bf16-tradeoff.title']
+src_hash = '72b67696'
+text = ''
+# src: 现代体系结构扩展：动态范围与相对精度的折衷
+
+['bf16-tradeoff.slide.1']
+src_hash = '1e7c6d02'
+text = ''
+# src:
+# 
+# - **位宽约束下的设计权衡公理**：
+#   - 在总位宽固定为 16 位的物理约束下：阶码字段位数决定动态范围（数值上下界）；尾数字段位数决定相对精度。
+# - **传统标准半精度浮点 FP16 的工业局限**：
+#   - 阶码仅 5 位，最大表示值受限于 $65504$。
+#   - 深度学习反向传播计算梯度时极易触发数值上溢（溢出为无穷大）与下溢（下溢为零），必须依赖复杂的混合精度动态缩放软件栈支撑。
+
+['bf16-tradeoff.image.1.alt']
+src_hash = 'bd7816b5'
+text = ''
+# src: FP32、FP16、BF16 的符号、阶码、尾数三段，BF16 与 FP32 的高 16 位对齐
+
+['bf16-tradeoff.notes.1']
+src_hash = '41036946'
+text = ''
+# src:
+# 
+# 核心教学目标：深入理解专用加速器在 16 位位宽约束下的设计权衡空间，讲透为什么现代大模型训练选择放弃 FP16 而全面转向 BF16。
+
+['bf16-tradeoff-cont.title']
+src_hash = '72b67696'
+text = ''
+# src: 现代体系结构扩展：动态范围与相对精度的折衷
+
+['bf16-tradeoff-cont.slide.1']
+src_hash = '87059462'
+text = ''
+# src:
+# 
+# - **BF16 的设计突破**：
+#   - 维持与 FP32 完全相同的 8 位阶码位宽，将尾数压缩至 7 位。
+#   - 核心权衡：接受相对精度的降低（十进制有效数字降至约 2.4 位），换取与 FP32 完全等价的动态范围（$\pm 3.4 \times 10^{38}$），彻底消除训练梯度溢出风险。
+
+['bf16-tradeoff-cont2.title']
+src_hash = '72b67696'
+text = ''
+# src: 现代体系结构扩展：动态范围与相对精度的折衷
+
+['bf16-tradeoff-cont2.slide.1']
+src_hash = '2ad2e619'
+text = ''
+# src: - **核心格式规格对照表**：
+
+['bf16-tradeoff-cont2.table.1.cell.0.0']
+src_hash = 'c786210d'
+text = ''
+# src: 格式名称
+
+['bf16-tradeoff-cont2.table.1.cell.0.1']
+src_hash = '08875a1c'
+text = ''
+# src: 符号位
+
+['bf16-tradeoff-cont2.table.1.cell.0.2']
+src_hash = '5775549f'
+text = ''
+# src: 阶码位（决定范围）
+
+['bf16-tradeoff-cont2.table.1.cell.0.3']
+src_hash = '258403cb'
+text = ''
+# src: 尾数位（决定精度）
+
+['bf16-tradeoff-cont2.table.1.cell.0.4']
+src_hash = '6732dda9'
+text = ''
+# src: 动态范围上界
+
+['bf16-tradeoff-cont2.table.1.cell.0.5']
+src_hash = '230e187f'
+text = ''
+# src: 相对精度（十进制有效位）
+
+['bf16-tradeoff-cont2.table.1.cell.0.6']
+src_hash = 'd5ab9643'
+text = ''
+# src: 核心应用领域
+
+['bf16-tradeoff-cont2.table.1.cell.1.0']
+src_hash = '83ede5fc'
+text = ''
+# src: **FP32**
+
+['bf16-tradeoff-cont2.table.1.cell.1.1']
+src_hash = '6b86b273'
+text = ''
+# src: 1
+
+['bf16-tradeoff-cont2.table.1.cell.1.2']
+src_hash = 'aa2c9250'
+text = ''
+# src: **8**
+
+['bf16-tradeoff-cont2.table.1.cell.1.3']
+src_hash = '535fa30d'
+text = ''
+# src: 23
+
+['bf16-tradeoff-cont2.table.1.cell.1.4']
+src_hash = '55ded159'
+text = ''
+# src: $\approx \pm 3.4 \times 10^{38}$
+
+['bf16-tradeoff-cont2.table.1.cell.1.5']
+src_hash = '21b316c5'
+text = ''
+# src: $\approx 7.2$ 位
+
+['bf16-tradeoff-cont2.table.1.cell.1.6']
+src_hash = '14c4c4fe'
+text = ''
+# src: 科学计算、基准训练模型
+
+['bf16-tradeoff-cont2.table.1.cell.2.0']
+src_hash = '48be1485'
+text = ''
+# src: **FP16**
+
+['bf16-tradeoff-cont2.table.1.cell.2.1']
+src_hash = '6b86b273'
+text = ''
+# src: 1
+
+['bf16-tradeoff-cont2.table.1.cell.2.2']
+src_hash = '12d95793'
+text = ''
+# src: **5**
+
+['bf16-tradeoff-cont2.table.1.cell.2.3']
+src_hash = '4a44dc15'
+text = ''
+# src: 10
+
+['bf16-tradeoff-cont2.table.1.cell.2.4']
+src_hash = '20420bbc'
+text = ''
+# src: **$65504$（极易溢出）**
+
+['bf16-tradeoff-cont2.table.1.cell.2.5']
+src_hash = 'af94ed9f'
+text = ''
+# src: $\approx 3.3$ 位
+
+['bf16-tradeoff-cont2.table.1.cell.2.6']
+src_hash = '61c772f4'
+text = ''
+# src: 传统图形学、边缘推理
+
+['bf16-tradeoff-cont2.table.1.cell.3.0']
+src_hash = '769b1532'
+text = ''
+# src: **BF16**
+
+['bf16-tradeoff-cont2.table.1.cell.3.1']
+src_hash = '6b86b273'
+text = ''
+# src: 1
+
+['bf16-tradeoff-cont2.table.1.cell.3.2']
+src_hash = 'aa2c9250'
+text = ''
+# src: **8**
+
+['bf16-tradeoff-cont2.table.1.cell.3.3']
+src_hash = '7902699b'
+text = ''
+# src: 7
+
+['bf16-tradeoff-cont2.table.1.cell.3.4']
+src_hash = '55ded159'
+text = ''
+# src: $\approx \pm 3.4 \times 10^{38}$
+
+['bf16-tradeoff-cont2.table.1.cell.3.5']
+src_hash = 'e9a2f4bb'
+text = ''
+# src: $\approx 2.4$ 位
+
+['bf16-tradeoff-cont2.table.1.cell.3.6']
+src_hash = 'db46fc39'
+text = ''
+# src: **现代大语言模型训练与推理标准**
+
+['bf16-tradeoff-cont2.notes.1']
+src_hash = '69057e05'
+text = ''
+# src:
+# 
+# 讲授导引与过渡：“BF16 不仅在数值范围上完美契合深度学习，其微架构层面的位布局更展现出对硬件实现的极度友好性。”
+
+['bf16-mapping.title']
+src_hash = '6ee13eb3'
+text = ''
+# src: 微架构实现友好性：FP32 到 BF16 的位级映射与小节总结
+
+['bf16-mapping.slide.1']
+src_hash = '277eb4fa'
+text = ''
+# src:
+# 
+# - **位布局天然对齐优势**：
+#   - FP32 与 BF16 的符号位、阶码位在物理位置上严格一致（位 31 至位 16）。
+#   - 最精简的转换仅需单条移位指令截取 FP32 的高 16 位，反向扩展仅需低位补零。对比 FP16（需动态重新计算偏置、处理非规格化移位），逻辑门开销极低。
+
+['bf16-mapping.image.1.alt']
+src_hash = 'f80cbfaa'
+text = ''
+# src: FP32 转 BF16 只需高 16 位直通加一次进位；FP32 转 FP16 需要逐项改写
+
+['bf16-mapping.notes.1']
+src_hash = '2b5b90d3'
+text = ''
+# src:
+# 
+# 核心教学目标：通过位操作代码对比硬件复杂度，论证为何 BF16 能够大幅削减加速器芯片的数据通路面积与功耗开销，并总结本节的体系结构权衡思想。
+
+['bf16-mapping-cont.title']
+src_hash = '6ee13eb3'
+text = ''
+# src: 微架构实现友好性：FP32 到 BF16 的位级映射与小节总结
+
+['bf16-mapping-cont.slide.1']
+src_hash = '3ad46704'
+text = ''
+# src:
+# 
+# - **硬件级无偏舍入实现算法**：
+#   - 硬件通过简单的偏置加法，即可实现向最近偶数舍入。
+#   - 尾数全 1 进位时，加法器能自动自然溢出至阶码字段，无需额外的边界修正指令。
+# - **特殊值完全兼容**：
+#   - 由于阶码位宽与偏置量完全一致，无穷大、非数（NaN）以及非规格化数的边界判定与 FP32 严格兼容，软硬件边界条件完全对齐。
+
+['bf16-mapping-cont2.title']
+src_hash = '6ee13eb3'
+text = ''
+# src: 微架构实现友好性：FP32 到 BF16 的位级映射与小节总结
+
+['bf16-mapping-cont2.slide.1']
+src_hash = 'dac504af'
+text = ''
+# src: - **微架构模拟实现代码**：
+
+['bf16-mapping-cont3.title']
+src_hash = '6ee13eb3'
+text = ''
+# src: 微架构实现友好性：FP32 到 BF16 的位级映射与小节总结
+
+['bf16-mapping-cont3.slide.1']
+src_hash = '9ca42d1c'
+text = ''
+# src:
+# 
+# - **本节总结与思考题**：
+#   - **核心体系结构权衡**：
+#     - 实数是无限连续的，而物理存储是有限离散的。
+#     - 阶码决定跨度，尾数决定刻度。
+#     - 无论硬件如何优化舍入无偏性，都无法改变代数公理在离散浮点系统中的局部失效。
+#   - **课后思考**：
+#     > “在现代异构计算芯片中，为什么矩阵乘法单元普遍支持低精度输入（如 BF16/FP8）却依然强制要求高精度累加（如 FP32）？”
+
+['bridge-6.title']
+src_hash = '02ccd554'
+text = ''
+# src: 第六部分 · 大模型量化的底层系统原理
+
+['bridge-6.bridge.1']
+src_hash = '45fae421'
+text = ''
+# src:
+# 第六部分 · 大模型量化的底层系统原理
+# 从连续实数到离散低 Bit 网格的系统级跨越
+
+['section.quant-crisis.title']
+src_hash = '02ccd554'
+text = ''
+# src: 第六部分 · 大模型量化的底层系统原理
+
+['topic-cover.title']
+src_hash = 'a95d04c6'
+text = ''
+# src: 大模型量化的底层系统原理
+
+['topic-cover.image.1.footnote.1']
+src_hash = 'ed383d94'
+text = ''
+# src: 配图由 OpenAI Codex 图像生成模型绘制，仅作概念示意。
+
+['topic-cover.slide.1']
+src_hash = '51d3f9e7'
+text = ''
+# src:
+# 
+# - **主讲内容**：大模型量化——体系结构瓶颈、定点映射与底层位运算
+# - **核心视角**：微架构能耗、冯·诺依曼访存墙、整数溢出与字节打包
+
+['topic-cover.notes.1']
+src_hash = '095dc502'
+text = ''
+# src:
+# 
+# 同学们，前面我们花了两周时间攻克了计算机系统底层的数据表示：补码、溢出、阶码、尾数。
+# 大家可能觉得这只是教科书里的枯燥规范。今天这堂课，我们要把视角拉到当今全球计算技术的
+# 最前沿——大模型量化。我们将看到，大家刚刚学过的每一个 bit、每一次移位、每一个溢出判定，
+# 是如何在真实工业系统里支撑起千亿参数大模型飞速运转的。
+
+['topic-cover-cont.title']
+src_hash = 'a95d04c6'
+text = ''
+# src: 大模型量化的底层系统原理
+
+['topic-cover-cont.slide.1']
+src_hash = 'ffc45bcc'
+text = ''
+# src:
+# 
+# - **核心问题**：
+#   1. 为什么当代大模型系统要主动“抛弃”IEEE 754 单精度浮点数？
+#   2. 大模型自回归推理中，内存带宽是如何以线性关系卡死生成速度的？
+#   3. 工业级 GGUF 规范（Q4_0 / Q4_1 / Q4_K 等）是如何运用二级量化与位级别的排布将元数据开销压缩至极限的？
+
+['topic-cover-cont.slide.1.footnote.1']
+src_hash = '979877e9'
+text = ''
+# src: 文献出处：CS:APP 3rd Edition, Chapter 2.
+
+['fp32-myth.title']
+src_hash = '7157b11e'
+text = ''
+# src: 破局：高精度神话的破灭
+
+['fp32-myth.slide.1']
+src_hash = '598cc8d9'
+text = ''
+# src:
+# 
+# - **IEEE 754 FP32 的历史使命**：
+#   - 23 位尾数带来约 7 位有效十进制精度：$2^{23} \approx 8.4 \times 10^{6}$，量级为 $10^{7}$。
+#   - **设计初衷**：满足天体轨道仿真、偏微分方程收敛等传统科学计算对极微小累积误差的严苛要求。
+# - **大模型的参数与表征本质**：
+#   - 现代大模型是典型的**超大规模过参数化系统**，拥有千亿至万亿级的参数。
+#   - **自注意力机制的核心逻辑**：推理时模型依赖的是 Softmax 归一化后的注意力分布排序关系，以及激活通道之间的相对强弱对比，而非浮点尾数后十几位的绝对数值。
+#   - **核心认知**：注意力概率分布对参数尾数的微小舍入完全钝化，大模型的生成质量并不取决于微观数字的绝对精度。
+# - **系统结论**：在大模型时代强行沿用传统科学计算的高能耗、大位宽 FP32，不仅在算力和显存上存在极大浪费，还会成倍增加自回归推理需要搬运的字节数，加剧“显存带宽”的限制。
+
+['fp32-myth.slide.1.footnote.1']
+src_hash = '1d1cefd7'
+text = ''
+# src: 文献出处：Goldberg, D. *What Every Computer Scientist Should Know About Floating-Point Arithmetic* (1991).
+
+['fp32-myth.notes.1']
+src_hash = 'c4b71bde'
+text = ''
+# src:
+# 
+# 如果发射火箭，浮点数第 6 位发生截断，飞船可能偏离火星轨道；但在千亿参数大模型时代，海量
+# 参数赋予了模型极强的拓扑容错能力。大模型真正在乎的是注意力权重的相对分布与激活值的语义序
+# 关系，根本不需要尾数最后十几位的绝对数值。用昂贵且耗电的 FP32 浮点单元去承载具有天然高
+# 容错性的大模型，在显存带宽和能耗上造成了巨大的物理浪费。摆脱对传统高精度的盲目迷信，是大
+# 模型系统优化的第一步。
+# 
+# 7 位是量级估算：23 位二进制尾数能区分 $2^{23} \approx 8.4 \times 10^{6}$ 个值，与 7 位十进制数能区分的
+# $10^{7}$ 个值同一量级。换一个角度，相邻两个 FP32 数的相对间距约为 $2^{-23} \approx 1.2 \times 10^{-7}$，
+# 误差出现在第 7 位十进制数字附近。算上隐含的首位 1，有效位是 24 位，$\log_{10} 2^{24} \approx 7.2$，结论相同。
+
+['roofline-basics.title']
+src_hash = '2e3e677b'
+text = ''
+# src: 基本量：计算量、访存量、带宽与算术强度
+
+['roofline-basics.table.1.cell.0.0']
+src_hash = 'bbfdc49d'
+text = ''
+# src: 物理量
+
+['roofline-basics.table.1.cell.0.1']
+src_hash = 'e892654a'
+text = ''
+# src: 符号
+
+['roofline-basics.table.1.cell.0.2']
+src_hash = '8e5c1c8c'
+text = ''
+# src: 含义
+
+['roofline-basics.table.1.cell.0.3']
+src_hash = '80b19d68'
+text = ''
+# src: 单位
+
+['roofline-basics.table.1.cell.1.0']
+src_hash = 'dbd6d967'
+text = ''
+# src: **计算量**
+
+['roofline-basics.table.1.cell.1.1']
+src_hash = '713609e7'
+text = ''
+# src: $W$
+
+['roofline-basics.table.1.cell.1.2']
+src_hash = 'a865bedb'
+text = ''
+# src: 一次任务执行的浮点运算次数，1 次乘加计 2 次
+
+['roofline-basics.table.1.cell.1.3']
+src_hash = '77ffa7eb'
+text = ''
+# src: FLOP
+
+['roofline-basics.table.1.cell.2.0']
+src_hash = 'bc1a8f4b'
+text = ''
+# src: **访存量**
+
+['roofline-basics.table.1.cell.2.1']
+src_hash = 'dd11800f'
+text = ''
+# src: $Q$
+
+['roofline-basics.table.1.cell.2.2']
+src_hash = '99a42ed3'
+text = ''
+# src: 一次任务在内存与芯片之间传输的字节数
+
+['roofline-basics.table.1.cell.2.3']
+src_hash = '6c19075d'
+text = ''
+# src: Byte
+
+['roofline-basics.table.1.cell.3.0']
+src_hash = 'c6122e7f'
+text = ''
+# src: **峰值算力**
+
+['roofline-basics.table.1.cell.3.1']
+src_hash = '83e05657'
+text = ''
+# src: $P$
+
+['roofline-basics.table.1.cell.3.2']
+src_hash = 'e0b93d95'
+text = ''
+# src: 芯片每秒最多执行的浮点运算次数
+
+['roofline-basics.table.1.cell.3.3']
+src_hash = 'c7198f87'
+text = ''
+# src: FLOP/s
+
+['roofline-basics.table.1.cell.4.0']
+src_hash = '32acba63'
+text = ''
+# src: **带宽**
+
+['roofline-basics.table.1.cell.4.1']
+src_hash = 'ccd2b4a0'
+text = ''
+# src: $B$
+
+['roofline-basics.table.1.cell.4.2']
+src_hash = '076eac7b'
+text = ''
+# src: 内存每秒最多向芯片传输的字节数
+
+['roofline-basics.table.1.cell.4.3']
+src_hash = 'c9dbfcfc'
+text = ''
+# src: Byte/s
+
+['roofline-basics.table.1.cell.5.0']
+src_hash = 'fddf6600'
+text = ''
+# src: **算术强度**
+
+['roofline-basics.table.1.cell.5.1']
+src_hash = '64839842'
+text = ''
+# src: $I = W / Q$
+
+['roofline-basics.table.1.cell.5.2']
+src_hash = 'db58c95b'
+text = ''
+# src: 每传输 1 字节数据执行的运算次数
+
+['roofline-basics.table.1.cell.5.3']
+src_hash = '11ae271e'
+text = ''
+# src: FLOP/Byte
+
+['roofline-basics.slide.1']
+src_hash = '35f9d383'
+text = ''
+# src:
+# 
+# - **单位前缀**：G = $10^9$，T = $10^{12}$。
+# - **书写约定**：GFLOPs 中的小写 s 表示复数，指运算次数；TFLOPS 中的大写 S 表示每秒，指运算速率。
+
+['roofline-basics.notes.1']
+src_hash = 'a247f0d5'
+text = ''
+# src:
+# 
+# 这一页把后面反复出现的五个量放在一起。计算量和访存量描述一次任务，峰值算力和带宽描述硬件。
+# 算术强度是计算量与访存量的比值：权重的位宽越小，访存量越小，算术强度越高。
+# 1 次乘加包含 1 次乘法和 1 次加法，计 2 次浮点运算。
+
+['bandwidth-ledger.title']
+src_hash = '739ca95a'
+text = ''
+# src: 硬件基础：内存带宽决定生成速度上限
+
+['bandwidth-ledger.slide.1']
+src_hash = '8381a6ef'
+text = ''
+# src:
+# 
+# - **硬件现实基准**：
+#   - **PC 内存**：双通道 DDR5-7200 峰值带宽 = $7200\text{ MT/s} \times 8\text{ B} \times 2 = \mathbf{115.2\text{ GB/s}}$
+#   - **消费级显卡**：NVIDIA RTX 5090 显存峰值带宽 = $\mathbf{1792\text{ GB/s}}$
+# - **以 1.24B 小模型（Llama-3.2-1B）单请求自回归推理为例**：
+
+['bandwidth-ledger.table.1.cell.0.0']
+src_hash = '78244194'
+text = ''
+# src: 量化格式与位宽
+
+['bandwidth-ledger.table.1.cell.0.1']
+src_hash = '5fe52a93'
+text = ''
+# src: 模型实际内存体积
+
+['bandwidth-ledger.table.1.cell.0.2']
+src_hash = 'b30464c2'
+text = ''
+# src: DDR5-7200 理论速度上限
+
+['bandwidth-ledger.table.1.cell.0.3']
+src_hash = '0dc4bb67'
+text = ''
+# src: RTX 5090 理论速度上限
+
+['bandwidth-ledger.table.1.cell.1.0']
+src_hash = '55201b37'
+text = ''
+# src: **BF16 (16 位)**
+
+['bandwidth-ledger.table.1.cell.1.1']
+src_hash = '36b04426'
+text = ''
+# src: 2.47 GB
+
+['bandwidth-ledger.table.1.cell.1.2']
+src_hash = 'b69fa447'
+text = ''
+# src: 47 token/s
+
+['bandwidth-ledger.table.1.cell.1.3']
+src_hash = '5adfdfaa'
+text = ''
+# src: 725 token/s
+
+['bandwidth-ledger.table.1.cell.2.0']
+src_hash = '9b736f88'
+text = ''
+# src: **Q8_0 (8.5 位)**
+
+['bandwidth-ledger.table.1.cell.2.1']
+src_hash = '2af7bd90'
+text = ''
+# src: 1.31 GB
+
+['bandwidth-ledger.table.1.cell.2.2']
+src_hash = '2bc17c6f'
+text = ''
+# src: 88 token/s
+
+['bandwidth-ledger.table.1.cell.2.3']
+src_hash = 'dcd3aa7a'
+text = ''
+# src: 1365 token/s
+
+['bandwidth-ledger.table.1.cell.3.0']
+src_hash = '652c1fbb'
+text = ''
+# src: **Q4_K (4.5 位)**
+
+['bandwidth-ledger.table.1.cell.3.1']
+src_hash = 'f5c1c49e'
+text = ''
+# src: **0.70 GB**
+
+['bandwidth-ledger.table.1.cell.3.2']
+src_hash = '1fb962bc'
+text = ''
+# src: **166 token/s**
+
+['bandwidth-ledger.table.1.cell.3.3']
+src_hash = '79dc0acb'
+text = ''
+# src: **2578 token/s**
+
+['bandwidth-ledger.notes.1']
+src_hash = 'b48f06d6'
+text = ''
+# src:
+# 
+# 请大家关注这张对比表：同一个 12 亿参数的模型，在标准的双通道 DDR5 内存环境下，若采用
+# 16 位浮点格式，单请求生成速率上限仅为 47 token/s；而一旦压缩至 4 位量化格式，理论吞吐
+# 上限将跃升至 166 token/s。这一性能瓶颈完全由内存总线每秒能向芯片供给的数据带宽所决定，
+# 是物理硬件层面的硬性约束。
+
+['bandwidth-ledger-cont.title']
+src_hash = '739ca95a'
+text = ''
+# src: 硬件基础：内存带宽决定生成速度上限
+
+['bandwidth-ledger-cont.image.1.footnote.1']
+src_hash = 'd8123ca9'
+text = ''
+# src: GeForce RTX 5090 Founders Edition。照片来自 Wikimedia Commons，ZMASLO 视频截帧，CC BY 3.0，已裁剪。
+
+['bandwidth-ledger-cont.slide.1']
+src_hash = '0b69f40f'
+text = ''
+# src:
+# 
+# - **硬件铁律**：
+#   - 单请求推理场景下，每个权重从内存搬进芯片只参与 1 次乘加计算，算术强度极低（BF16 权重：$2\text{ FLOP} \div 2\text{ Byte}$，约为 $1\text{ FLOP/Byte}$）。
+#   - **对比 RTX 5090**：BF16 张量峰值算力 209.5 TFLOPS ÷ 显存带宽 1792 GB/s ≈ 117 FLOP/Byte，算术强度达到该值时计算单元才能满载。单请求推理的算术强度只有它的 1/117，计算单元的利用率上限不足 1%。
+#   - **模型的生成吞吐量上限与权重的物理位宽近似成反比**
+
+['bandwidth-ledger-cont.slide.1.footnote.1']
+src_hash = '29d5cc84'
+text = ''
+# src: 文献出处：Llama-3.2-1B-Instruct Safetensors Spec & JEDEC DDR5 Standard.
+
+['memory-wall.title']
+src_hash = '9614b88c'
+text = ''
+# src: 问题实测：自回归推理深陷访存受限
+
+['memory-wall.slide.1']
+src_hash = '61a0715b'
+text = ''
+# src: **IEEE Micro 2024 实测：BERT-Base vs GPT-2**（序列长度 4096）
+
+['memory-wall.table.1.cell.0.0']
+src_hash = 'c98e118e'
+text = ''
+# src: 模型
+
+['memory-wall.table.1.cell.0.1']
+src_hash = '3e60052a'
+text = ''
+# src: 参数量
+
+['memory-wall.table.1.cell.0.2']
+src_hash = 'd91ee2c9'
+text = ''
+# src: 计算量
+
+['memory-wall.table.1.cell.0.3']
+src_hash = 'bf413af8'
+text = ''
+# src: 访存量
+
+['memory-wall.table.1.cell.0.4']
+src_hash = '58ca0de3'
+text = ''
+# src: 算术强度 (FLOP/Byte)
+
+['memory-wall.table.1.cell.0.5']
+src_hash = '729273b4'
+text = ''
+# src: 端到端相对时延
+
+['memory-wall.table.1.cell.1.0']
+src_hash = '50d4141e'
+text = ''
+# src: **BERT-Base**
+
+['memory-wall.table.1.cell.1.1']
+src_hash = 'd232ebcd'
+text = ''
+# src: 110M
+
+['memory-wall.table.1.cell.1.2']
+src_hash = 'b8425a07'
+text = ''
+# src: 1324 GFLOPs
+
+['memory-wall.table.1.cell.1.3']
+src_hash = '211acf0b'
+text = ''
+# src: 11.2 GB
+
+['memory-wall.table.1.cell.1.5']
+src_hash = '44c8031c'
+text = ''
+# src: 84
+
+['memory-wall.table.1.cell.2.0']
+src_hash = '0e5b7a23'
+text = ''
+# src: **GPT-2**
+
+['memory-wall.table.1.cell.2.1']
+src_hash = 'c75fc523'
+text = ''
+# src: 124M
+
+['memory-wall.table.1.cell.2.2']
+src_hash = 'a15597c2'
+text = ''
+# src: 1012 GFLOPs
+
+['memory-wall.table.1.cell.2.3']
+src_hash = 'a3390885'
+text = ''
+# src: 507.8 GB
+
+['memory-wall.table.1.cell.2.5']
+src_hash = '3b5aa0da'
+text = ''
+# src: 2344
+
+['memory-wall.notes.1']
+src_hash = 'f1f07733'
+text = ''
+# src:
+# 
+# 计算量相近的模型，端到端延迟却可能存在数十倍的差距。实测数据清晰地揭示了这一现象的根源：
+# BERT 作为 Encoder 架构，整段序列在一次前向传播中并行处理，每个权重被序列中的全部 token 复用，算术强度超过 100 FLOP/Byte；
+# 而大语言模型在逐 Token 自回归生成时，每次前向传播仅处理一个新 Token，却必须完整遍历全部
+# 权重，算术强度骤降至 2 FLOP/Byte。在这种访存严重受限的场景下，缩减权重数据位宽是提升系统
+# 吞吐最直接有效的途径。
+# 
+# 表中二者的参数量与计算量相近，访存量相差约 45 倍，端到端时延相差约 28 倍。算术强度一列留空，
+# 请学生用计算量除以访存量算出，再对照左图中两者的位置：BERT-Base 为 1324 ÷ 11.2 ≈ 118
+# （论文图中标注 117，差在访存量的舍入），GPT-2 为 1012 ÷ 507.8 ≈ 2。续页的「根源剖析」给出这两个值。
+
+['memory-wall-cont.title']
+src_hash = '9614b88c'
+text = ''
+# src: 问题实测：自回归推理深陷访存受限
+
+['memory-wall-cont.slide.1']
+src_hash = 'f8a69bc1'
+text = ''
+# src:
+# 
+# - **根源剖析**：
+#   - **BERT（整段序列一次前向）**：算术强度高达 **117 ~ 266 FLOP/Byte**
+#     $\implies$ 处于**算力受限区**，硬件计算单元 满负荷运转。
+#   - **GPT-2（自回归逐 token 生成）**：算术强度跌落至仅 **2 FLOP/Byte**
+#     $\implies$ 处于**访存受限区**，计算单元长期处于等待数据的饥饿状态。
+# - **量化的本质**：不改变计算图，直接将数据体积削减至 $1/4$（BF16 → 4 位），迫使工作点在 Roofline 模型上大幅向右跃迁。
+
+['memory-wall-cont.slide.1.footnote.1']
+src_hash = 'f88515e2'
+text = ''
+# src: 文献出处：Gholami, A. et al. *AI and Memory Wall*, IEEE Micro (2024).
+
+['memory-wall-cont.image.1.alt']
+src_hash = '106aecc7'
+text = ''
+# src: RTX 5090 的 Roofline 上，单请求生成的工作点从 BF16 的 1 FLOP/Byte 经 8 位的 2 移到 4 位的 4，仍在平衡点 117 左侧的访存受限区
+
+['alu-energy.title']
+src_hash = '66f9444e'
+text = ''
+# src: 微架构视角：晶体管能耗与芯片面积核算
+
+['alu-energy.slide.1']
+src_hash = 'b9e81686'
+text = ''
+# src:
+# 
+# - **45nm 工艺标准运算单元测试数据（Horowitz 经典基准）**：
+
+['alu-energy.slide.1.footnote.1']
+src_hash = '87700dc0'
+text = ''
+# src: 台积电（TSMC）商标。图片来自 Wikimedia Commons（File:TSMC wordmark.svg），公有领域，商标权归台积电所有。
+
+['alu-energy.table.1.cell.0.0']
+src_hash = 'f5cc1e15'
+text = ''
+# src: 运算单元类型
+
+['alu-energy.table.1.cell.0.1']
+src_hash = 'fcfdb043'
+text = ''
+# src: 硅片物理面积 ($\mu m^2$)
+
+['alu-energy.table.1.cell.0.2']
+src_hash = '0dbf8e11'
+text = ''
+# src: 每次运算能耗 (pJ)
+
+['alu-energy.table.1.cell.0.3']
+src_hash = '93ef92c9'
+text = ''
+# src: 相对能耗倍数
+
+['alu-energy.table.1.cell.1.0']
+src_hash = '62ebcdd9'
+text = ''
+# src: **FP32 乘法**
+
+['alu-energy.table.1.cell.1.1']
+src_hash = '6b6c0168'
+text = ''
+# src: 7700
+
+['alu-energy.table.1.cell.1.2']
+src_hash = '8586f087'
+text = ''
+# src: 3.7 pJ
+
+['alu-energy.table.1.cell.1.3']
+src_hash = 'c0f6883e'
+text = ''
+# src: **$123\times$**
+
+['alu-energy.table.1.cell.2.0']
+src_hash = '110a7d12'
+text = ''
+# src: **FP32 加法**
+
+['alu-energy.table.1.cell.2.1']
+src_hash = '545fae2e'
+text = ''
+# src: 4184
+
+['alu-energy.table.1.cell.2.2']
+src_hash = '22f8d208'
+text = ''
+# src: 0.9 pJ
+
+['alu-energy.table.1.cell.2.3']
+src_hash = '38ae2f7d'
+text = ''
+# src: $30\times$
+
+['alu-energy.table.1.cell.3.0']
+src_hash = '55a13fe8'
+text = ''
+# src: **FP16 乘法**
+
+['alu-energy.table.1.cell.3.1']
+src_hash = 'cdbe4e7e'
+text = ''
+# src: 1640
+
+['alu-energy.table.1.cell.3.2']
+src_hash = 'd579fdea'
+text = ''
+# src: 1.1 pJ
+
+['alu-energy.table.1.cell.3.3']
+src_hash = '08170654'
+text = ''
+# src: $37\times$
+
+['alu-energy.table.1.cell.4.0']
+src_hash = '10ad5ac4'
+text = ''
+# src: **INT8 乘法**
+
+['alu-energy.table.1.cell.4.1']
+src_hash = 'b841fc72'
+text = ''
+# src: **282**
+
+['alu-energy.table.1.cell.4.2']
+src_hash = '1962f499'
+text = ''
+# src: **0.2 pJ**
+
+['alu-energy.table.1.cell.4.3']
+src_hash = 'c433c17d'
+text = ''
+# src: **$6.7\times$**
+
+['alu-energy.table.1.cell.5.0']
+src_hash = 'a155bd35'
+text = ''
+# src: **INT8 加法**
+
+['alu-energy.table.1.cell.5.1']
+src_hash = '3bf316f5'
+text = ''
+# src: **36**
+
+['alu-energy.table.1.cell.5.2']
+src_hash = '97bb21aa'
+text = ''
+# src: **0.03 pJ**
+
+['alu-energy.table.1.cell.5.3']
+src_hash = 'a5124c1d'
+text = ''
+# src: **$1.0\times$ (基准)**
+
+['alu-energy.notes.1']
+src_hash = '8e1d716d'
+text = ''
+# src:
+# 
+# 请大家看表里的相对能耗倍数：做 1 次 FP32 乘法的电能，足以支撑 120 多次 8 位整数加法！
+# 这就解释了为什么当今体系结构设计者在布局张量核心与 NPU 时，会将成千上万个紧凑的定点 ALU
+# 集成于硅片之中。每一位位宽的缩减，换来的都是微架构能效比与吞吐密度的飞跃。
+
+['alu-energy-cont.title']
+src_hash = '66f9444e'
+text = ''
+# src: 微架构视角：晶体管能耗与芯片面积核算
+
+['alu-energy-cont.image.1.footnote.1']
+src_hash = 'ed383d94'
+text = ''
+# src: 配图由 OpenAI Codex 图像生成模型绘制，仅作概念示意。
+
+['alu-energy-cont.slide.1']
+src_hash = 'aa194e41'
+text = ''
+# src:
+# 
+# - **门电路级的物理开销**：
+#   - 32 位浮点加乘法器需要容纳庞大且繁杂的计算与判定电路。
+#   - 8 位整数加法器只需一条进位链，面积约为 FP32 加法器的 1/116（36 vs 4184 $\mu m^2$）。
+#   - 8 位整数乘法器的面积约为 FP32 乘法器的 1/27（282 vs 7700 $\mu m^2$）。
+
+['alu-energy-cont.slide.1.footnote.1']
+src_hash = '12a3ad0d'
+text = ''
+# src: 文献出处：Horowitz, M. *1.1 Computing's energy problem (and what we can do about it)*, ISSCC (2014)；面积：Han, S., Stanford CS231n (2017).
+
+['bridge-7.title']
+src_hash = '8c4fa4ba'
+text = ''
+# src: 第七部分 · 数学映射与数据分布
+
+['bridge-7.bridge.1']
+src_hash = '8c4fa4ba'
+text = ''
+# src: 第七部分 · 数学映射与数据分布
+
+['section.quant-mapping.title']
+src_hash = '8c4fa4ba'
+text = ''
+# src: 第七部分 · 数学映射与数据分布
+
+['affine-mapping.title']
+src_hash = '8ef7b0ec'
+text = ''
+# src: 形式化：均匀仿射量化映射
+
+['affine-mapping.slide.1']
+src_hash = 'a98b9710'
+text = ''
+# src:
+# 
+# - **映射任务**：将连续浮点区间 $[w_{\min}, w_{\max}]$ 投射至 $b$-bit 整数集合 $[q_{\min}, q_{\max}]$。
+# - **量化编码公式**：
+#  $$q = \text{clip}\left(\left\lfloor \frac{w}{S} \right\rceil + Z, \; q_{\min}, \; q_{\max}\right)$$
+# - **反量化重构公式**：
+#  $$\hat{w} = S \times (q - Z) \quad \text{或写为} \quad \hat{w} = d \cdot q + m$$
+# - **参数的物理意义**：
+#   - **步长 $S$（或 $d$）**：正浮点数，表示离散网格的单位刻度间距：$S = \frac{w_{\max} - w_{\min}}{q_{\max} - q_{\min}}$。
+#   - **零点 $Z$（或偏移 $m$）**：与 $q$ 同类型的整数，确保 $0.0$ 能精准落在某个整数格子上。
+# - **误差界**：单点舍入误差受限于半个步长：$|w - \hat{w}| \le \frac{S}{2}$。
+
+['affine-mapping.slide.1.footnote.1']
+src_hash = '889f6ef5'
+text = ''
+# src: 文献出处：Jacob, B. et al. CVPR (2018).
+
+['affine-mapping.notes.1']
+src_hash = '608c5369'
+text = ''
+# src:
+# 
+# 这两个公式是所有量化算法的母体。$S$ 决定尺子的刻度有多细，它本身是一个浮点数；$Z$ 是把
+# 原点固定在哪个整数格上。只要没有超出量化范围，四舍五入带来的误差绝对不超过半个刻度。
+# 量化的全部技巧，就是在想方设法把这个刻度 $S$ 变得更小。
+
+['affine-grid.title']
+src_hash = '8a2ec8a6'
+text = ''
+# src: 图解：$w$、$q$、$S$、$Z$ 在数轴上的含义
+
+['zero-point-cost.title']
+src_hash = '27b378bc'
+text = ''
+# src: 零点 $Z$ 引发的交叉项惩罚
+
+['zero-point-cost.slide.1']
+src_hash = '0f42afd6'
+text = ''
+# src:
+# 
+# - **由反量化公式**：$\hat{w} = S\,(q - Z)$。对称量化令 $Z = 0$，公式退化为 $\hat{w} = S\,q$。
+# - **矩阵乘法 $Y = XW$ 的每个输出元素是一个点积**：$X$ 的一行与 $W$ 的一列逐项相乘再求和，$y = \sum_{k=1}^{K} x_k w_k$，其中 $K$ 是向量长度。
+# - **激活与权重各自量化**，各有一组步长与零点：
+#   - 激活：$x_k \approx S_x\,(a_k - Z_x)$，整数码 $a_k$ 随每次输入变化。
+#   - 权重：$w_k \approx S_w\,(b_k - Z_w)$，整数码 $b_k$ 在模型离线量化之后固定不变。
+# - **代入点积，按乘法分配律展开**：
+#  $$y \approx S_x S_w \sum_{k=1}^{K} (a_k - Z_x)(b_k - Z_w) = S_x S_w \Big[\, \underbrace{\sum a_k b_k}_{\text{①}} - \underbrace{Z_w \sum a_k}_{\text{②}} - \underbrace{Z_x \sum b_k}_{\text{③}} + \underbrace{K Z_x Z_w}_{\text{④}} \,\Big]$$
+# - ② 与 ③ 由一侧的零点乘以另一侧整数码之和得到，称为**交叉项**。
+
+['zero-point-cost.notes.1']
+src_hash = 'e5a8b6cf'
+text = ''
+# src:
+# 
+# 第 55 页的反量化公式同时用于激活和权重。矩阵乘法的每个输出元素都是一个点积，把两个反量化
+# 公式代入点积，再用乘法分配律展开，得到四项：① 是整数码的点积；② 和 ③ 各含一个零点，
+# 是交叉项；④ 是常数。对称量化时两个零点都是 0，后三项全部消失。
+
+['zero-point-compute.title']
+src_hash = '1118643f'
+text = ''
+# src: 零点 $Z$ 带来的额外计算量
+
+['zero-point-compute.slide.1']
+src_hash = 'c0c414d0'
+text = ''
+# src:
+# 
+# - **展开式中各项的计算时机**：
+#   - ① $\sum a_k b_k$：$K$ 次 8 位整数乘加，对称量化同样需要。
+#   - ② $Z_w \sum a_k$：$a_k$ 随输入变化，推理时现算 $\sum a_k$，多 $K$ 次加法。
+#   - ③ $Z_x \sum b_k$ 与 ④ $K Z_x Z_w$：只含权重与常数，使用同一个量化模型进行推理时，可以离线计算存储复用。
+
+['zero-point-compute.table.1.cell.0.0']
+src_hash = 'a9667529'
+text = ''
+# src: 计算方式
+
+['zero-point-compute.table.1.cell.0.1']
+src_hash = '3db12b7e'
+text = ''
+# src: 计算一次点积的惩罚
+
+['zero-point-compute.table.1.cell.0.2']
+src_hash = 'fc7426ce'
+text = ''
+# src: 能否用 8 位整数乘法
+
+['zero-point-compute.table.1.cell.1.0']
+src_hash = 'bfade44f'
+text = ''
+# src: 对称量化
+
+['zero-point-compute.table.1.cell.1.1']
+src_hash = '484d5561'
+text = ''
+# src: 无
+
+['zero-point-compute.table.1.cell.1.2']
+src_hash = '413c06bc'
+text = ''
+# src: 能
+
+['zero-point-compute.table.1.cell.2.0']
+src_hash = '17cee7d1'
+text = ''
+# src: 非对称，按上页展开
+
+['zero-point-compute.table.1.cell.2.1']
+src_hash = 'a2b9c77d'
+text = ''
+# src: 求 $\sum a_k$ 的 $K$ 次加法
+
+['zero-point-compute.table.1.cell.2.2']
+src_hash = '413c06bc'
+text = ''
+# src: 能
+
+['zero-point-compute.slide.2']
+src_hash = 'efc44157'
+text = ''
+# src:
+# 
+# - **对称量化令 $Z_x = Z_w = 0$，②③④ 全部为 0，只剩纯整数点积 ①。**
+
+['zero-point-compute.slide.2.footnote.1']
+src_hash = '62778654'
+text = ''
+# src: 文献出处：Jacob, B. et al. CVPR (2018); Krishnamoorthi, R. *Quantizing deep convolutional networks for efficient inference: A whitepaper* (2018).
+
+['zero-point-compute.notes.1']
+src_hash = 'bd17a441'
+text = ''
+# src:
+# 
+# 逐项先减零点再相乘的做法最直接，但 8 位码减去零点之后取值范围是 $[-255, 255]$，需要
+# 9 位，只能改用 16 位乘法，每条指令完成的乘加数减半。展开之后，① 仍是纯 8 位整数点积，零点带来的工作集中在 ②：推理时对激活的整数码求和。
+# 这个和对同一行激活只需求一次，由该行的所有输出列共用。以 Llama-3.2-1B 的一个
+# 2048 × 2048 投影矩阵、生成 1 个 token 为例，① 约 419 万次乘加，② 为 2048 次加法。
+# 
+# GGUF 的 Q4_1 把反量化写作 $\hat{w} = d\,q + m$，$m$ 对应这里的零点项。llama.cpp 把激活
+# 量化为 Q8_1 时，每 32 个数一块，块内同时存下 $d \cdot \sum a_k$，点积时每块只多 1 次乘加。
+
+['symmetric-failure.title']
+src_hash = '8c11c85b'
+text = ''
+# src: 对称量化的不足：数据非对称分布下的精度雪崩
+
+['symmetric-failure.slide.1']
+src_hash = 'fcdd73ff'
+text = ''
+# src:
+# 
+# - Llama-3.2 输出层 LayerNorm 共 2048 参数，**取值全部为正**，分布在 $[+0.0417, +2.9219]$。
+# - **对称量化（Q4_0）的局限**：
+#   - 步长由最大绝对值强制对称决定：$d_{\text{sym}} = \frac{2.9219}{8} \approx \mathbf{0.365}$。
+#   - 16 个网格强制排布在 $[-2.92, +2.92]$，**其中 8 个落在负数区间，未被有效利用**。
+# - **非对称量化（Q4_1）的修正**：
+#   - 记录独立最小值 $m = 0.0417$，步长按极差紧密划分：$d_{\text{asym}} = \frac{2.9219 - 0.0417}{15} \approx \mathbf{0.192}$。
+#   - **步长精细了 1.9 倍，16 个量化级被量化后的权重 100% 覆盖**。
+
+['symmetric-failure.notes.1']
+src_hash = '0f2d1c99'
+text = ''
+# src:
+# 
+# 刚才我们说对称量化硬件友好，但大家看屏幕上我们跑出来的真实数据！LayerNorm 的权重全是
+# 正数，集中在 1 到 3 之间。对称量化非要把原点设在 0，结果一半的格子全分给了根本不存在的
+# 负数。这就是为什么大模型里普通的线性层用对称，而归一化层必须保留非对称甚至保留原始浮点。
+
+['symmetric-failure-grid.title']
+src_hash = '8c11c85b'
+text = ''
+# src: 对称量化的不足：数据非对称分布下的精度雪崩
+
+['symmetric-failure-grid.notes.1']
+src_hash = '84b35f98'
+text = ''
+# src:
+# 
+# 上面是 2048 个 LayerNorm 权重的真实分布：全部为正，大部分集中在 2.2 到 2.6 之间。
+# 下面两行把两种 4 位量化的 16 个格点画在同一条实数轴上，步长按整个张量计算。
+# 
+# Q4_0 的步长由最大绝对值决定，$d = 2.9219 / 8 \approx 0.365$，格点为 $-7d$ 到 $8d$。
+# 负半轴的 7 个格点与 0 这个格点都在数据范围之外，数据范围内只剩 8 个格点。
+# Q4_1 以最小值 $m = 0.0417$ 为起点，把 $[0.0417, 2.9219]$ 等分为 15 段，
+# $d \approx 0.192$，16 个格点全部落在数据范围内，间距约为 Q4_0 的一半。
+
+['symmetric-failure-cont.title']
+src_hash = '8c11c85b'
+text = ''
+# src: 对称量化的不足：数据非对称分布下的精度雪崩
+
+['symmetric-failure-cont.slide.1']
+src_hash = 'b9ef941d'
+text = ''
+# src:
+# 
+# - `./quant_compare norm`，加载模型 `w-final-norm.bf16` 进行实测
+
+['symmetric-failure-cont.slide.2']
+src_hash = '110f4e23'
+text = ''
+# src:
+# 
+# - **结论**：增加仅 0.5 位/权重的元数据存储最小值 $m$，相对误差从 **4.25% 显著降低至 0.94%**！
+
+['symmetric-failure-cont.slide.2.footnote.1']
+src_hash = '0ad16aa9'
+text = ''
+# src: 文献出处：Llama-3.2-1B Weight Distribution Analysis & GGUF Format Implementation.
+
+['clipping-tradeoff.title']
+src_hash = '3645bd24'
+text = ''
+# src: 离群点困境：动态范围与局部精度的零和博弈
+
+['clipping-tradeoff.slide.1']
+src_hash = '0337335a'
+text = ''
+# src:
+# 
+# - **模型权重的钟形分布特征**：绝大部分数值密集聚集在 0 附近，两翼伴随少量极端离群值。
+# - **策略 A：MinMax 准则**
+#   - 强制覆盖最大极值：$w_{\max} = \max|W|$。
+#   - **弊端**：只要有一个离群尖刺，步长 $S = w_{\max}/q_{\max}$ 就会被暴力拉大，导致处于中间的 99.9% 正常权重全被挤压在 0 附近的极少数离散桶中，**舍入误差剧增**。
+# - **策略 B：饱和截断准则**
+#   - 设定阈值 $T \ll \max|W|$，超出 $T$ 的数据强行截断为 $T$。
+#   - **收益**：步长 $S = T / q_{\max}$ 显著缩小，核心有效区域网格致密；
+#   - **代价**：两端尾部承担**截断误差**。
+# - **核心权衡**：以可控的截断代价，换取全量参数平均舍入噪声的最小化。
+
+['clipping-tradeoff.slide.1.footnote.1']
+src_hash = '5098080c'
+text = ''
+# src: 文献出处：Zhao, R. et al. *Improving Neural Network Quantization without Retraining*, ICML (2019).
+
+['clipping-tradeoff.notes.1']
+src_hash = '12af8490'
+text = ''
+# src:
+# 
+# 动态范围的截断本质上是统计分布中的方差权衡。MinMax 准则为了迁就极少数极端离群点，不惜
+# 拉大整个量化网格刻度，导致占据 99% 的核心分布数据丧失了分辨精度；而饱和截断则是主动舍弃
+# 尾部极值，换取主体密集区间内极其细密的网格步长。系统工程从不追求教条式的绝对无损，而是
+# 追求全分布期望误差的最小化。
+
+['bridge-8.title']
+src_hash = '69a825e0'
+text = ''
+# src: 第八部分 · GGUF 家族与二级量化
+
+['bridge-8.bridge.1']
+src_hash = '69a825e0'
+text = ''
+# src: 第八部分 · GGUF 家族与二级量化
+
+['section.quant-gguf.title']
+src_hash = '69a825e0'
+text = ''
+# src: 第八部分 · GGUF 家族与二级量化
+
+['granularity-spectrum.title']
+src_hash = '314dcef7'
+text = ''
+# src: 量化粒度：压缩率与精度的光谱权衡
+
+['granularity-spectrum.slide.1']
+src_hash = '932b0b9c'
+text = ''
+# src:
+# 
+# - **粒度谱系定义**：
+#   - **整张量粒度**：全矩阵数千万参数共用 1 个缩放系数。元数据极小，但若出现孤立异常值将导致全张量动态范围失真。
+#   - **按通道粒度**：矩阵每一行独立分配 1 个缩放系数（共 $M$ 个缩放系数）。
+#   - **分组量化**：将连续权重切分为若干固定大小小块（分组规模 $G$），各块独享参数。
+# - **分摊至单权重的元数据开销公式**：
+#   $$\text{元数据位数/权重} = \frac{\text{缩放系数总位数}}{\text{分组规模 } G}$$
+#   - [例] FP16 缩放系数（16 位）分摊至 32 个权重：$16 \div 32 = \mathbf{0.5\text{ 位/权重}}$。
+
+['granularity-spectrum.slide.1.footnote.1']
+src_hash = 'd1d5865d'
+text = ''
+# src: 文献出处：Hubara, I. et al. *Quantized Neural Networks*, JMLR (2017).
+
+['granularity-spectrum.table.1.cell.0.0']
+src_hash = '17b6d4ce'
+text = ''
+# src: Llama-3.2-1B ffn_down
+
+['granularity-spectrum.table.1.cell.0.1']
+src_hash = '364d9164'
+text = ''
+# src: 整张量（4.00 位）
+
+['granularity-spectrum.table.1.cell.0.2']
+src_hash = '0d178c52'
+text = ''
+# src: 256 元素分组（4.06 位）
+
+['granularity-spectrum.table.1.cell.0.3']
+src_hash = '53c2dda1'
+text = ''
+# src: 32 元素分组（4.50 位）
+
+['granularity-spectrum.table.1.cell.1.0']
+src_hash = '64186e38'
+text = ''
+# src: **相对均方根误差**
+
+['granularity-spectrum.table.1.cell.1.1']
+src_hash = '756dfc09'
+text = ''
+# src: 13.50%
+
+['granularity-spectrum.table.1.cell.1.2']
+src_hash = '1f42481a'
+text = ''
+# src: 11.15%
+
+['granularity-spectrum.table.1.cell.1.3']
+src_hash = '3ec53f2f'
+text = ''
+# src: **8.42%**
+
+['granularity-spectrum.notes.1']
+src_hash = 'ea8d0baf'
+text = ''
+# src:
+# 
+# 分组粒度越小，网格步长越贴合局部数据分布，拟合精度便越高；但系统设计必须精确核算元数据
+# 开销：每个分组都需独立保存一个 FP16 缩放系数。以 32 元素分组为例，分摊到每个参数上会额外
+# 产生 0.5 位的存储成本。这部分开销即为换取局部表征精度所付出的体系结构代价。
+
+['gguf-blocks.title']
+src_hash = 'bb8143b5'
+text = ''
+# src: 格式规范：GGUF 基础 4 位量化块物理排布
+
+['gguf-blocks.slide.1']
+src_hash = '19a3a7db'
+text = ''
+# src:
+# 
+# - **Q4_0 交叉配对排布规则**：
+#   - 单字节的低 4 位存放第 $j$ 个权重，高 4 位存放第 $j + 16$ 个权重（前后半块交织对齐）。
+
+['gguf-blocks.notes.1']
+src_hash = '1ae70acb'
+text = ''
+# src:
+# 
+# 这就是我们用 llama.cpp 运行时磁盘上权重的真实排布方式。Q4_0 结构非常规整，18 个字节
+# 对应 32 个权重。请大家注意它打包时的精巧设计：第 0 个权重和第 16 个权重拼在同一个字节里，
+# 高低半字节交错。这种交替排布非常契合后续向量化解包时的并行指令对齐。
+
+['gguf-blocks-cont.title']
+src_hash = 'bb8143b5'
+text = ''
+# src: 格式规范：GGUF 基础 4 位量化块物理排布
+
+['gguf-blocks-cont.slide.1']
+src_hash = '27bdb8ce'
+text = ''
+# src:
+# 
+# - **GGUF Q4_0 块结构（对称量化基准）**：
+#   - 每 **32 个连续权重**划为 1 个量化块。
+#   - **`d` 字段**：2 字节（FP16 缩放步长）。
+#   - **`qs` 字段**：16 字节（32 个 4-bit 编码打包存储）。
+#   - **单块开销**：$2 + 16 = \mathbf{18\text{ 字节}}$ $\implies$ 平均每个权重占用 **4.50 位**。
+# - **GGUF Q4_1 块结构（非对称量化）**：
+#   - **`d` 字段**：2 字节（FP16 缩放步长）。
+#   - **`m` 字段**：2 字节（FP16 块内最小值）。
+#   - **`qs` 字段**：16 字节（32 个 4-bit 编码）。
+#   - **单块开销**：$2 + 2 + 16 = \mathbf{20\text{ 字节}}$ $\implies$ 平均每个权重占用 **5.00 位**。
+
+['gguf-blocks-cont.slide.1.footnote.1']
+src_hash = '12c0be87'
+text = ''
+# src: 文献出处：`llama.cpp` GGUF Specification & `ggml-quants.h`.
+
+['kquants-superblock.title']
+src_hash = 'fa818f06'
+text = ''
+# src: 系统进阶：K-quants 超块设计与二级量化
+
+['kquants-superblock.slide.1']
+src_hash = 'd1884427'
+text = ''
+# src:
+# 
+# - **工程痛点**：
+#   - Q4_0 对称省空间但非对称数据下精度差；Q4_1 精度好但多占了 $11\%$ 的空间。
+#   - **能否用 Q4_0 的体积，实现接近 Q4_1 的非对称高精度？**
+
+['kquants-superblock.image.1.alt']
+src_hash = '1d5ee29f'
+text = ''
+# src: 位宽与误差的平面上，Q4_0 在 4.50 位、4.25%，Q4_1 在 5.00 位、0.94%；4.50 位、约 1% 处是一个带问号的虚线圆，两者都达不到
+
+['kquants-superblock.notes.1']
+src_hash = '88e85ecd'
+text = ''
+# src:
+# 
+# 图中两个点是第 59 页 `./quant_compare norm` 的实测结果。Q4_0 每 32 个权重占 18 字节，
+# 相对误差 4.25%；Q4_1 多存一个 FP16 偏移，占 20 字节，误差降到 0.94%，体积多出
+# 20 ÷ 18 − 1 ≈ 11%。虚线圆是两种格式都达不到的位置：Q4_0 的体积、Q4_1 的精度。
+# Q4_K 落在哪里，由本页第三面的表格给出。
+
+['kquants-superblock-cont.title']
+src_hash = 'fa818f06'
+text = ''
+# src: 系统进阶：K-quants 超块设计与二级量化
+
+['kquants-superblock-cont.slide.1']
+src_hash = 'b1b2864d'
+text = ''
+# src:
+# 
+# - **Q4_K 的破局之道：超块与二级量化**：
+#   - **超块规模**：每个超块包含 **256 个权重**，细分为 **8 个子块（各 32 个权重）**。
+#   - 8 个子块需要 8 个步长与 8 个偏移量（共 16 个参数）。
+#   - **二级量化机制**：
+#     - 步长以 `d` 为单位量化为 6 位整数 `sc`，偏移以 `dmin` 为单位量化为 6 位整数 `m`。
+#     - `sc` 与 `m` 共 $16 \times 6 = 96\text{ bits} = \mathbf{12\text{ 字节}}$；`d` 与 `dmin` 为 FP16，共 **4 字节**。
+
+['kquants-superblock-cont.notes.1']
+src_hash = '10127f18'
+text = ''
+# src:
+# 
+# 请大家体会二级量化的系统工程巧思：量化对象不仅限于权重数据
+# 本身，量化产生的缩放与偏移参数同样可以被再次量化。8 个子块原本需要 32 字节的浮点元数据，
+# 经过 6 位二次量化后被紧凑压缩为 12 字节。Q4_K 以 4.5 位的存储开销，取得了逼近 5.0 位
+# 非对称量化的保真度。
+# 
+# `d` 取 8 个子块步长中的最大值除以 63，`sc` = round(子块步长 ÷ `d`)，因此 `sc` 落在
+# 0 ~ 63，正好 6 位；`dmin` 与 `m` 对偏移做同样的事。`d` 与 `dmin` 本身不再量化，按 FP16 存储。
+
+['kquants-superblock-cont2.title']
+src_hash = 'fa818f06'
+text = ''
+# src: 系统进阶：K-quants 超块设计与二级量化
+
+['kquants-superblock-cont2.slide.1']
+src_hash = '6f6ffa84'
+text = ''
+# src:
+# 
+# - **还原一个权重**（$q$ 为 4 位编码，取值 0 ~ 15）：
+#   - 子块步长 = `d` × `sc`，子块偏移 = `dmin` × `m`；权重 = 子块步长 × $q$ − 子块偏移。
+# - **超块开销结算**：
+#   - 256 个 4 位权重编码（128 字节）+ 二级量化参数（12 字节）+ `d` 与 `dmin`（4 字节）= **144 字节**。
+#   - **平均位宽**：$144 \times 8 \div 256 = \mathbf{4.50\text{ 位/权重}}$（与 Q4_0 的存储开销完全一致）。
+
+['kquants-superblock-cont2.slide.1.footnote.1']
+src_hash = 'c341a454'
+text = ''
+# src: 文献出处：Gerganov, G. et al. *k-quants: Fast and accurate 2-6 bit quantization in llama.cpp* (2023).
+
+['kquants-superblock-cont2.table.1.cell.0.0']
+src_hash = '0e8b1c78'
+text = ''
+# src: 格式
+
+['kquants-superblock-cont2.table.1.cell.0.1']
+src_hash = 'f4ebc329'
+text = ''
+# src: 位/权重
+
+['kquants-superblock-cont2.table.1.cell.0.2']
+src_hash = '08a762a4'
+text = ''
+# src: 全正权重实测误差
+
+['kquants-superblock-cont2.table.1.cell.0.3']
+src_hash = '396cc846'
+text = ''
+# src: 近似对称权重实测误差
+
+['kquants-superblock-cont2.table.1.cell.1.0']
+src_hash = '23e71bfb'
+text = ''
+# src: Q4_0
+
+['kquants-superblock-cont2.table.1.cell.1.1']
+src_hash = 'd0536bcd'
+text = ''
+# src: 4.50
+
+['kquants-superblock-cont2.table.1.cell.1.2']
+src_hash = 'db48ec42'
+text = ''
+# src: 4.25%
+
+['kquants-superblock-cont2.table.1.cell.1.3']
+src_hash = '5a075619'
+text = ''
+# src: 8.42%
+
+['kquants-superblock-cont2.table.1.cell.2.0']
+src_hash = 'c592d071'
+text = ''
+# src: Q4_1
+
+['kquants-superblock-cont2.table.1.cell.2.1']
+src_hash = '9ae1524b'
+text = ''
+# src: 5.00
+
+['kquants-superblock-cont2.table.1.cell.2.2']
+src_hash = '29ac7536'
+text = ''
+# src: **0.94%**
+
+['kquants-superblock-cont2.table.1.cell.2.3']
+src_hash = 'e4e7346c'
+text = ''
+# src: **7.69%**
+
+['kquants-superblock-cont2.table.1.cell.3.0']
+src_hash = '6690da88'
+text = ''
+# src: **Q4_K**
+
+['kquants-superblock-cont2.table.1.cell.3.1']
+src_hash = 'e9243512'
+text = ''
+# src: **4.50**
+
+['kquants-superblock-cont2.table.1.cell.3.2']
+src_hash = 'b0db1d66'
+text = ''
+# src: 2.16%
+
+['kquants-superblock-cont2.table.1.cell.3.3']
+src_hash = '14188f1f'
+text = ''
+# src: 7.70%
+
+['kquants-superblock-cont2.notes.1']
+src_hash = 'cfbe2134'
+text = ''
+# src:
+# 
+# 表中数字是 `./quant_compare` 对 Llama-3.2-1B 两段真实权重的输出，误差为相对均方根误差。`w-down-proj` 上，
+# Q4_K 以 4.50 位取得 7.70%，与 5.00 位的 Q4_1（7.69%）几乎相同。`w-final-norm` 上，
+# Q4_K 把 Q4_0 的 4.25% 降到 2.16%，仍高于 Q4_1 的 0.94%：Q4_K 的偏移只能把格点向下平移
+# （子块最小值大于 0 时按 0 处理，与 llama.cpp 一致），全为正的数据用不上偏移，16 个格点
+# 铺在 0 到最大值之间；Q4_1 的格点从数据的最小值开始，因此更密。
+
+['scale-bits.title']
+src_hash = '744c9b4d'
+text = ''
+# src: 位级别的代价：6 位字段跨越字节边界的重构
+
+['scale-bits.slide.1']
+src_hash = 'e4a3e152'
+text = ''
+# src:
+# 
+# - **严峻的物理现实**：
+#   - 16 个 6 位参数共 96 bits，刚好凑成整整 12 个字节。但 **6 与 8 无法整除**！
+#   - 这意味着：**字段必须跨越物理字节边界存储，不能有任何一位被浪费。**
+
+['scale-bits.notes.1']
+src_hash = '838d86df'
+text = ''
+# src:
+# 
+# 天下没有免费的午餐。要省下这几个字节，代价就是代码变复杂。大家看 `sc4` 的提取：低 4 位在
+# 第 8 字节，高 2 位在第 0 字节的高处！如果你的位移写错一位，权重直接全偏。没有扎实的掩码和
+# 移位基本功，你连工业级大模型的文件都读不懂。
+
+['scale-bits-cont.title']
+src_hash = '744c9b4d'
+text = ''
+# src: 位级别的代价：6 位字段跨越字节边界的重构
+
+['scale-bits-cont.slide.1']
+src_hash = '7e87e861'
+text = ''
+# src:
+# 
+# - **GGUF `scales` 12 字节物理布局协议**：
+#   - 前 8 个字节（`scales[0..7]`）：低 6 位分别存放前 4 个步长 $sc_{0..3}$ 与前 4 个偏移 $m_{0..3}$。
+#   - 空出的高 2 位（共 $8 \times 2 = 16$ 位）：正好用来存放后 4 个步长与偏移的**高 2 位**！
+#   - 后 4 个字节（`scales[8..11]`）：低 4 位与高 4 位分别存放后 4 个步长与偏移的**低 4 位**！
+# - **C 语言解码内核实现**：
+
+['scale-bits-cont.slide.1.footnote.1']
+src_hash = 'e397db4d'
+text = ''
+# src: 文献出处：`llama.cpp/k_quants.c` Decode Kernel.
+
+['bridge-9.title']
+src_hash = 'fceabfc5'
+text = ''
+# src: 第九部分 · 前沿视野与实验
+
+['bridge-9.bridge.1']
+src_hash = 'fceabfc5'
+text = ''
+# src: 第九部分 · 前沿视野与实验
+
+['section.quant-frontier.title']
+src_hash = 'fceabfc5'
+text = ''
+# src: 第九部分 · 前沿视野与实验
+
+['ai-float-formats.title']
+src_hash = 'e0d06bcc'
+text = ''
+# src: 浮点重构：从通用规范到专用 AI 浮点
+
+['ai-float-formats.slide.1']
+# CHANGED: was ff6632fe
+src_hash = 'a7537c88'
+text = ''
+# src:
+# 
+# - **位域演变对比**：
+#   - **FP32**：`[1s]` + `[8 exp]` + `[23 mantissa]`
+#   - **FP16**：`[1s]` + `[5 exp]` + `[10 mantissa]` （动态范围过小，极易溢出）
+#   - **BF16**：`[1s]` + `[8 exp]` + `[ 7 mantissa]` （保全 8 位阶码，动态范围与 FP32 相同）
+# - **NVIDIA Hopper 时代的 1 字节浮点：FP8 双子星规范**：
+#   1. **E4M3（1 位符号，4 位阶码，3 位尾数）**：
+#      - 相对偏向精度，**专为前向推理的权重与激活值定制**。
+#      - **突破 IEEE 规范**：废除无穷大（$\pm\infty$）编码，将保留码段释放用来表示更大正常数（最大数达 448）。
+#   2. **E5M2（1 位符号，5 位阶码，2 位尾数）**：
+#      - 阶码与 FP16 一致，动态范围广，**专为反向传播的梯度更新定制**。
+
+['ai-float-formats.slide.1.footnote.1']
+src_hash = '0017a887'
+text = ''
+# src: 文献出处：Micikevicius, P. et al. *FP8 Formats for Deep Learning*, arXiv:2209.05433 (2022).
+
+['ai-float-formats.notes.1']
+src_hash = '05a68de5'
+text = ''
+# src:
+# 
+# 体系结构的发展展现了对传统规范的务实重塑。BF16 为了确保数值不发生下溢，大幅缩减尾数以保留
+# 完整的 8 位阶码；而到了 FP8 时代，E4M3 甚至废除了对无穷大的编码保留，将其重新分配给有限
+# 数值以扩展表示范围。这表明在特定领域计算中，数据表示形式始终服务于具体的系统效能与动态范围
+# 需求。
+
+['nf4-lut.title']
+src_hash = 'f92db3e9'
+text = ''
+# src: 非均匀量化：NF4 的信息论等熵分割
+
+['nf4-lut.slide.1']
+# CHANGED: was ea3f9508
+src_hash = 'cb58e0c4'
+text = ''
+# src:
+# 
+# - **均匀整数量化的理论缺陷**：
+#   - 预训练模型的权重呈现极其平滑的**标准正态分布 $\mathcal{N}(0, 1)$**。
+#   - 等距网格导致：两端稀疏区浪费编码，中间高频区精度严重不足。
+# - **香农信息论原则**：
+#   - 最优量化要求每个离散符号出现的后验概率均等（**最大化信息熵**）。
+# - **NF4 量化实现机制**：
+#   - 基于标准正态分布累积分布函数，将概率质量精确切分为面积相等的 16 个等熵子区间。
+#   - **硬件查找表架构**：
+#     - 4 位存储的不再是数值，而是 **0 ~ 15 的查找表索引**；
+#     - 运行时通过一张仅含 16 个 FP16 常量的极小片上查找表，瞬间还原为浮点送入计算。
+
+['nf4-lut.slide.1.footnote.1']
+src_hash = 'aaf611aa'
+text = ''
+# src: 文献出处：Dettmers, T. et al. *QLoRA: Efficient Finetuning of Quantized LLMs*, NeurIPS (2023).
+
+['nf4-lut.notes.1']
+src_hash = 'd4153ccc'
+text = ''
+# src:
+# 
+# NF4 是算法、信息论与系统工程交织的代表作。它不指望硬件加法器去支持非等距运算，而是巧妙地
+# 在芯片 SRAM 缓存里放一张 16 点的黄金正态分布表。内存里存 4 位的索引，算的时候查一下表。
+# 看似简单的查找表，背后是严丝合缝的信息论最大熵原理。
+
+['lab-release.title']
+src_hash = '8b2aca14'
+text = ''
+# src: 小练习：动手打造你自己的量化引擎
+
+['lab-release.slide.1']
+src_hash = 'e73d2379'
+text = ''
+# src:
+# 
+# - **实验核心目标**：纯 C/C++ 实现无任何第三方重量级依赖的模型量化与推理核心模块。
+# - **阶段性开发任务**：
+#   - **Task 1: Safetensors 容器小端解析（20%）**
+#     - 读取前 8 字节小端无符号整数获取头部长度，解析 JSON 字典获取张量偏移、形状与 BF16 类型。
+#   - **Task 2: BF16 扩展与浮点转换（20%）**
+#     - 利用移位操作实现 BF16 到 FP32 的极速展开（左移 16 位）。
+#   - **Task 3: Q4_0 与 Q4_1 量化及反量化内核（40%）**
+#     - 实现 32 元素块级划分、极差计算、四舍五入舍入与半字节位打包。
+#   - **Task 4: 端到端推理生成与 MD5 校验和自查（20%）**
+#     - 运行极简单请求 Greedy Decode，验证量化误差上界，比对输出文本的 MD5 校验和。
+
+['lab-release.slide.1.footnote.1']
+src_hash = 'ff99b9a5'
+text = ''
+# src: 文献出处：ICS Course Lab Guideline & Qwen-VL Safetensors Spec.
+
+['lab-release.notes.1']
+src_hash = 'c02abd46'
+text = ''
+# src:
+# 
+# 计算机系统是一门注重工程验证的学科。本次大作业无需依赖 Python 或复杂的大模型推理框架，大家将使用纯 C/C++
+# 完成核心逻辑。从解析 Safetensors 的小端字节序头部开始，自主实现 Q4_0 与 Q4_1 的编解码内核，
+# 最终验证量化后模型的文本输出校验和。这将帮助大家真正建立起从底层数据表示到上层大语言模型推理的
+# 端到端系统认知。
+
+['summary.title']
+src_hash = '5f41b7e0'
+text = 'Summary'
+# src: 课程小结
+
+['summary.slide.1']
+# CHANGED: was cf01b0f8
+src_hash = '2d2ff598'
+text = '''
+- **Bytes and addressing**: 8 binary bits, written as 2 hexadecimal digits, the smallest addressable unit of memory
+- **Multi-byte storage and byte order**: set by the architecture's byte order; modern general-purpose processors (x86-64, ARM64) and the GGUF format use little-endian
+- **Binary encoding of integers**: two's complement gives the top sign bit a negative weight, and implicit conversions between signed and unsigned numbers are a common source of security bugs
+- **Real numbers and model quantization**: floating point divides bits among sign, exponent and fraction; group quantization compresses weights to 4 bits, greatly easing the memory bottleneck
 '''
 # src:
-# 第五部分 · 浮点数的精度与低精度格式
-# 可表示值的分布、舍入，以及更少位的浮点格式
+# 
+# - **字节概念与寻址单位**：8 个二进制 Bits 组合，对应 2 位十六进制数，是内存寻址的最小基本单位
+# - **多字节存储与字节序**：由体系结构字节序规定，现代通用处理器（x86-64、ARM64）及 GGUF 格式普遍采用小端序
+# - **整数二进制编码规则**：补码赋予最高符号位负权重，有符号数与无符号数之间的隐式转换是常见的安全缺陷来源
+# - **实数表示与模型量化**：浮点数分配符号、阶码与尾数；分组量化技术将权重压缩至 4 位宽，大幅降低内存访存瓶颈
+
+['summary.slide.2']
+# CHANGED: was 865739e6
+src_hash = 'd6e86b83'
+text = '''
+Bits carry no meaning of their own; their meaning depends entirely on the rule that interprets them (format specifications, type systems and hardware conventions).
+Implicit semantics at type conversions and bit operations do not trigger compile errors, so developers must review code carefully.
+'''
+# src:
+# 
+# 数据比特本身不具有固有语义，其含义完全取决于解释规则。
+# 类型转换与位操作边界处的隐式语义不会触发编译报错，需要开发者保持严谨的代码审查意识。
+
+['summary.highlight.1']
+src_hash = '02539e55'
+text = 'Before interpreting a sequence of bytes, first determine its data type and the rule for parsing it.'
+# src: 解释字节序列之前，必须首先明确其数据类型与解析规范。
+
+['summary.notes.1']
+src_hash = '8cc177b2'
+text = 'These four together are all the conventions needed to read 1.9 GB of bytes as a model. One more sentence can connect them to what follows: in machine-level programs immediate values and addresses are likewise stored little-endian; in the memory hierarchy the bit width of the data directly sets the memory traffic per token; and the object files that linking and dynamic loading handle are equally byte sequences with a specification, approached the same way.'
+# src:
+# 
+# 这四条合起来就是把 1.9 GB 字节读成一个模型所需的全部约定。
+# 还可以补一句与后续内容的连接：机器级程序里立即数与地址同样按小端存放，
+# 存储层次一节里数据的位宽直接决定每个 token 的访存量，
+# 链接与动态加载处理的目标文件同样是有规范的字节序列，用的是同一套方法。
+
+# orphaned — no longer in the lecture. Kept so a rename does not
+# throw the translation away; delete by hand once you are sure.
 
 ['section.float-formats.title']
 src_hash = '5ea00915'
 text = 'Part five · Floating-point precision and low-precision formats'
-# src: 第五部分 · 浮点数的精度与低精度格式
 
 ['float-distribution.title']
 src_hash = 'c02d1dd6'
 text = 'How floating-point values are distributed on the real line'
-# src: 浮点数在实数轴上的分布
 
 ['float-distribution.slide.1']
 src_hash = '3bd9fd07'
@@ -2731,70 +5036,54 @@ text = '''
 - The exponent selects an interval $[2^E, 2^{E+1})$ and the fraction divides it into $2^n$ equal parts; each power of two crossed doubles the step
 - The step is proportional to the value: absolute precision falls as values grow, while <mark>relative precision</mark> stays constant
 '''
-# src:
-# 
-# - 阶码选定区间 $[2^E, 2^{E+1})$，尾数把它等分为 $2^n$ 份；每跨过一个 2 的幂，步长加倍
-# - 步长与数值成比例：绝对精度随数值增大而下降，<mark>相对精度</mark>保持不变
 
 ['float-distribution.table.1.cell.0.0']
 src_hash = 'e68795ed'
 text = 'FP32 interval'
-# src: FP32 的区间
 
 ['float-distribution.table.1.cell.0.1']
 src_hash = '3ce58068'
 text = 'Step $2^{E-23}$'
-# src: 步长 $2^{E-23}$
 
 ['float-distribution.table.1.cell.0.2']
 src_hash = '78072acc'
 text = 'Step / interval start'
-# src: 步长 / 区间起点
 
 ['float-distribution.table.1.cell.1.0']
 src_hash = '9d20b5d5'
 text = '$[1, 2)$'
-# src: $[1, 2)$
 
 ['float-distribution.table.1.cell.1.1']
 src_hash = 'f4701a0e'
 text = '$2^{-23} \approx 1.2 \times 10^{-7}$'
-# src: $2^{-23} \approx 1.2 \times 10^{-7}$
 
 ['float-distribution.table.1.cell.1.2']
 src_hash = 'feb83cc3'
 text = '$2^{-23}$'
-# src: $2^{-23}$
 
 ['float-distribution.table.1.cell.2.0']
 src_hash = 'd96a20c0'
 text = '$[2^{10}, 2^{11})$'
-# src: $[2^{10}, 2^{11})$
 
 ['float-distribution.table.1.cell.2.1']
 src_hash = '3eec6ea8'
 text = '$2^{-13} \approx 1.2 \times 10^{-4}$'
-# src: $2^{-13} \approx 1.2 \times 10^{-4}$
 
 ['float-distribution.table.1.cell.2.2']
 src_hash = 'feb83cc3'
 text = '$2^{-23}$'
-# src: $2^{-23}$
 
 ['float-distribution.table.1.cell.3.0']
 src_hash = 'c6272995'
 text = '$[2^{24}, 2^{25})$'
-# src: $[2^{24}, 2^{25})$
 
 ['float-distribution.table.1.cell.3.1']
 src_hash = '5aa1ba5b'
 text = '$2^{1} = 2$'
-# src: $2^{1} = 2$
 
 ['float-distribution.table.1.cell.3.2']
 src_hash = 'feb83cc3'
 text = '$2^{-23}$'
-# src: $2^{-23}$
 
 ['float-distribution.notes.1']
 src_hash = '4d76ea39'
@@ -2805,23 +5094,14 @@ Absolute precision falls as values grow: above $2^{24}$ neighbouring FP32 values
 near $10^9$ the step is 64, so a counter kept in a float stops changing when 1 is added once it reaches a billion.
 The denormalized values near zero are the one evenly spaced stretch, filling the gap between the smallest normalized value and zero.
 '''
-# src:
-# 
-# 图中用的是尾数只有 3 位的简化格式，FP32 的每个区间被等分成 $2^{23}$ 份，道理相同。
-# 表中每个区间的长度是 $2^E$，除以 $2^{23}$ 得到步长 $2^{E-23}$；步长除以区间起点 $2^E$，结果总是 $2^{-23}$。
-# 绝对精度随数值增大而下降：$2^{24}$ 以上相邻两个 FP32 相差 2，奇数已经无法表示；
-# $10^9$ 附近的步长是 64，一个用 float 记录的计数器数到十亿之后，加一不再改变它的值。
-# 零附近的非规格化数是唯一一段等距区域，它填补了最小规格化数与零之间的空隙。
 
 ['float-rounding.title']
 src_hash = '225a5686'
 text = 'Rounding: taking the nearest representable value'
-# src: 舍入：取最近的可表示值
 
 ['float-rounding.demo.1.name']
 src_hash = '68e6b4e8'
 text = 'Three integers and one fraction'
-# src: 三个整数与一个小数
 
 ['float-rounding.slide.1']
 src_hash = '6fef9ceb'
@@ -2831,11 +5111,6 @@ text = '''
 - At the midpoint the value whose last fraction bit is even is chosen, which is called <mark>round to nearest even</mark>, so that error does not accumulate in one direction
 - `0.1` is a repeating fraction in binary, and a finite format can only store an approximation
 '''
-# src:
-# 
-# - $2^{24}$ 以上相邻两个 FP32 相差 2，奇数正好落在两个可表示值的中点
-# - 中点处取尾数末位为偶的那个，称为<mark>舍入到最近的偶数</mark>，使误差不朝一个方向累积
-# - `0.1` 在二进制下是无限循环小数，有限位的格式只能存一个近似值
 
 ['float-rounding.notes.1']
 src_hash = '6259ac85'
@@ -2845,21 +5120,14 @@ Round to nearest even is the IEEE 754 default; the next page lists all four mode
 Both rules guarantee that a single rounding errs by no more than half a step, which is the basis of the quantization error bound;
 the section on quantization shows how that bound fails once the two ends of the coding interval are asymmetric.
 '''
-# src:
-# 
-# 舍入到最近的偶数是 IEEE 754 的默认模式，下一页列出全部四种模式。
-# 两种规则都保证单次舍入的误差不超过半个步长，这是量化误差上界的依据；
-# 量化那一节会说明编码区间两端不对称时这个上界如何失效。
 
 ['rounding-modes.title']
 src_hash = 'aeec42f4'
 text = 'The four IEEE 754 rounding modes'
-# src: IEEE 754 的四种舍入模式
 
 ['rounding-modes.demo.1.name']
 src_hash = '5b89f925'
 text = 'Rounding five values to integers in four modes'
-# src: 五个值在四种模式下取整
 
 ['rounding-modes.slide.1']
 src_hash = '9dbcd780'
@@ -2869,11 +5137,6 @@ text = '''
 - **Round to nearest even** is the default; it differs from round-half-up only at midpoints, where both 1.50 and 2.50 give 2
 - The other three modes always err toward the same side, so a sum over many values comes out systematically too large or too small
 '''
-# src:
-# 
-# - **向下**取不大于真值的最近值，**向上**取不小于真值的最近值，**向零**丢弃小数部分
-# - **舍入到最近的偶数**是默认模式；只在中点处与四舍五入不同，1.50 与 2.50 都得到 2
-# - 其余三种模式的误差总是偏向同一侧，对大量数值求和时结果会系统性地偏大或偏小
 
 ['rounding-modes.notes.1']
 src_hash = 'ae5c5a98'
@@ -2884,147 +5147,114 @@ Round to nearest even goes up at half of the midpoints and down at the other hal
 A decimal example, rounding to two places: 1.2349999 gives 1.23, 1.2350001 gives 1.24,
 1.2350000 gives 1.24 (midpoint, up), and 1.2450000 gives 1.24 (midpoint, down).
 '''
-# src:
-# 
-# 程序用 `fesetround` 切换模式，`nearbyint` 按当前模式取整。
-# 舍入到最近的偶数在中点处一半向上、一半向下，因此求和时误差的期望为零。
-# 十进制下的例子：保留两位小数时，1.2349999 得 1.23，1.2350001 得 1.24，
-# 1.2350000 得 1.24（中点，向上），1.2450000 得 1.24（中点，向下）。
 
 ['binary-rounding.title']
 src_hash = '87d9ba1f'
 text = 'Rounding binary fractions'
-# src: 二进制小数的舍入
 
 ['binary-rounding.slide.1']
 src_hash = '8b14d25b'
 text = 'Rounding to 2 bits after the binary point (a step of 1/4):'
-# src: 以保留到小数点后 2 位（步长 1/4）为例：
 
 ['binary-rounding.table.1.cell.0.0']
 src_hash = 'cda1d55c'
 text = 'Value'
-# src: 值
 
 ['binary-rounding.table.1.cell.0.1']
 src_hash = 'd9b89d61'
 text = 'Binary'
-# src: 二进制
 
 ['binary-rounding.table.1.cell.0.2']
 src_hash = '7da3ee30'
 text = 'Rounded'
-# src: 舍入结果
 
 ['binary-rounding.table.1.cell.0.3']
 src_hash = 'be37d841'
 text = 'Action'
-# src: 动作
 
 ['binary-rounding.table.1.cell.0.4']
 src_hash = '151ae4c3'
 text = 'Rounded value'
-# src: 舍入后的值
 
 ['binary-rounding.table.1.cell.1.0']
 src_hash = '4339fd0f'
 text = '$2\frac{3}{32}$'
-# src: $2\frac{3}{32}$
 
 ['binary-rounding.table.1.cell.1.1']
 src_hash = 'e046bcea'
 text = '`10.00011`'
-# src: `10.00011`
 
 ['binary-rounding.table.1.cell.1.2']
 src_hash = '3a49e90f'
 text = '`10.00`'
-# src: `10.00`
 
 ['binary-rounding.table.1.cell.1.3']
 src_hash = '967a206e'
 text = 'Down'
-# src: 向下
 
 ['binary-rounding.table.1.cell.1.4']
 src_hash = 'b71be43b'
 text = '$2$'
-# src: $2$
 
 ['binary-rounding.table.1.cell.2.0']
 src_hash = 'b12b5065'
 text = '$2\frac{3}{16}$'
-# src: $2\frac{3}{16}$
 
 ['binary-rounding.table.1.cell.2.1']
 src_hash = 'd507ce4e'
 text = '`10.00110`'
-# src: `10.00110`
 
 ['binary-rounding.table.1.cell.2.2']
 src_hash = '99bfd9ed'
 text = '`10.01`'
-# src: `10.01`
 
 ['binary-rounding.table.1.cell.2.3']
 src_hash = '0ad9fc2d'
 text = 'Up'
-# src: 向上
 
 ['binary-rounding.table.1.cell.2.4']
 src_hash = '9ef75220'
 text = '$2\frac{1}{4}$'
-# src: $2\frac{1}{4}$
 
 ['binary-rounding.table.1.cell.3.0']
 src_hash = '5cfb5291'
 text = '$2\frac{7}{8}$'
-# src: $2\frac{7}{8}$
 
 ['binary-rounding.table.1.cell.3.1']
 src_hash = 'cc55b365'
 text = '`10.11100`'
-# src: `10.11100`
 
 ['binary-rounding.table.1.cell.3.2']
 src_hash = '53f409a5'
 text = '`11.00`'
-# src: `11.00`
 
 ['binary-rounding.table.1.cell.3.3']
 src_hash = '0ad9fc2d'
 text = 'Up'
-# src: 向上
 
 ['binary-rounding.table.1.cell.3.4']
 src_hash = '4744619e'
 text = '$3$'
-# src: $3$
 
 ['binary-rounding.table.1.cell.4.0']
 src_hash = '466d2d3a'
 text = '$2\frac{5}{8}$'
-# src: $2\frac{5}{8}$
 
 ['binary-rounding.table.1.cell.4.1']
 src_hash = '2c8c0648'
 text = '`10.10100`'
-# src: `10.10100`
 
 ['binary-rounding.table.1.cell.4.2']
 src_hash = '67fe8574'
 text = '`10.10`'
-# src: `10.10`
 
 ['binary-rounding.table.1.cell.4.3']
 src_hash = '967a206e'
 text = 'Down'
-# src: 向下
 
 ['binary-rounding.table.1.cell.4.4']
 src_hash = '017a886e'
 text = '$2\frac{1}{2}$'
-# src: $2\frac{1}{2}$
 
 ['binary-rounding.slide.2']
 src_hash = '5fcffc9a'
@@ -3033,10 +5263,6 @@ text = '''
 - When the bits after the rounding position are `100…0`, the value is a <mark>midpoint</mark> and goes to the side whose last bit is 0; above the midpoint it rounds up, below it rounds down
 - Rounding row 3 up produces a carry, and the integer part changes from `10` to `11`
 '''
-# src:
-# 
-# - 舍入位置之后为 `100…0` 时是<mark>中点</mark>，取末位为 0 的一侧；大于中点向上，小于中点向下
-# - 第 3 行向上时产生进位，整数部分由 `10` 变为 `11`
 
 ['binary-rounding.notes.1']
 src_hash = '182d1881'
@@ -3046,21 +5272,14 @@ Row 1 drops `011`, below the midpoint `100`; row 2 drops `110`, above the midpoi
 Rows 3 and 4 both drop exactly `100`: `10.11` ends in 1 and goes up to `11.00`; `10.10` already ends in 0 and stays.
 Floating-point fractions are rounded by the same rule, and the FP32-to-BF16 conversion later uses exactly this rule.
 '''
-# src:
-# 
-# 第 1 行舍去的是 `011`，小于中点 `100`；第 2 行舍去 `110`，大于中点；
-# 第 3 行与第 4 行舍去的都恰好是 `100`：`10.11` 末位为 1，向上到 `11.00`；`10.10` 末位已是 0，保持不变。
-# 浮点数的尾数按同样的规则舍入，后面 FP32 转换为 BF16 时用的就是这条规则。
 
 ['patriot-missile.title']
 src_hash = 'caaa3d66'
 text = 'The Patriot missile: rounding error in 0.1 accumulates over time'
-# src: 爱国者导弹：0.1 的舍入误差随时间累积
 
 ['patriot-missile.demo.1.name']
 src_hash = 'ff840035'
 text = 'Computing the clock error after 100 hours'
-# src: 计算 100 小时后的时钟误差
 
 ['patriot-missile.slide.1']
 src_hash = '8d30167b'
@@ -3069,18 +5288,11 @@ text = '''
 - On 25 February 1991, a Patriot battery failed to intercept a Scud missile; 28 people died
 - The clock ticked every 0.1 s; the program approximated 0.1 with a 24-bit binary fraction
 - Each tick lost about $10^{-7}$ s; after 100 hours of operation the error was 0.343 s
-
 '''
-# src:
-# 
-# - 1991 年 2 月 25 日，爱国者导弹未能拦截飞毛腿导弹，28 人死亡
-# - 时钟每 0.1 秒计数一次，程序用 24 位二进制小数近似 0.1
-# - 每次计数少约 $10^{-7}$ 秒，连续运行 100 小时后误差 0.343 秒
 
 ['patriot-missile.slide.1.footnote.1']
 src_hash = 'b8f44ff9'
 text = 'A Patriot missile launch. Photo from Wikimedia Commons, taken by the U.S. Army, public domain.'
-# src: 爱国者导弹发射。照片来自 Wikimedia Commons，美国陆军拍摄，公有领域。
 
 ['patriot-missile.notes.1']
 src_hash = '099444d1'
@@ -3092,23 +5304,14 @@ and $0.1 - x = 0.00000000000000000000000[1100]\ldots_2 \approx 2^{-20} \times 0.
 A Scud travels at about 2000 m/s and covers about 687 m in 0.343 s, which put it outside the radar's tracking window.
 Part of the software had already been changed to compute time precisely while another part still used the old approximation, so the errors did not cancel when the two were subtracted.
 '''
-# src:
-# 
-# $0.1 = 0.0\overline{0011}_2$，截断到小数点后 23 位得到 $x = 0.00011001100110011001100_2$，
-# $0.1 - x = 0.00000000000000000000000[1100]\ldots_2 \approx 2^{-20} \times 0.1$。
-# 100 小时共 $100 \times 3600 \times 10 = 3.6 \times 10^6$ 次计数，乘以单次误差得到 0.343 秒。
-# 飞毛腿导弹的速度约 2000 m/s，0.343 秒内飞行约 687 米，超出了雷达的跟踪窗口。
-# 当时软件的部分代码已改用精确的时间计算，另一部分仍使用旧的近似值，两者相减后误差没有抵消。
 
 ['float-not-real.title']
 src_hash = 'd3103535'
 text = 'A finite representation does not obey the laws of real arithmetic'
-# src: 有限位的表示不满足实数的运算律
 
 ['float-not-real.demo.1.name']
 src_hash = '481bbba1'
 text = 'Three examples'
-# src: 三个例子
 
 ['float-not-real.slide.1']
 src_hash = '2a8f6c28'
@@ -3116,25 +5319,18 @@ text = '''
 - Floating-point addition <mark>is not associative</mark>: the order of the additions changes the result
 - A finite decimal fraction may repeat in binary, and `0.1` and `0.2` are both rounded
 '''
-# src:
-# 
-# - 浮点加法<mark>不满足结合律</mark>：改变加法次序会改变结果
-# - 十进制的有限小数在二进制下可能是无限循环，`0.1` 与 `0.2` 都需要舍入
 
 ['float-not-real.highlight.1']
 src_hash = 'd7d0fc75'
 text = '`float` is a finite-width approximation, and its operations do not obey the laws of real arithmetic.'
-# src: `float` 是有限位的近似，其运算不满足实数的运算律。
 
 ['float-casts.title']
 src_hash = 'f000c308'
 text = 'Conversions between integers and floating point in C'
-# src: C 中整数与浮点数之间的转换
 
 ['float-casts.demo.1.name']
 src_hash = '0872ce94'
 text = 'x = 2^24 + 1, f = 0.1f, d = 0.1'
-# src: x = 2^24 + 1，f = 0.1f，d = 0.1
 
 ['float-casts.slide.1']
 src_hash = '3c2ffffc'
@@ -3144,11 +5340,6 @@ text = '''
 - Floating point to integer <mark>truncates toward zero</mark>; out of `int` range the C standard leaves the result undefined, and x86-64 gives $-2^{31}$
 - `2/3` is integer division and yields 0; `2/3.0` is floating-point division
 '''
-# src:
-# 
-# - `int` 转 `double` 是精确的；转 `float` 时超过 $2^{24}$ 的值需要舍入
-# - 浮点转整数<mark>向零截断</mark>小数部分；超出 `int` 范围时 C 标准未定义结果，x86-64 上得到 $-2^{31}$
-# - `2/3` 是整数除法，结果为 0；`2/3.0` 是浮点除法
 
 ['float-casts.notes.1']
 src_hash = 'ef845cf9'
@@ -3159,17 +5350,10 @@ On x86-64 an out-of-range conversion is done by the `cvttsd2si` instruction, whi
 Quantization must round explicitly when converting floats to integers: `(int)` truncates toward zero, so errors on both sides lean toward 0;
 this lecture's `quant_compare.c` uses `lrintf`, which rounds in the current mode (round to nearest even by default).
 '''
-# src:
-# 
-# `float` 转 `double` 不丢失信息，再转回 `float` 得到原值；`double` 转 `float` 丢掉尾数的后 29 位，0.1 的近似值因此改变。
-# x86-64 上越界的转换由 `cvttsd2si` 指令完成，结果固定为 `0x80000000`，称为 integer indefinite；其他平台可能饱和到最大或最小值。
-# 量化时把浮点数转为整数必须显式舍入：`(int)` 向零截断，正负两侧的误差都偏向 0；
-# 本讲的 `quant_compare.c` 用 `lrintf`，它按当前舍入模式（默认舍入到最近的偶数）取整。
 
 ['precision-formats.title']
 src_hash = '5b35a562'
 text = 'Low-precision floating-point formats'
-# src: 低精度浮点格式
 
 ['precision-formats.slide.1']
 src_hash = '49b7eaaa'
@@ -3179,20 +5363,10 @@ The formats differ only in how the fields split the bits.
 - **FP16**: 5-bit exponent, maximum 65504, large values overflow
 - **FP8**: E4M3 favours precision, E5M2 range
 '''
-# src:
-# 
-# **每种格式的差别只在三段位如何分配。**
-# - **BF16** 与 FP32 的阶码同为 8 位，范围相同，尾数少 16 位
-# - **FP16** 阶码 5 位，最大值 65504，数值较大时溢出
-# - **FP8** 有 E4M3 与 E5M2 两种分法，前者精度优先，后者范围优先
 
 ['precision-formats.slide.2']
 src_hash = '731c750a'
 text = 'Dropping low fraction bits cuts storage and memory traffic in proportion and speeds multiply-add, if output quality tolerates it.'
-# src:
-# 
-# 低精度舍弃尾数末尾的若干位，换来存储与访存量按位数同比例下降，以及更高的乘加吞吐。
-# 前提是模型的输出质量对尾数末位的变化不敏感。
 
 ['precision-formats.notes.1']
 src_hash = '038b660c'
@@ -3200,21 +5374,14 @@ text = '''
 
 FP64 divides its bits 1 · 11 · 52 and is used in scientific computing; it rarely appears in deep learning and is not shown. The three gains can be stated separately: the weight file and the memory it occupies shrink in proportion to the bit width; the memory traffic per token shrinks in the same proportion; and low-precision multiply-add units on accelerators have higher throughput than high-precision ones.
 '''
-# src:
-# 
-# FP64 的分配为 1 · 11 · 52，用于科学计算，深度学习中很少出现，图中未列。
-# 三项收益可以分开说：权重文件与显存占用按位数同比例下降；每个 token 的访存量同比例下降；
-# 加速器上低精度乘加单元的吞吐高于高精度单元。
 
 ['bf16-truncation.title']
 src_hash = '6157818b'
 text = 'Converting FP32 to BF16: keep the top 16 bits, then round'
-# src: FP32 转换为 BF16：保留前 16 位再舍入
 
 ['bf16-truncation.demo.1.name']
 src_hash = '7932a759'
 text = 'Converting three values'
-# src: 三个值的转换
 
 ['bf16-truncation.slide.1']
 src_hash = '54e7a581'
@@ -3223,10 +5390,6 @@ text = '''
 - The conversion keeps the sign bit, the exponent and the first 7 fraction bits, then rounds on the 16 dropped bits
 - Adding one to an all-ones fraction <mark>carries into the exponent</mark>: 1.99999988 converts with the exponent going from 127 to 128, value 2
 '''
-# src:
-# 
-# - 转换保留符号位、阶码与尾数的前 7 位，再按被舍去的 16 位舍入
-# - 尾数全 1 时加一会<mark>进位到阶码</mark>：1.99999988 转换后阶码由 127 变为 128，值为 2
 
 ['bf16-truncation.notes.1']
 src_hash = 'c7607d82'
@@ -3240,25 +5403,14 @@ Carrying from `0x7f7f` gives `0x7f80`, infinity, which agrees with how round-to-
 BF16's role in training: it has the same range as FP32, so extra measures such as loss scaling are unnecessary;
 the cost is a relative precision of about three decimal digits.
 '''
-# src:
-# 
-# 第一行被舍去的最高位是 0，舍入与截断的结果相同；第二行被舍去的部分大于一半，尾数加一；
-# 第三行尾数本来全 1，加一后尾数清零、阶码加一。三行都与编译器对 `__bf16` 的转换一致。
-# 判断条件就是前面二进制舍入那一页的规则：`rest` 大于 `0x8000` 时超过一半，等于 `0x8000` 时是中点，取末位为偶。
-# `0x7f7f` 再进位得到 `0x7f80`，即无穷，与舍入到最近值时溢出的规定一致；NaN 的情形这段代码没有处理。
-# `examples/bf16.c` 只做截断，打印 π 被舍去的部分，可以对照阅读。
-# BF16 在训练中的作用：与 FP32 范围一致，因此不需要 loss scaling 一类的额外处理；
-# 代价是相对精度下降到约三位十进制有效数字。
 
 ['bf16-classes.title']
 src_hash = 'da25a32a'
 text = 'Normalized and denormalized values in BF16'
-# src: BF16 的规格化数与非规格化数
 
 ['bf16-classes.demo.1.name']
 src_hash = 'adf4251b'
 text = 'Interpret several bit patterns as BF16'
-# src: 对若干个位模式按 BF16 解释
 
 ['bf16-classes.slide.1']
 src_hash = '2e0d2ef7'
@@ -3268,11 +5420,6 @@ text = '''
 - An all-zero exponent gives a <mark>denormalized value</mark> $(-1)^s \times 0.f \times 2^{-126}$, which joins the normalized range without a gap
 - An all-ones exponent is a special value: a zero fraction means infinity, a nonzero fraction means NaN
 '''
-# src:
-# 
-# - 1 位符号、8 位阶码、7 位尾数，偏置 127；规格化数为 $(-1)^s \times 1.f \times 2^{e-127}$
-# - 阶码全 0 为<mark>非规格化数</mark>，值为 $(-1)^s \times 0.f \times 2^{-126}$，与规格化数首尾相接
-# - 阶码全 1 为特殊值：尾数为 0 表示无穷，尾数非 0 表示 NaN
 
 ['bf16-classes.notes.1']
 src_hash = '932d4497'
@@ -3284,23 +5431,14 @@ and the smallest normalized value `0x0080` is $128 \times 2^{-133} = 2^{-126}$, 
 `0x0080` equals the smallest normalized FP32 value, and `0x7f7f` is of the same order as the FP32 maximum; both follow from the shared exponent.
 The program copies each bit pattern into a GCC `__bf16` variable and prints it as a float, so the compiler does the decoding.
 '''
-# src:
-# 
-# BF16 的规则与 FP32 完全相同，只是尾数从 23 位减到 7 位，阶码的 8 位保持不变。
-# 阶码全 0 时 $E$ 取 $1-127=-126$ 而非 $-127$：最大的非规格化数 `0x007f` 为 $127 \times 2^{-133}$，
-# 最小的规格化数 `0x0080` 为 $128 \times 2^{-133} = 2^{-126}$，两者相差一个步长 $2^{-133}$。
-# `0x0080` 的值与 FP32 最小的规格化数相同，`0x7f7f` 也与 FP32 的最大值在同一数量级，这是阶码相同的结果。
-# 程序把位模式复制进 GCC 的 `__bf16` 变量再按浮点数输出，解码由编译器完成。
 
 ['range-and-precision.title']
 src_hash = 'ee384c82'
 text = 'Range and precision are independent'
-# src: 范围与精度相互独立
 
 ['range-and-precision.demo.1.name']
 src_hash = 'f74a52aa'
 text = 'One value in three formats'
-# src: 同一个值在三种格式下
 
 ['range-and-precision.slide.1']
 src_hash = 'b97b203a'
@@ -3309,16 +5447,10 @@ text = '''
 - $1/3$ is closer in FP16, which has 3 more fraction bits
 - Training gradients span a wide range and favour BF16; inference fits FP16
 '''
-# src:
-# 
-# - 100000 超出 FP16 的范围，结果为 `inf`；BF16 的阶码更宽，仍能表示
-# - $1/3$ 在 FP16 下比在 BF16 下更接近真值，因为 FP16 的尾数多 3 位
-# - 训练中梯度的动态范围很大，因此偏向 BF16；推理中数值范围较窄，FP16 可用
 
 ['range-and-precision.highlight.1']
 src_hash = 'dd379ce6'
 text = 'Exponent bits set range; fraction bits set precision.'
-# src: 阶码位数决定范围，尾数位数决定相对精度。
 
 ['range-and-precision.notes.1']
 src_hash = '40d7cd12'
@@ -3326,116 +5458,90 @@ text = '''
 
 With the total width fixed, how many bits go to the exponent and how many to the fraction is a design trade-off: FP16 and BF16 are both 16 bits, and BF16 moves 3 bits from the fraction to the exponent, giving it FP32's range and lower precision. The 100000 line and the $1/3$ line above are the two ends of that trade.
 '''
-# src:
-# 
-# 总位数固定时，阶码与尾数各占多少是格式设计上的取舍：FP16 与 BF16 都是 16 位，
-# BF16 把 3 位从尾数挪给阶码，因此范围与 FP32 相同而精度更低。
-# 上面 100000 与 $1/3$ 这两行分别对应这两端。
 
 ['model-size.title']
 src_hash = '0fe596ed'
 text = "Aside: precision fixes a model's size and its memory traffic per token"
-# src: 拓展：精度决定模型的体积与逐 token 的访存量
 
 ['model-size.table.1.cell.0.0']
 src_hash = '0e8b1c78'
 text = 'Format'
-# src: 格式
 
 ['model-size.table.1.cell.0.1']
 src_hash = '41972556'
 text = 'Bits per weight'
-# src: 每权重位数
 
 ['model-size.table.1.cell.0.2']
 src_hash = '7e7e9231'
 text = 'Size at 3.21 B parameters'
-# src: 3.21 B 参数的体积
 
 ['model-size.table.1.cell.0.3']
 src_hash = '05b36669'
 text = 'Use'
-# src: 用途
 
 ['model-size.table.1.cell.1.0']
 src_hash = '869436ad'
 text = 'FP32'
-# src: FP32
 
 ['model-size.table.1.cell.1.1']
 src_hash = 'e29c9c18'
 text = '32'
-# src: 32
 
 ['model-size.table.1.cell.1.2']
 src_hash = '9dbb31da'
 text = '12.85 GB'
-# src: 12.85 GB
 
 ['model-size.table.1.cell.1.3']
 src_hash = 'c5cf03d0'
 text = 'the baseline precision for training'
-# src: 训练的基准精度
 
 ['model-size.table.1.cell.2.0']
 src_hash = 'e979c597'
 text = 'BF16 / FP16'
-# src: BF16 / FP16
 
 ['model-size.table.1.cell.2.1']
 src_hash = 'b17ef6d1'
 text = '16'
-# src: 16
 
 ['model-size.table.1.cell.2.2']
 src_hash = 'be031880'
 text = '6.43 GB'
-# src: 6.43 GB
 
 ['model-size.table.1.cell.2.3']
 src_hash = '6a3b2540'
 text = 'training and high-precision inference'
-# src: 训练与高精度推理
 
 ['model-size.table.1.cell.3.0']
 src_hash = 'b4da377c'
 text = 'FP8'
-# src: FP8
 
 ['model-size.table.1.cell.3.1']
 src_hash = '2c624232'
 text = '8'
-# src: 8
 
 ['model-size.table.1.cell.3.2']
 src_hash = '8dcaaf6c'
 text = '3.21 GB'
-# src: 3.21 GB
 
 ['model-size.table.1.cell.3.3']
 src_hash = '7a3b0590'
 text = 'inference on newer accelerators'
-# src: 较新加速器上的推理
 
 ['model-size.table.1.cell.4.0']
 src_hash = '4616a6fa'
 text = '4-bit quantization (Q4_0)'
-# src: 4 位量化（Q4_0）
 
 ['model-size.table.1.cell.4.1']
 src_hash = '32209ccb'
 text = '4.5'
-# src: 4.5
 
 ['model-size.table.1.cell.4.2']
 src_hash = 'ea57a26d'
 text = '1.81 GB'
-# src: 1.81 GB
 
 ['model-size.table.1.cell.4.3']
 src_hash = '8329a5ec'
 text = 'the common choice for local inference'
-# src: 本地推理的常见选择
 
 ['model-size.slide.1']
 src_hash = '8f39efc8'
@@ -3444,11 +5550,6 @@ text = '''
 - 4-bit quantization costs <mark>4.5</mark> bits per weight rather than 4: the 4 bits are the code itself, and the other 0.5 is each weight's share of the FP16 scale shared by every 32 weights (2 bytes ÷ 32 weights = 0.5 bits)
 - Generating one token requires reading every parameter once, so the bit width of the format sets the <mark>memory traffic</mark> in proportion
 '''
-# src:
-# 
-# - 4 位量化的每权重位数是 <mark>4.5</mark> 而非 4：4 位是编码本身，另外的 0.5 位是每 32 个权重
-#   共用的 FP16 缩放系数（2 字节 ÷ 32 个权重 = 0.5 位）摊到每个权重上的份额
-# - 每生成一个 token 需完整读一遍参数，格式的位数同比例决定了<mark>访存量</mark>
 
 ['model-size.notes.1']
 src_hash = 'c2806244'
@@ -3456,141 +5557,677 @@ text = '''
 
 The table uses decimal GB: 3.21 B × 4.5 bits ÷ 8 = 1.81 GB. That row describes a single 4-bit format. The file actually downloaded is a mixture of several formats (llama.cpp calls it Q4_K_M): most tensors are Q4_K (4.5 bits), the token embedding table and the attn_v and ffn_down of some layers are raised to Q6_K (6.56 bits), and the normalization coefficients stay F32, for a weighted average of 5.01 bits, or 2.02 GB. The 1.9G that `ls -lh` reported in lecture 1 is GiB, and 2.02 GB is 1.88 GiB. These numbers are worth having when a student asks whether it all adds up; `examples/gguf_bits.py` will tally a whole file.
 '''
-# src:
-# 
-# 表中按十进制 GB 计算：3.21 B × 4.5 位 ÷ 8 = 1.81 GB。这一行说的是单一 4 位格式。
-# 实际下载到的那个文件是几种格式的混合（llama.cpp 称为 Q4_K_M）：多数张量为 Q4_K（4.5 位），
-# 词嵌入表与部分层的 attn_v、ffn_down 提到 Q6_K（6.56 位），归一化系数保持 F32，
-# 加权平均 5.01 位，合 2.02 GB。第一讲 `ls -lh` 显示的 1.9G 是 GiB，2.02 GB 即 1.88 GiB。
-# 有学生追问对得上对不上时可以给这组数；`examples/gguf_bits.py` 能把整个文件统计一遍。
 
-['bridge-6.title']
-src_hash = '679a7586'
-text = 'Part six · Quantization'
-# src: 第六部分 · 量化
+['mixed-recipe-llama.title']
+src_hash = '1dce4b72'
+text = ''
 
-['bridge-6.bridge.1']
-src_hash = '90001505'
-text = '''
-Part six · Quantization
-Storing the same weights in fewer bits
-'''
-# src:
-# 第六部分 · 量化
-# 用更少的位存放同一组权重
+['mixed-recipe-llama.slide.1']
+src_hash = '1853f5a7'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.0.0']
+src_hash = 'b9e68224'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.0.1']
+src_hash = 'af3ae51c'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.0.2']
+src_hash = '8fe87e20'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.0.3']
+src_hash = '73f23b61'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.0.4']
+src_hash = 'cdccbaf6'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.1.0']
+src_hash = '69f0bf36'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.1.1']
+src_hash = '2dbd2cea'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.1.2']
+src_hash = '92529cfb'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.1.3']
+src_hash = '2e4198bc'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.1.4']
+src_hash = '102be248'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.2.0']
+src_hash = '2feb4214'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.2.1']
+src_hash = '90c6bb44'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.2.2']
+src_hash = '92529cfb'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.2.3']
+src_hash = '2e4198bc'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.2.4']
+src_hash = '3fdfb3e9'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.3.0']
+src_hash = 'f2dcc941'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.3.1']
+src_hash = 'c5388c58'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.3.2']
+src_hash = '6690da88'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.3.3']
+src_hash = 'e2cb93a5'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.3.4']
+src_hash = '2aefd424'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.4.0']
+src_hash = 'e2b03930'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.4.1']
+src_hash = '43eb9ede'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.4.2']
+src_hash = 'dec618fd'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.4.3']
+src_hash = '1f472f19'
+text = ''
+
+['mixed-recipe-llama.table.1.cell.4.4']
+src_hash = 'e0dc57f9'
+text = ''
+
+['mixed-recipe-llama.notes.1']
+src_hash = '115f527a'
+text = ''
+
+['mixed-recipe-llama-cont.title']
+src_hash = '1dce4b72'
+text = ''
+
+['mixed-recipe-llama-cont.slide.1']
+src_hash = '5a069e20'
+text = ''
+
+['mixed-recipe-llama-cont.slide.1.footnote.1']
+src_hash = '1592248d'
+text = ''
+
+['closing.title']
+src_hash = '910a3b78'
+text = ''
+
+['closing.image.1.footnote.1']
+src_hash = 'ed383d94'
+text = ''
+
+['closing.slide.1']
+src_hash = '62ef9afc'
+text = ''
+
+['closing.notes.1']
+src_hash = '931f5bec'
+text = ''
+
+['closing-cont.title']
+src_hash = '910a3b78'
+text = ''
+
+['closing-cont.slide.1']
+src_hash = 'c9243948'
+text = ''
+
+['closing-cont.slide.2']
+src_hash = '216c016c'
+text = ''
+
+['closing-cont.slide.2.footnote.1']
+src_hash = '0298d34e'
+text = ''
+
+['section.quant-hardware.title']
+src_hash = 'b57cd6b2'
+text = ''
+
+['int32-accumulator.title']
+src_hash = '5f1c4bbd'
+text = ''
+
+['int32-accumulator.slide.1']
+src_hash = 'c39886e5'
+text = ''
+
+['int32-accumulator.notes.1']
+src_hash = 'bff23307'
+text = ''
+
+['int32-accumulator-cont.title']
+src_hash = '5f1c4bbd'
+text = ''
+
+['int32-accumulator-cont.slide.1']
+src_hash = '06925e80'
+text = ''
+
+['int32-accumulator-cont.slide.1.footnote.1']
+src_hash = '88425144'
+text = ''
+
+['dot-product-isa.title']
+src_hash = '8a3f6702'
+text = ''
+
+['dot-product-isa.slide.1']
+src_hash = '24e7ffc5'
+text = ''
+
+['dot-product-isa.slide.1.footnote.1']
+src_hash = '2af2336c'
+text = ''
+
+['dot-product-isa.notes.1']
+src_hash = '06bb7d19'
+text = ''
+
+['nibble-pack-cpp.title']
+src_hash = '96467505'
+text = ''
+
+['nibble-pack-cpp.slide.1']
+src_hash = '7d11162d'
+text = ''
+
+['nibble-pack-cpp.notes.1']
+src_hash = 'b3d71532'
+text = ''
+
+['nibble-pack-cpp-cont.title']
+src_hash = '96467505'
+text = ''
+
+['nibble-pack-cpp-cont.slide.1']
+src_hash = '915b6ff8'
+text = ''
+
+['nibble-pack-cpp-cont.slide.1.footnote.1']
+src_hash = 'd09afc62'
+text = ''
+
+['swar-add.title']
+src_hash = '17735b39'
+text = ''
+
+['swar-add.slide.1']
+src_hash = '34033b2e'
+text = ''
+
+['swar-add.notes.1']
+src_hash = '5d7b4036'
+text = ''
+
+['swar-add-cont.title']
+src_hash = '17735b39'
+text = ''
+
+['swar-add-cont.slide.1']
+src_hash = '6d77f2dc'
+text = ''
+
+['swar-add-demo.title']
+src_hash = '17735b39'
+text = ''
+
+['swar-add-demo.slide.1']
+src_hash = 'cee23f91'
+text = ''
+
+['swar-add-demo.slide.1.footnote.1']
+src_hash = 'e2ae54b6'
+text = ''
+
+['swar-add-demo.demo.1.name']
+src_hash = 'd100b05c'
+text = ''
+
+['smoothquant.title']
+src_hash = '31bcaf76'
+text = ''
+
+['smoothquant.slide.1']
+src_hash = 'b028b552'
+text = ''
+
+['smoothquant.notes.1']
+src_hash = '1de48083'
+text = ''
+
+['smoothquant-cont.title']
+src_hash = '31bcaf76'
+text = ''
+
+['smoothquant-cont.image.1.footnote.1']
+src_hash = 'ed383d94'
+text = ''
+
+['smoothquant-cont.slide.1']
+src_hash = '7201d91d'
+text = ''
+
+['smoothquant-cont.slide.1.footnote.1']
+src_hash = '4e4a608a'
+text = ''
+
+['bridge-10.title']
+src_hash = '8123fa94'
+text = ''
+
+['bridge-10.bridge.1']
+src_hash = '8123fa94'
+text = ''
+
+['cache-benchmark.title']
+src_hash = 'bcc35eed'
+text = ''
+
+['cache-benchmark.slide.1']
+src_hash = 'd5b766fb'
+text = ''
+
+['cache-benchmark.table.1.cell.0.0']
+src_hash = '88b7ef7a'
+text = ''
+
+['cache-benchmark.table.1.cell.0.1']
+src_hash = '714e86fd'
+text = ''
+
+['cache-benchmark.table.1.cell.0.2']
+src_hash = '0463a96a'
+text = ''
+
+['cache-benchmark.table.1.cell.0.3']
+src_hash = 'ae4cd161'
+text = ''
+
+['cache-benchmark.table.1.cell.1.0']
+src_hash = '7ed2c6e9'
+text = ''
+
+['cache-benchmark.table.1.cell.1.1']
+src_hash = '5c342c6d'
+text = ''
+
+['cache-benchmark.table.1.cell.1.2']
+src_hash = 'fdd54c14'
+text = ''
+
+['cache-benchmark.table.1.cell.1.3']
+src_hash = '0040e3c2'
+text = ''
+
+['cache-benchmark.table.1.cell.2.0']
+src_hash = 'd7d606c2'
+text = ''
+
+['cache-benchmark.table.1.cell.2.1']
+src_hash = '9dcaa225'
+text = ''
+
+['cache-benchmark.table.1.cell.2.2']
+src_hash = '6a1254c3'
+text = ''
+
+['cache-benchmark.table.1.cell.2.3']
+src_hash = 'f4ac3aeb'
+text = ''
+
+['cache-benchmark.table.1.cell.3.0']
+src_hash = '5a5713f3'
+text = ''
+
+['cache-benchmark.table.1.cell.3.1']
+src_hash = '24e8d2d8'
+text = ''
+
+['cache-benchmark.table.1.cell.3.2']
+src_hash = '6921ab1b'
+text = ''
+
+['cache-benchmark.table.1.cell.3.3']
+src_hash = '2aba48af'
+text = ''
+
+['cache-benchmark.table.1.cell.4.0']
+src_hash = '3b4c1478'
+text = ''
+
+['cache-benchmark.table.1.cell.4.1']
+src_hash = 'ece9b2b4'
+text = ''
+
+['cache-benchmark.table.1.cell.4.2']
+src_hash = 'dad6a500'
+text = ''
+
+['cache-benchmark.table.1.cell.4.3']
+src_hash = 'b7f48733'
+text = ''
+
+['cache-benchmark.notes.1']
+src_hash = '8a27bb21'
+text = ''
+
+['cache-benchmark-cont.title']
+src_hash = 'bcc35eed'
+text = ''
+
+['cache-benchmark-cont.slide.1']
+src_hash = '8bae8de2'
+text = ''
+
+['cache-benchmark-cont.slide.1.footnote.1']
+src_hash = 'f4228877'
+text = ''
+
+['ptq-pipeline.title']
+src_hash = 'a846e375'
+text = ''
+
+['ptq-pipeline.slide.1']
+src_hash = 'd647d116'
+text = ''
+
+['ptq-pipeline.slide.1.footnote.1']
+src_hash = '620e8a1e'
+text = ''
+
+['ptq-pipeline.notes.1']
+src_hash = '27775994'
+text = ''
+
+['kquants-superblock-cont.slide.1.footnote.1']
+src_hash = 'c341a454'
+text = ''
+
+['granularity-spectrum-cont.title']
+src_hash = '314dcef7'
+text = ''
+
+['granularity-spectrum-cont.slide.1']
+src_hash = 'd565aaf6'
+text = ''
+
+['granularity-spectrum-cont.slide.1.footnote.1']
+src_hash = 'd1d5865d'
+text = ''
+
+['symmetric-failure-cont.demo.1.name']
+src_hash = '92461e04'
+text = ''
+
+['roofline-basics-cont.title']
+src_hash = '2e3e677b'
+text = ''
+
+['roofline-basics-cont.slide.1']
+src_hash = '5a55fb02'
+text = ''
+
+['roofline-basics-cont.notes.1']
+src_hash = 'c398a43a'
+text = ''
+
+['zero-point-compute.table.1.cell.3.0']
+src_hash = '17cee7d1'
+text = ''
+
+['zero-point-compute.table.1.cell.3.1']
+src_hash = 'a2b9c77d'
+text = ''
+
+['zero-point-compute.table.1.cell.3.2']
+src_hash = '413c06bc'
+text = ''
+
+['zero-point-cost-cont.title']
+src_hash = 'a44607d1'
+text = ''
+
+['zero-point-cost-cont.slide.1']
+src_hash = '39d6846b'
+text = ''
+
+['zero-point-cost-cont.slide.1.footnote.1']
+src_hash = 'f5816774'
+text = ''
+
+['fp32-myth-cont.title']
+src_hash = '7157b11e'
+text = ''
+
+['fp32-myth-cont.slide.1']
+src_hash = 'd1536a2c'
+text = ''
+
+['fp32-myth-cont.slide.1.footnote.1']
+src_hash = '1d1cefd7'
+text = ''
+
+['affine-mapping-cont.title']
+src_hash = '3cf34fca'
+text = ''
+
+['affine-mapping-cont.slide.1']
+src_hash = '587e691d'
+text = ''
+
+['affine-mapping-cont.slide.1.footnote.1']
+src_hash = '889f6ef5'
+text = ''
+
+['clipping-tradeoff-cont.title']
+src_hash = '3645bd24'
+text = ''
+
+['clipping-tradeoff-cont.slide.1']
+src_hash = 'd62929fe'
+text = ''
+
+['clipping-tradeoff-cont.slide.1.footnote.1']
+src_hash = '5098080c'
+text = ''
+
+['kquants-superblock-budget.title']
+src_hash = 'fa818f06'
+text = ''
+
+['kquants-superblock-budget.slide.1']
+src_hash = '804b7049'
+text = ''
+
+['kquants-superblock-budget.slide.1.footnote.1']
+src_hash = 'c341a454'
+text = ''
+
+['dot-product-isa-cont.title']
+src_hash = '8a3f6702'
+text = ''
+
+['dot-product-isa-cont.slide.1']
+src_hash = '5ec06024'
+text = ''
+
+['dot-product-isa-cont.slide.1.footnote.1']
+src_hash = '2af2336c'
+text = ''
+
+['ai-float-formats-cont.title']
+src_hash = 'e0d06bcc'
+text = ''
+
+['ai-float-formats-cont.slide.1']
+src_hash = 'e36a4f47'
+text = ''
+
+['ai-float-formats-cont.slide.1.footnote.1']
+src_hash = '0017a887'
+text = ''
+
+['nf4-lut-cont.title']
+src_hash = 'f92db3e9'
+text = ''
+
+['nf4-lut-cont.slide.1']
+src_hash = '23a8cf9c'
+text = ''
+
+['nf4-lut-cont.slide.1.footnote.1']
+src_hash = 'aaf611aa'
+text = ''
+
+['lab-release-cont.title']
+src_hash = '388c1814'
+text = ''
+
+['lab-release-cont.slide.1']
+src_hash = '13704b07'
+text = ''
+
+['lab-release-cont.slide.1.footnote.1']
+src_hash = 'ff99b9a5'
+text = ''
+
+['closing-envoi.title']
+src_hash = '910a3b78'
+text = ''
+
+['closing-envoi.slide.1']
+src_hash = '6e91da0e'
+text = ''
+
+['closing-envoi.slide.2']
+src_hash = 'a0d5aa9f'
+text = ''
+
+['closing-envoi.slide.2.footnote.1']
+src_hash = '0298d34e'
+text = ''
 
 ['section.quantization.title']
 src_hash = '7f85763b'
 text = 'Part six · Quantization: principles and Q4_0'
-# src: 第六部分 · 量化：原理与 Q4_0
 
 ['why-quantize.title']
-src_hash = '2971d217'
-text = 'Why quantize: memory traffic per token'
-# src: 量化的动机：逐 token 的访存量
+src_hash = '99b0b4fe'
+text = 'Why quantize: the memory bottleneck'
 
 ['why-quantize.slide.1']
-src_hash = '345743a0'
-text = 'Each generated token reads all weights into the compute units once; the bits per weight set the bytes read.'
-# src:
-# 
-# 自回归生成每产生一个 token，都要把全部权重读进运算单元一次。权重用多少位存放，直接决定这一次读多少字节。
+src_hash = 'c705191a'
+text = 'When a large autoregressive model generates, every token requires reading all model weights from video memory or main memory into the compute units once. For a fixed parameter count, the bit width of the weights directly determines the total amount of data read each time.'
 
 ['why-quantize.table.1.cell.0.0']
-src_hash = '0e8b1c78'
+src_hash = '44d72b88'
 text = 'Format'
-# src: 格式
 
 ['why-quantize.table.1.cell.0.1']
-src_hash = '961276bb'
-text = 'Size, 1.24 B params'
-# src: 1.24 B 参数的体积
+src_hash = '8684bb0a'
+text = 'Memory for 1.24 B params'
 
 ['why-quantize.table.1.cell.0.2']
-src_hash = '75b451e3'
-text = 'At 89.6 GB/s'
-# src: 89.6 GB/s 下的上限
+src_hash = '3ffb0db1'
+text = 'Main-memory bound (89.6 GB/s)'
 
 ['why-quantize.table.1.cell.0.3']
-src_hash = '79fa0b2a'
-text = 'At 1008 GB/s'
-# src: 1008 GB/s 下的上限
+src_hash = '7482ec41'
+text = 'Video-memory bound (1008 GB/s)'
 
 ['why-quantize.table.1.cell.1.0']
 src_hash = '6c900b1e'
 text = 'BF16 (16 bits)'
-# src: BF16（16 位）
 
 ['why-quantize.table.1.cell.1.1']
 src_hash = '36b04426'
 text = '2.47 GB'
-# src: 2.47 GB
 
 ['why-quantize.table.1.cell.1.2']
 src_hash = 'f301845d'
 text = '36 token/s'
-# src: 36 token/s
 
 ['why-quantize.table.1.cell.1.3']
 src_hash = '688ac317'
 text = '408 token/s'
-# src: 408 token/s
 
 ['why-quantize.table.1.cell.2.0']
 src_hash = 'a28f83d0'
 text = 'Q8_0 (8.5 bits)'
-# src: Q8_0（8.5 位）
 
 ['why-quantize.table.1.cell.2.1']
 src_hash = '2af7bd90'
 text = '1.31 GB'
-# src: 1.31 GB
 
 ['why-quantize.table.1.cell.2.2']
 src_hash = '75f88d57'
 text = '68 token/s'
-# src: 68 token/s
 
 ['why-quantize.table.1.cell.2.3']
 src_hash = '45a5fc63'
 text = '768 token/s'
-# src: 768 token/s
 
 ['why-quantize.table.1.cell.3.0']
 src_hash = '8b2337f6'
 text = 'Q4_K (4.5 bits)'
-# src: Q4_K（4.5 位）
 
 ['why-quantize.table.1.cell.3.1']
 src_hash = 'e7a22810'
 text = '0.70 GB'
-# src: 0.70 GB
 
 ['why-quantize.table.1.cell.3.2']
 src_hash = 'e1ae4697'
 text = '129 token/s'
-# src: 129 token/s
 
 ['why-quantize.table.1.cell.3.3']
 src_hash = '5b436f82'
 text = '1450 token/s'
-# src: 1450 token/s
 
 ['why-quantize.slide.2']
-src_hash = 'c8b3ce18'
+src_hash = '9961005d'
 text = '''
-- 89.6 GB/s is dual-channel DDR5-5600; 1008 GB/s is RTX 4090 video memory
-- With one request, each weight joins one multiply-add: about one operation per byte read
+- 89.6 GB/s is the peak bandwidth of dual-channel DDR5-5600; 1008 GB/s is the peak video-memory bandwidth of an RTX 4090
+- With a single request, each weight takes part in only one multiply-add, so the arithmetic intensity is very low (about 1 operation per byte read)
 '''
-# src:
-# 
-# - 89.6 GB/s 是双通道 DDR5-5600 的峰值带宽，1008 GB/s 是 RTX 4090 显存的峰值带宽
-# - 一次只处理一个请求时，每个权重只参与一次乘加，读一个字节只做一次左右的运算
 
 ['why-quantize.highlight.1']
-src_hash = '7a574224'
-text = 'Single-request inference is memory-bound: weight width sets the speed.'
-# src: 单请求推理的瓶颈在访存，权重的位数几乎线性地决定生成速度。
+src_hash = '7e03cd7f'
+text = 'Single-request inference is bounded by memory bandwidth; the bit width of the weights sets generation speed almost linearly.'
 
 ['why-quantize.notes.1']
 src_hash = '43c1ff53'
@@ -3598,42 +6235,21 @@ text = '''
 
 The numbers in the table are bandwidth divided by size — ceilings rather than measurements: a real system also reads and writes the KV cache, launches operators, and never reaches peak bandwidth utilization. The parameter count 1 235 814 400 is taken from the safetensors header of Llama-3.2-1B-Instruct, the model used in the experiments later in this lecture. Dual-channel DDR5-5600: 5600 MT/s × 8 bytes × 2 = 89.6 GB/s. Batched inference is a different regime: when one forward pass serves many requests the same weights are used repeatedly, the bottleneck shifts from memory to compute, and the benefit of quantization falls accordingly.
 '''
-# src:
-# 
-# 表里的数是带宽除以体积，是上限而非实测值：真实系统还有 KV 缓存的读写、算子启动、
-# 以及带宽利用率达不到峰值。参数量 1 235 814 400 取自 Llama-3.2-1B-Instruct 的
-# safetensors 头部，本节后面的实验用的就是这个模型。
-# DDR5-5600 双通道：5600 MT/s × 8 字节 × 2 = 89.6 GB/s。
-# 批量推理是另一种情形：一次前向服务多个请求时，同一份权重被多次使用，
-# 瓶颈会从访存转向算力，量化带来的收益随之下降。
 
 ['memory-bound-measured.title']
-src_hash = '65c6f6e7'
-text = 'Memory-bound behaviour measured: encoder against decoder'
-# src: 访存瓶颈的实测：编码器与解码器的对照
+src_hash = '26df3615'
+text = 'The memory bottleneck, measured'
 
 ['memory-bound-measured.image.1.footnote.1']
 src_hash = '9f236d01'
-text = 'From Gholami et al., AI and Memory Wall (IEEE Micro 2024), panels 3(b), 3(d), CC BY 4.0; titles removed, joined.'
-# src: 图片来自 Gholami et al., AI and Memory Wall（IEEE Micro 2024）图 3(b)(d)，CC BY 4.0；裁去两幅子图的标题后横向拼合。
+text = 'From Gholami et al., AI and Memory Wall (IEEE Micro 2024), Figure 3(b)(d), CC BY 4.0; subplot titles removed and the two joined side by side.'
 
 ['memory-bound-measured.slide.1']
-src_hash = '906302df'
+src_hash = '3153580e'
 text = '''
-- Left: memory traffic of one forward pass; right: its latency, single request
-- From 128 to 4096, GPT-2 traffic grows 45.7×, latency 52.1×
-- At 4096, BERT-Base and GPT-2 compute similar amounts; latency 84 vs 2344
+- Left: memory operations of one forward pass; right: the corresponding end-to-end latency (measured with a single request)
+- As the sequence length grows from 128 to 4096, the memory operations of the autoregressive GPT-2 grow 45.7×, and its latency grows 52.1×
 '''
-# src:
-# 
-# - 左图为一次前向的访存量，右图为同一次前向的时延，均在单请求下测得
-# - 128 到 4096，GPT-2 的访存量增至 45.7 倍，时延增至 52.1 倍
-# - 同为 4096，BERT-Base 与 GPT-2 的计算量相近，时延却是 84 与 2344
-
-['memory-bound-measured.highlight.1']
-src_hash = '939e9d8a'
-text = 'Similar compute, 28× latency gap: latency follows memory traffic.'
-# src: 计算量相近而时延相差 28 倍，时延跟随的是访存量。
 
 ['memory-bound-measured.notes.1']
 src_hash = 'db0c04f3'
@@ -3641,156 +6257,26 @@ text = '''
 
 The original figure has four panels; this page takes two: 3(b) is the memory traffic of one forward pass (GMOPs) and 3(d) is the end-to-end latency of the same pass, normalized to 1 for BERT-Base at sequence length 128, both at batch size 1. At sequence length 4096, BERT-Base does 1324 GFLOPs and GPT-2 1012 GFLOPs. The omitted panel 3(c) gives arithmetic intensity: GPT-2 is 2 FLOP/byte at every sequence length, BERT between 117 and 266. Arithmetic intensity is the number of floating-point operations performed per byte read, and it decides whether a computation is limited by bandwidth or by arithmetic. The paper's conclusion is that decoder models at small batch sizes are bound by memory rather than compute.
 '''
-# src:
-# 
-# 原图共四幅，本页取其中两幅：图 3(b) 是一次前向的访存量（GMOPs），图 3(d) 是同一次前向的
-# 端到端时延，以 BERT-Base 在序列长 128 时为 1 归一化，均在 batch size 1 下测得。
-# 同为序列长 4096，BERT-Base 的计算量是 1324 GFLOPs，GPT-2 是 1012 GFLOPs。
-# 未取的图 3(c) 给出算术强度：GPT-2 在各序列长度上都是 2 FLOP/字节，BERT 是 117 到 266。
-# 算术强度即每读一个字节所做的浮点运算次数，它决定了一次计算受限于带宽还是受限于算力。
-# 原文的结论是 decoder 模型在小批量下的瓶颈是访存而非计算。
 
-['what-to-quantize.title']
-src_hash = '9750e736'
-text = 'What gets quantized: weights, activations and the KV cache'
-# src: 量化的对象：权重、激活值与 KV 缓存
+['memory-bound-measured-cont.title']
+src_hash = '26df3615'
+text = 'The memory bottleneck, measured'
 
-['what-to-quantize.slide.1']
-src_hash = '9a7c42d4'
-text = '<mark>Activations</mark> are per-layer intermediate results that change with each input; the KV cache stores attention keys and values per token and grows with the context.'
-# src:
-# 
-# <mark>激活值</mark>是前向计算中每一层算出的中间结果，随每次输入而变；<mark>KV 缓存</mark>是注意力为已生成的每个 token 保存的一份键与值，供后续 token 反复读取，随上下文增长。
+['memory-bound-measured-cont.slide.1']
+src_hash = '5dc32e6b'
+text = "- At sequence length 4096, BERT-Base and GPT-2 compute similar amounts, yet GPT-2's relative latency reaches 2344 while BERT-Base's is only 84 (about 28× apart)"
 
-['what-to-quantize.table.1.cell.0.0']
-src_hash = '53f92c06'
-text = 'Object'
-# src: 对象
-
-['what-to-quantize.table.1.cell.0.1']
-src_hash = 'a22bb45b'
-text = 'Fixed when'
-# src: 何时确定
-
-['what-to-quantize.table.1.cell.0.2']
-src_hash = '6f673d09'
-text = 'Quantized when'
-# src: 量化的时机
-
-['what-to-quantize.table.1.cell.0.3']
-src_hash = '5c9e570a'
-text = 'Width'
-# src: 常见位宽
-
-['what-to-quantize.table.1.cell.1.0']
-src_hash = 'db18831a'
-text = 'Weights'
-# src: 权重
-
-['what-to-quantize.table.1.cell.1.1']
-src_hash = '3a44b532'
-text = 'after training'
-# src: 训练结束后不再变化
-
-['what-to-quantize.table.1.cell.1.2']
-src_hash = 'e2f977d7'
-text = 'offline, in the file'
-# src: 离线做一次，存进文件
-
-['what-to-quantize.table.1.cell.1.3']
-src_hash = '7011dbd0'
-text = '4 – 8 bits'
-# src: 4 – 8 位
-
-['what-to-quantize.table.1.cell.2.0']
-src_hash = '2cc6f880'
-text = 'Activations'
-# src: 激活值
-
-['what-to-quantize.table.1.cell.2.1']
-src_hash = 'b524838d'
-text = 'per input'
-# src: 随每次输入变化
-
-['what-to-quantize.table.1.cell.2.2']
-src_hash = '44748fa1'
-text = 'run time, per tensor'
-# src: 运行时逐张量做
-
-['what-to-quantize.table.1.cell.2.3']
-src_hash = '1b612359'
-text = '8 – 16 bits'
-# src: 8 – 16 位
-
-['what-to-quantize.table.1.cell.3.0']
-src_hash = '2a398db8'
-text = 'KV cache'
-# src: KV 缓存
-
-['what-to-quantize.table.1.cell.3.1']
-src_hash = 'cfb1d078'
-text = 'grows with context'
-# src: 随上下文增长
-
-['what-to-quantize.table.1.cell.3.2']
-src_hash = 'a2984025'
-text = 'run time, per token'
-# src: 运行时逐 token 做
-
-['what-to-quantize.table.1.cell.3.3']
-src_hash = '8c18154a'
-text = 'often 8 bits'
-# src: 8 位居多
-
-['what-to-quantize.slide.2']
-src_hash = '68553151'
-text = '''
-- Weights are static: one conversion, error once, so they reached 4 bits first
-- Activation ranges vary, so coefficients are computed at run time and error accumulates
-- `W4A16` means 4-bit weights, 16-bit activations, common for local inference
-'''
-# src:
-# 
-# - 权重是静态的，量化一次就固定下来，出错也只影响这一次转换，因此最先被压到 4 位
-# - 激活值的取值范围随输入变化，量化的系数要在运行时求，且误差会沿网络逐层累积
-# - 记号 `W4A16` 表示权重 4 位、激活值 16 位，是本地推理最常见的组合
-
-['what-to-quantize.highlight.1']
-src_hash = '3d130c06'
-text = 'This lecture quantizes weights only.'
-# src: 本节只讨论权重的量化，文件里存的也只有权重。
-
-['what-to-quantize.notes.1']
-src_hash = '7a290b9e'
-text = '''
-
-Quantizing the KV cache pays off clearly at long contexts: the cache grows linearly with context length and overtakes the weights themselves once the context is long enough. llama.cpp's `--cache-type-k q8_0` does exactly this. The difficulty in quantizing activations is outliers, which is the subject of the figure in the last part.
-'''
-# src:
-# 
-# KV 缓存的量化在长上下文下收益明显：缓存的体积随上下文长度线性增长，
-# 上下文足够长时会超过权重本身。llama.cpp 的 `--cache-type-k q8_0` 就是做这件事。
-# 激活值量化的难点在离群值，最后一部分的那张图讲的正是这个问题。
+['memory-bound-measured-cont.highlight.1']
+src_hash = 'd24ac884'
+text = 'In autoregressive decoder models, end-to-end latency is limited mainly by memory operations, not by computation.'
 
 ['quantization-idea.title']
-src_hash = '7671a619'
-text = 'Quantization: approximating a set of floats with integer codes'
-# src: 量化：用整数编码近似一组浮点值
+src_hash = '9332ce10'
+text = 'The principle of uniform quantization'
 
 ['quantization-idea.slide.1']
-src_hash = '8a852c60'
-text = '''
-Split a group's range into equal levels and store <mark>the index of the nearest level</mark>.
-- A 4-bit code gives 16 levels; a group shares one scale $d$
-- Reconstruction: $w \approx (q - 8) \cdot d$, with code $q$
-- Except at saturation, error is at most half a step, proportional to the range
-'''
-# src:
-# 
-# **把一组权重的取值范围划分为等距的若干级，每个权重记录<mark>离它最近的那一级的编号</mark>。**
-# - 4 位编码可表示 16 级，一组共用一个缩放系数 $d$
-# - 还原时按 $w \approx (q - 8) \cdot d$ 计算，$q$ 为编码
-# - 除去饱和的一端，单个权重的误差不超过半个步长，步长与该组的取值范围成正比
+src_hash = '9ed764e2'
+text = '**Uniform quantization divides the range of the floating-point weights into equally spaced discrete steps (quantization levels), and maps each weight to <mark>the nearest integer code</mark>.**'
 
 ['quantization-idea.notes.1']
 src_hash = 'bfa2215c'
@@ -3798,57 +6284,50 @@ text = '''
 
 "Away from the saturating end" is a necessary qualification. Q4_0's 16 codes represent −8 to 7, which is asymmetric: the scale is taken as $d = \max / (-8)$, so the extreme value of the group lands exactly on code 0; a weight of the opposite sign and comparable magnitude computes a code above 15, is clamped to 15, and reconstructs as $7d$ rather than $8d$, an error of up to a full step. This is the same fact as $|TMin| = TMax + 1$ from the section on integers.
 '''
-# src:
-# 
-# 「除去饱和的一端」是一句必要的限定。Q4_0 的 16 个编码表示 −8 到 7，两端不对称：
-# 缩放系数取 $d = \max / (-8)$，组内的极值恰好落在编码 0 上；与它反号且幅度相近的权重
-# 算出的编码超过 15，被截到 15，还原为 $7d$ 而非 $8d$，误差可达一个完整步长。
-# 这与整数一节的 $|TMin| = TMax + 1$ 是同一件事。
+
+['quantization-idea-cont.title']
+src_hash = '9332ce10'
+text = 'The principle of uniform quantization'
+
+['quantization-idea-cont.slide.1']
+src_hash = 'f6379a8f'
+text = '''
+- A 4-bit unsigned code represents 16 levels; a group of weights shares one floating-point scale (the step) $d$
+- Dequantization approximates the value as $\hat{w} = (q - 8) \cdot d$, with code $q \in [0, 15]$
+- Within the range where no saturation occurs, the rounding error of each value is at most half a step ($\le d/2$), and the step is proportional to the range of the weights
+'''
+
+['quantization-idea-cont.highlight.1']
+src_hash = '87710464'
+text = 'Uniform quantization approximates real numbers with discrete grid points, trading a bounded rounding error for a large saving in storage.'
 
 ['quantization-map.title']
-src_hash = '39133c84'
-text = 'Quantization is an affine map'
-# src: 量化是一个仿射映射
+src_hash = '6655f01a'
+text = 'The affine mapping model'
 
 ['quantization-map.slide.1']
-src_hash = '8a423c08'
-text = 'A group shares a step $d$ and offset $m$; the 4-bit unsigned code $q$ gives $\hat{w} = d \cdot q + m$.'
-# src:
-# 
-# 一组权重共用两个浮点参数：步长 $d$ 与偏移 $m$。编码 $q$ 是一个 4 位无符号整数，还原时按 $\hat{w} = d \cdot q + m$ 计算。
+src_hash = '5f46a20c'
+text = 'A group of floating-point weights maps to unsigned integer codes through two parameters: the step $d$ and the offset $m$. Dequantization is $\hat{w} = d \cdot q + m$.'
 
 ['quantization-map.slide.2']
-src_hash = '6ead2820'
+src_hash = '1e9f9920'
 text = '''
-- **Group**: how many weights share $d$ and $m$, the granularity
-- **Levels**: code bits; 4 bits give 16 levels
-- **Offset**: $m = 0$ is <mark>symmetric</mark>; $m$ = group minimum is affine quantization
+- **Granularity**: the number of weights that share one pair $(d, m)$ (the group size)
+- **Bit width**: the number of bits in a code (4 bits give 16 levels)
+- **Zero point**: an offset tied to the step (for example $m = -8d$, symmetric about 0) is <mark>symmetric quantization</mark>; an offset stored separately from the data (for example the block minimum) is <mark>asymmetric (affine) quantization</mark>
 '''
-# src:
-# 
-# - **区间**：多少个权重共用同一对 $d$ 与 $m$，即量化的粒度
-# - **级数**：编码占几位，4 位给出 16 级
-# - **偏移**：$m$ 固定为 0 时称为<mark>对称量化</mark>，$m$ 可取该组的最小值时称为<mark>仿射量化</mark>
 
 ['quantization-map.slide.3']
-src_hash = '4ed3697a'
-text = 'Then quantization is a division and a rounding, error at most half a step.'
-# src:
-# 
-# 在这三项都定下来之后，量化本身只是一次除法与一次舍入，误差不超过半个步长。
+src_hash = 'eb604f53'
+text = 'Once these three are fixed, quantization is a scale, a shift and a rounding with clamping, and dequantization is a simple linear computation.'
 
 ['quantization-map.aside.1']
-src_hash = '5f48c6ab'
-text = 'Symmetric is $m = -8d$: codes 0–15 mean $-8$ to $7$ steps; only whether $m$ is stored differs.'
-# src:
-# 
-# 对称量化并不需要另一套式子：$m$ 取 $-8d$ 时，编码 0 到 15 就表示 $-8$ 到 $7$ 个步长，
-# 差别只在 $m$ 是否单独存储、能否独立取值。
+src_hash = 'f4b90df6'
+text = 'Symmetric quantization needs no separate formula: with $m$ fixed at $-8d$, codes 0 to 15 correspond to $-8$ to $+7$ steps. The two differ only in whether $m$ is stored and adjusted independently.'
 
 ['quantization-map.highlight.1']
-src_hash = '5ceaa647'
-text = 'Every quantization choice, and every format difference, is in these three.'
-# src: 量化的全部选择都在这三项上，格式之间的差别也在这三项上。
+src_hash = 'f7fe0402'
+text = 'Designing a quantization format is a trade-off among granularity, bit width and zero point.'
 
 ['quantization-map.notes.1']
 src_hash = 'b2c66890'
@@ -3856,42 +6335,40 @@ text = '''
 
 Q4_0 is symmetric: $m = 0$, and codes 0 to 15 denote −8 to 7 times the step. Writing $\hat{w} = d(q - 8)$ and writing $\hat{w} = dq + m$ with $m = -8d$ describe the same thing; the difference is whether $m$ is stored separately and can be chosen independently. The exception to "no more than half a step" is the saturating end, covered in the notes of the previous page.
 '''
-# src:
-# 
-# Q4_0 是对称的：$m = 0$，编码 0 到 15 表示 −8 到 7 乘以步长。
-# 写成 $\hat{w} = d(q - 8)$ 与写成 $\hat{w} = dq + m$（$m = -8d$）是同一件事，
-# 区别在于 $m$ 是否单独存储、能否独立取值。
-# 「误差不超过半个步长」的例外是饱和的那一端，前一页的备注里讲过。
 
 ['q4-block.title']
-src_hash = 'b1547cd1'
-text = 'The Q4_0 block: 32 weights in 18 bytes'
-# src: Q4_0 的块结构：18 字节存放 32 个权重
+src_hash = '9fdf7c56'
+text = 'The Q4_0 block'
 
 ['q4-block.slide.1']
-src_hash = '14de2aa0'
+src_hash = 'e4142b95'
 text = '''
-- Every 32 weights form a group sharing one FP16 scale, occupying 2 bytes
-- The 32 four-bit codes pack into 16 bytes, two weights to a byte
-- The 16 codes denote $-8$ through $7$, asymmetric at the two ends just like signed numbers
-- 18 bytes in all, an average of <mark>4.5 bits</mark> per weight; 3.21 B parameters come to about 1.8 GB
+- Every 32 consecutive weights form a block, sharing one FP16 scale (2 bytes)
+- The 32 four-bit codes are packed into 16 bytes, two codes to a byte
 '''
-# src:
-# 
-# - 每 32 个权重为一组，共用一个 FP16 的缩放系数，占 2 字节
-# - 32 个 4 位编码打包进 16 字节，每字节存放两个权重
-# - 16 个编码表示 $-8$ 到 $7$，与有符号数一样两端不对称
-# - 合计 18 字节，平均每个权重 <mark>4.5 位</mark>；3.21 B 参数据此约为 1.8 GB
+
+['q4-block-cont.title']
+src_hash = '9fdf7c56'
+text = 'The Q4_0 block'
+
+['q4-block-cont.slide.1']
+src_hash = '245ef6b4'
+text = '''
+- The 4-bit codes $0 \sim 15$ map to the integers $-8 \sim +7$, asymmetric in the same way as two's complement
+- A block takes 18 bytes, an average of <mark>4.5 bits</mark> per weight (about 3.56× smaller than FP16)
+'''
+
+['q4-block-cont.highlight.1']
+src_hash = '9b475236'
+text = 'By letting 32 elements share a scale, Q4_0 bounds the local quantization error at a very small metadata cost.'
 
 ['quantize-code.title']
-src_hash = 'be495eb5'
-text = 'Implementing the quantizer'
-# src: 量化的实现
+src_hash = 'cc7e6521'
+text = 'Implementing Q4_0 quantization'
 
 ['quantize-code.demo.1.name']
 src_hash = 'b88704a7'
 text = 'Quantizing a group of weights and reconstructing them'
-# src: 量化一组权重并还原
 
 ['quantize-code.notes.1']
 src_hash = '12db95b1'
@@ -3899,72 +6376,38 @@ text = '''
 
 Two places are easy to get wrong. First, the scale is the weight of largest absolute value in the block, taken with its sign and divided by −8, so that this weight encodes as 0 and all 16 codes are reachable; using absmax/7 instead confines the codes to 1..15. Second, the pairing: the low nibble holds weight $j$ and the high nibble weight $j+16$, so a pair spans the two halves of the block. llama.cpp quantizes with a floating-point d and stores d back as FP16, so the two differ slightly and the actual error can therefore exceed half a step by a little.
 '''
-# src:
-# 
-# 两处容易写错。一是缩放系数取块内绝对值最大的那个权重、连同它的符号除以 −8，
-# 使该权重编码为 0，16 个码字全部可达；若改用 absmax/7，编码只落在 1..15。
-# 二是配对方式：低半字节存第 j 个权重，高半字节存第 j+16 个，配对跨越块的前后两半。
-# llama.cpp 用浮点的 d 量化、按 FP16 存回 d，还原时两者略有出入，实际误差因此
-# 可以略微超过半个步长。
 
 ['nibble-packing.title']
-src_hash = '32d267e2'
-text = 'Reading and writing 4-bit data: masks and shifts'
-# src: 4 位数据的存取：掩码与移位
+src_hash = 'd8e9504e'
+text = 'Packing and reading nibbles'
 
 ['nibble-packing.slide.1']
-src_hash = '12325d7c'
-text = '''
-
-The byte is the smallest addressable unit, so 4-bit data has no address of its own and <mark>must be packed two to a byte</mark>.
-'''
-# src:
-# 
-# 字节是最小的可寻址单位，4 位的数据没有独立地址，必须<mark>两个一组打包进一个字节</mark>。
+src_hash = '00232001'
+text = 'The byte is the smallest addressable unit of memory. 4-bit data (a half byte, a nibble) cannot be addressed on its own and must be packed two to a byte.'
 
 ['nibble-packing.slide.2']
-src_hash = '1c3b7177'
+src_hash = '914af9b2'
 text = '''
-
-- Take the low 4 bits with the mask `& 0x0f`, and the high 4 bits with the shift `>> 4`
-- To write back, shift the high 4 bits into place first, then or them with the low 4
-- Q4_0 pairs weight $j$ with weight $j+16$, so the two halves of a byte come from the two halves of the block
+- Reading the low 4 bits: the bitwise-and mask `b & 0x0f` extracts the value
+- Reading the high 4 bits: the logical right shift `b >> 4` moves the high nibble down to the lowest bits
+- Packing: shift the high 4 bits left by 4 (`hi << 4`), then combine with the low 4 bits by bitwise or (`|`)
+- Q4_0 layout: weight $j$ of the block is paired with weight $j+16$, so the low and high halves of a byte hold the first and second halves of the block
 '''
-# src:
-# 
-# - 取低 4 位用掩码 `& 0x0f`，取高 4 位用移位 `>> 4`
-# - 写回时先把高 4 位左移到位，再与低 4 位按位或
-# - Q4_0 配对的是第 $j$ 与第 $j+16$ 个权重，一个字节里的两半来自块的前后两段
 
 ['nibble-add.title']
-src_hash = 'd2a61f52'
-text = 'Arithmetic after packing: each field needs its own overflow'
-# src: 打包之后的运算：每个字段需要独立的溢出
+src_hash = 'f625f6c4'
+text = 'Parallel addition on packed nibbles'
 
 ['nibble-add.slide.1']
-src_hash = '2fc039a1'
-text = 'Two 4-bit fields share a byte; direct addition carries from the low field across bit 3 into the high one.'
-# src:
-# 
-# 一个字节里的两个 4 位字段各自是一个数。直接相加时，低位字段的进位会越过第 3 位加到高位字段上。
+src_hash = 'd9fb0a7d'
+text = 'When one byte packs two independent 4-bit integers, ordinary byte addition lets the carry out of the low field overflow into the high field.'
 
 ['nibble-add.slide.2']
-src_hash = 'd9fe3b78'
+src_hash = '9296f665'
 text = '''
-- `& 0x77` clears each field's top bit; the low three bits carry at most into bit 3
-- `(a ^ b) & 0x88` restores those bits by xor, which does not carry
-- Overflow out of the high field's bit 3 is dropped and stays in the byte
+- `& 0x77` masks off the top bit of both 4-bit fields (bits 3 and 7), so the carry from adding the low 3 bits stays inside its own field
+- `(a ^ b) & 0x88` computes the half-adder sum of the top bits (xor produces no carry across fields) and merges it with the low-bit sum by xor
 '''
-# src:
-# 
-# - `& 0x77` 清掉每个字段的最高位，低三位相加最多进到第 3 位，进位停在字段内
-# - `(a ^ b) & 0x88` 把清掉的那两位用异或补回去，异或不产生进位
-# - 高位字段的第 3 位若溢出，同样被丢弃，不会越过字节边界
-
-['nibble-add.highlight.1']
-src_hash = '7985373d'
-text = "The low field's carry must stay out of the high field."
-# src: 低位字段的进位必须停在字段边界内，不能计入高位字段。
 
 ['nibble-add.notes.1']
 src_hash = '0c1a59be'
@@ -3972,82 +6415,26 @@ text = '''
 
 This page is where part three's bitwise material lands. Take `0x29 + 0x38` (fields 9+8 and 2+3): adding directly gives `0x61`, where 9+8=17 overflows the low field and carries a 1 into the high one; `add_packed` gives `0x51`, where the low field wraps to 1 and the high field is still 5. `examples/int4.c` checks both forms against all 65536 pairs of inputs: adding directly is wrong on 30720 of them, `add_packed` on none.
 '''
-# src:
-# 
-# 这一页是第三部分位运算内容的落点。以 `0x29 + 0x38` 为例（字段 9+8 与 2+3）：
-# 直接相加得 `0x61`，低字段 9+8=17 溢出并把 1 带进高字段；`add_packed` 得 `0x51`，
-# 低字段回绕成 1，高字段仍是 5。`examples/int4.c` 对全部 65536 组输入验证过这两种写法，
-# 直接相加错 30720 组，`add_packed` 错 0 组。
 
-['int4-hardware.title']
-src_hash = '4e1d7bc7'
-text = 'Aside: hardware support for 4-bit arithmetic'
-# src: 拓展：4 位运算在硬件上的支持
+['nibble-add-cont.title']
+src_hash = 'f625f6c4'
+text = 'Parallel addition on packed nibbles'
 
-['int4-hardware.slide.1']
-src_hash = 'efb5b99f'
-text = 'Matrix multiply units take each 4-bit number out to multiply and add the products into a 32-bit <mark>accumulator</mark>.'
-# src:
-# 
-# 矩阵乘有专门的运算单元：每个 4 位数单独取出来参与乘法，乘积逐个加进同一个 32 位寄存器，这个寄存器称为<mark>累加器</mark>（accumulator）。
+['nibble-add-cont.slide.1']
+src_hash = 'b5597237'
+text = '- The overflow of each field is simply truncated, so two independent 4-bit fields are added in parallel within one byte (the SWAR technique)'
 
-['int4-hardware.slide.2']
-src_hash = 'e78f6381'
-text = '''
-- The numbers no longer share a byte, so no carry can cross
-- 4-bit products reach 64; 32 of them sum to at most 2048, which fits in 32 bits
-- Turing (2018) Tensor Cores provide these; element-wise 4-bit add uses the previous page
-'''
-# src:
-# 
-# - 两个 4 位数不再共用一个字节，各自单独送进乘法器，进位无处可越
-# - 4 位数相乘最多得 64，32 个乘积相加不超过 2048，32 位的累加器装得下
-# - Turing（2018）起的 Tensor Core 提供这种单元；元素级的 4 位加减仍要用上一页的写法
-
-['int4-hardware.highlight.1']
-src_hash = '8677febd'
-text = '4 bits is storage; arithmetic uses a 32-bit accumulator.'
-# src: 4 位是权重的存放格式，运算在 32 位的累加器里完成。
-
-['int4-hardware.notes.1']
-src_hash = '48cdf1b5'
-text = '''
-
-The accumulator is the register inside a compute unit that holds a running sum: a matrix multiplication adds the 32 products of one row against one column one after another, and wherever they are added is the accumulator. It is much wider than the inputs, the ordinary hardware measure against overflow. The instruction is written `mma.sync…s32.s4.s4.s32`: the two `s4` are the 4-bit inputs and `s32` the 32-bit accumulator; the A100's INT4 peak is 1248 TOPS, four times the same chip's FP16 figure. The difficulty on the previous page arises only when the result must also be stored back into 4 bits: two numbers share one byte and the carry out of the low field has nowhere to go. INT4 Tensor Cores appeared on Turing in 2018, about four years before 4-bit quantization was actually taken up in large-model inference; by the time the usage matured, NVIDIA had marked INT4 deprecated on Hopper. Blackwell's fifth-generation Tensor Cores use FP4 instead, spending some of the 4 bits on an exponent, and NVFP4 adds fine-grained scaling over groups of 16 elements, in the same direction as the group scaling covered in this section. CUDA's `__vadd4` is the lower bound of element-wise SIMD addition: it treats 32 bits as four bytes added separately, and there is no narrower lane.
-'''
-# src:
-# 
-# 累加器就是运算单元里存放累加中间结果的那个寄存器，矩阵乘要把一行与一列的 32 对乘积依次加起来，
-# 加到哪里，哪里就是累加器。它比输入宽得多，是硬件避开溢出的常规做法。
-# 指令写作 `mma.sync…s32.s4.s4.s32`：两个 `s4` 是 4 位输入，`s32` 是 32 位累加器；
-# A100 的 INT4 峰值为 1248 TOPS，是同一颗芯片 FP16 的 4 倍。
-# 上一页的困难只出现在结果也要存回 4 位这种情形：两个数挤在一个字节里，低位的进位无处可去。
-# INT4 的 Tensor Core 出现在 2018 年的 Turing 上，比 4 位量化在大模型推理中被真正用起来
-# 早了约四年；等到用法成熟，NVIDIA 已在 Hopper 上把 INT4 标为弃用。
-# Blackwell 的第五代 Tensor Core 改用 FP4，4 位中留出阶码，
-# NVFP4 再配 16 个元素一组的细粒度缩放，方向与本节讲的分组缩放一致。
-# CUDA 的 `__vadd4` 是元素级 SIMD 加法的下限：它把 32 位当作四个字节分别相加，没有更窄的通道。
+['nibble-add-cont.highlight.1']
+src_hash = 'ce7d5eb7'
+text = 'The key to arithmetic on packed data is isolating the fields, so the carry of the low field cannot reach the high field.'
 
 ['granularity.title']
-src_hash = 'fee791ae'
-text = 'Granularity: how many weights share one scale'
-# src: 粒度：多少个权重共用一个缩放系数
+src_hash = '0e114a60'
+text = 'Quantization granularity'
 
 ['granularity.slide.1']
-src_hash = 'c8197254'
-text = '''
-- Coefficients cost bits: extra bits per weight = coefficient bits ÷ group size; fp16 over 32 is 0.5
-- Smaller groups give narrower ranges and smaller steps, but coefficients cost more
-'''
-# src:
-# 
-# - 系数本身要占空间：每权重多出的位数 = 系数的位数 ÷ 组的大小，fp16 分到 32 个权重上是 0.5 位
-# - 组越小，组内的取值范围越窄，步长越小；代价是系数的份额越大
-
-['granularity.highlight.1']
-src_hash = 'a8d84a25'
-text = 'Granularity is one adjustable parameter between accuracy and size.'
-# src: 粒度是精度与体积之间的一个可调参数。
+src_hash = '05290bfa'
+text = '- The scales themselves take space: metadata bits per weight = total scale bits ÷ group size (an FP16 scale over 32 weights is $16 \div 32 = 0.5$ bits per weight)'
 
 ['granularity.notes.1']
 src_hash = 'fe426a6a'
@@ -4055,36 +6442,34 @@ text = '''
 
 The bit overheads of the three granularities in the figure are 0, 16/256 = 0.0625 and 16/32 = 0.5 bits. The per-tensor row is drawn dashed because its coefficient is shared by the whole tensor and does not belong to the 256 weights shown.
 '''
-# src:
-# 
-# 图中三种粒度的位数开销分别是 0、16/256 = 0.0625、16/32 = 0.5 位。
-# per-tensor 一档在这张图上画成虚线，是因为它的系数由整个张量共用，
-# 不属于图中这 256 个权重。
+
+['granularity-cont.title']
+src_hash = '0e114a60'
+text = 'Quantization granularity'
+
+['granularity-cont.slide.1']
+src_hash = 'dce1bc52'
+text = '- The smaller the group, the narrower its local range, the smaller the step and the higher the precision; but the storage taken by the scales grows accordingly'
+
+['granularity-cont.highlight.1']
+src_hash = '959d34c9'
+text = 'Granularity is the central parameter trading compression (storage size) against precision (numerical error).'
 
 ['granularity-measured.title']
-src_hash = 'f49a4daf'
-text = 'The error of three granularities on real weights'
-# src: 三种粒度在真实权重上的误差
+src_hash = '11a80ea0'
+text = 'Error at three granularities'
 
 ['granularity-measured.demo.1.name']
 src_hash = 'e841fe78'
 text = 'One group of weights, three granularities'
-# src: 同一组权重，三种粒度
 
 ['granularity-measured.slide.1']
-src_hash = '259da586'
-text = '''
-
-The weights are the 4096 values of `ffn_down` in layer 0 of Llama-3.2-1B. `rel.rmse` is the root mean square of the error divided by the root mean square of the weights themselves.
-'''
-# src:
-# 
-# 权重取自 Llama-3.2-1B 第 0 层的 `ffn_down`，共 4096 个。`rel.rmse` 是误差的均方根与权重本身均方根之比。
+src_hash = '234de742'
+text = 'The sample is the `ffn_down` weight tensor in layer 0 of the real model Llama-3.2-1B (4096 parameters). `rel.rmse` is the root mean square error divided by the root mean square of the weights (the relative RMS error).'
 
 ['granularity-measured.highlight.1']
-src_hash = '318aaeef'
-text = 'Spending 0.5 more bits to narrow the granularity to 32 lowers the relative error from 13.5% to 8.4%.'
-# src: 多花 0.5 位把粒度收到 32，相对误差从 13.5% 降到 8.4%。
+src_hash = '4c74f511'
+text = 'Refining the granularity from the whole tensor to 32 elements (0.5 more bits of metadata per weight) lowers the relative RMS error from 13.50% to 8.42%.'
 
 ['granularity-measured.notes.1']
 src_hash = 'f1b02b1e'
@@ -4092,55 +6477,21 @@ text = '''
 
 This set of data is approximately symmetric about 0, so Q4_0 and Q4_1 differ little and granularity is the dominant factor. The other set of data in the next section is not like this. The Q4_1 and Q4_K rows of the table have not been covered yet, so in class only the first three rows need be read; the source of `quant_compare.c` is behind the button, with all five approaches in one file. The sample file and its licence note are in `examples/ext/`.
 '''
-# src:
-# 
-# 这组数据近似关于 0 对称，因此 Q4_0 与 Q4_1 的差别不大，粒度是主要因素。
-# 下一节的另一组数据不是这样。表里 Q4_1 与 Q4_K 两行现在还没有讲到，
-# 课上可以先只看前三行；`quant_compare.c` 的源码在按钮里，五种做法都在同一个文件中。
-# 样本文件与它的授权说明见 `examples/ext/`。
-
-['bridge-7.title']
-src_hash = '856dc198'
-text = 'Part seven · Quantization formats'
-# src: 第七部分 · 量化格式
-
-['bridge-7.bridge.1']
-src_hash = 'bedf6984'
-text = '''
-Part seven · Quantization formats
-Offsets, two-level scaling, and mixed quantization
-'''
-# src:
-# 第七部分 · 量化格式
-# 偏移、两级缩放，以及混合量化
 
 ['section.quant-formats.title']
 src_hash = '22e67b8c'
 text = 'Part seven · Quantization formats: Q4_1 and Q4_K'
-# src: 第七部分 · 量化格式：Q4_1 与 Q4_K
 
 ['zero-point.title']
-src_hash = '1aa6e029'
-text = 'Q4_1: the levels need not be symmetric about 0'
-# src: Q4_1：级不必关于 0 对称
+src_hash = 'b24073d3'
+text = 'Asymmetric quantization and Q4_1'
 
 ['zero-point.slide.1']
-src_hash = '165a42cb'
+src_hash = 'ea91f80e'
 text = '''
-- The symmetric step follows the largest magnitude, so groups far from 0 get large steps
-- Q4_1 also stores an fp16 minimum, so all 16 levels span the data
-- 20 bytes per block, <mark>5.0 bits</mark> on average
+- The symmetric step is set by the largest magnitude in the block; when the weights sit away from 0, the grid must also cover empty ranges and many levels go unused
+- Q4_1 also stores an FP16 block minimum (the offset $m$), so the step follows the actual range and all 16 levels cover the data
 '''
-# src:
-# 
-# - 对称量化的步长由组内绝对值最大的权重决定，一组权重离 0 越远，步长越大
-# - Q4_1 另存一个 fp16 的最小值，步长改由这组数据自身的宽度决定，16 个级全部落在数据上
-# - 每块 20 字节，平均 <mark>5.0 位</mark>
-
-['zero-point.highlight.1']
-src_hash = '7af696f7'
-text = 'Symmetric levels span [−max, max]; half may hold no data.'
-# src: 对称量化把 16 个级摊在 [−max, max] 上，其中一半可能没有数据。
 
 ['zero-point.notes.1']
 src_hash = '3d487e37'
@@ -4148,38 +6499,34 @@ text = '''
 
 The 32 weights of the block in the figure lie between 1.539 and 2.625. Q4_0's step is 2.625/8 = 0.328, and only 4 of the 16 levels fall inside that interval; Q4_1's step is (2.625 − 1.539)/15 = 0.0724, and all 16 levels fall inside it. The two differ by a factor of 4.5. This is also one reason GGUF keeps the normalization coefficients in F32: the values of such tensors cluster around 1, where symmetric quantization wastes the most, and their parameter count is small enough that the error is not worth a few saved KB.
 '''
-# src:
-# 
-# 图中这一块的 32 个权重取值在 1.539 与 2.625 之间。Q4_0 的步长是 2.625/8 = 0.328，
-# 16 个级里只有 4 个落在这个区间内；Q4_1 的步长是 (2.625 − 1.539)/15 = 0.0724，
-# 16 个级全部落在区间内。两者相差 4.5 倍。
-# 这也是 GGUF 把归一化系数保持为 F32 的原因之一：这类张量的值集中在 1 附近，
-# 对称量化在它们上面浪费得最厉害，而它们的参数量又很小，不值得为省几 KB 引入误差。
+
+['zero-point-cont.title']
+src_hash = 'b24073d3'
+text = 'Asymmetric quantization and Q4_1'
+
+['zero-point-cont.slide.1']
+src_hash = '55693e67'
+text = '- A block holds a 2-byte step, a 2-byte minimum and 16 bytes of codes, 20 bytes in all, an average of <mark>5.0 bits</mark> per weight'
+
+['zero-point-cont.highlight.1']
+src_hash = 'c2ca5f2c'
+text = 'Symmetric quantization forces its 16 levels to lie symmetrically over $[-\max, \max]$; skewed data loses a great deal of precision.'
 
 ['q4-1-measured.title']
-src_hash = 'cdcd0425'
-text = 'Q4_1: the effect of an offset on all-positive weights'
-# src: Q4_1：偏移在全正权重上的效果
+src_hash = '03a6442f'
+text = 'Asymmetric quantization, measured'
 
 ['q4-1-measured.demo.1.name']
 src_hash = 'f705ab19'
 text = 'A group of weights that are all positive'
-# src: 一组全为正的权重
 
 ['q4-1-measured.slide.1']
-src_hash = '92e4059c'
-text = '''
-
-These 2048 values are all positive with a mean of 2.35. Half a bit more to record each block's minimum brings the relative error from 4.25% to 0.94%.
-'''
-# src:
-# 
-# 这 2048 个数全为正，均值 2.35。多花 0.5 位记住每块的最小值，相对误差从 4.25% 降到 0.94%。
+src_hash = '4ff0ba9f'
+text = "The sample is a layer-normalization weight of the model's output layer (2048 positive values, mean about 2.35). Compared with the symmetric Q4_0, Q4_1 spends 0.5 more bits on the block minimum and lowers the relative RMS error from 4.25% to 0.94%."
 
 ['q4-1-measured.highlight.1']
-src_hash = 'b1b03f52'
-text = 'On this data, finer granularity barely helps; allowing an offset does.'
-# src: 这组数据上，缩小粒度几乎没有用，把偏移放开才有用。
+src_hash = '60bf1679'
+text = 'For data that sits away from 0, finer granularity helps little; an adaptive zero point makes the decisive difference.'
 
 ['q4-1-measured.notes.1']
 src_hash = '876f8363'
@@ -4187,35 +6534,17 @@ text = '''
 
 Per-tensor comes out slightly better than per-256 and Q4_0 because the waste of symmetric quantization here is structural: the step is set by the distance from 0, which no amount of finer grouping changes, while with one coefficient for the whole tensor the maximum happens to be a little larger than each block's maximum, so the step does not grow much worse. The error ratio 4.25/0.94 = 4.5 agrees with the step ratio 0.328/0.0724 = 4.5 computed on the previous page.
 '''
-# src:
-# 
-# per-tensor 反而略好于 per-256 与 Q4_0，是因为对称量化在这里的浪费是结构性的：
-# 步长由「离 0 多远」决定，分组分得再细也改不了这一点，而整个张量共用一个系数时，
-# 最大值恰好比各块的最大值更大一点，步长反而没有变差多少。
-# 误差比 4.25/0.94 = 4.5 与上一页算出的步长比 0.328/0.0724 = 4.5 一致。
 
 ['superblock.title']
-src_hash = '8d7cafd7'
-text = 'Q4_K: two-level scaling and the superblock'
-# src: Q4_K：两级缩放与超块
+src_hash = '8730dd79'
+text = 'The Q4_K superblock'
 
 ['superblock.slide.1']
-src_hash = 'fc1a3845'
+src_hash = 'a006d464'
 text = '''
-- 8 sub-blocks each keep a step and offset, 16 coefficients, fitting like Q4_1
-- Each coefficient takes 6 bits, 12 bytes in total
-- $\hat{w} = d \cdot sc \cdot q - d_{min} \cdot m$, with the sub-block's 6-bit $sc$ and $m$
+- Each superblock holds 256 weights in 8 sub-blocks of 32; each sub-block keeps its own step and offset for a close fit
+- The steps and offsets of the 8 sub-blocks, 16 parameters, are quantized again to 6-bit unsigned integers, 12 bytes in all ($16 \times 6 = 96$ bits)
 '''
-# src:
-# 
-# - 8 个子块各有自己的步长与偏移，共 16 个系数，因此保持了 Q4_1 的贴合程度
-# - 这 16 个系数各量化成 6 位，共占 12 字节
-# - 还原一个权重按 $\hat{w} = d \cdot sc \cdot q - d_{min} \cdot m$ 计算，$sc$ 与 $m$ 是该子块的两个 6 位系数
-
-['superblock.highlight.1']
-src_hash = '30aba1f3'
-text = 'Exercise: average bits per weight of Q4_K, compared with Q4_1?'
-# src: 算一算：Q4_K 布局下平均每权重占用多少位，与 Q4_1 相差多少？
 
 ['superblock.notes.1']
 src_hash = 'fb72a963'
@@ -4223,110 +6552,94 @@ text = '''
 
 Two-level means this: the superblock stores two fp16 values, one the common scale of the 8 sub-block steps and the other the common scale of the 8 sub-block offsets; a sub-block's step is written as a 6-bit integer times the superblock step, and likewise for the offset. Reconstructing one weight begins by reconstructing the coefficients of the sub-block it belongs to. In llama.cpp this structure is called K-quants, and Q2_K through Q6_K share the same superblock layout, differing only in the number of bits in the code and in how the sub-blocks are divided.
 '''
-# src:
-# 
-# 两级的意思是：超块存两个 fp16，分别作为 8 个子块步长的公共缩放与 8 个子块偏移的公共缩放；
-# 子块的步长写成「6 位整数 × 超块步长」，偏移同理。还原一个权重要先还原它所在子块的系数。
-# llama.cpp 里这个结构叫 K-quants，Q2_K 到 Q6_K 都是同一套超块布局，
-# 区别只在编码的位数与子块的划分。
+
+['superblock-cont.title']
+src_hash = '8730dd79'
+text = 'The Q4_K superblock'
+
+['superblock-cont.slide.1']
+src_hash = '7c468c52'
+text = "- Dequantization is $\\hat{w} = d \\cdot sc \\cdot q - d_{\\min} \\cdot m$, where $sc$ and $m$ are the sub-block's 6-bit parameters and $d$ and $d_{\\min}$ are the superblock's global FP16 scales"
+
+['superblock-cont.highlight.1']
+src_hash = 'a3cb2751'
+text = 'Q4_K compresses its metadata with a second level of quantization, reaching close to the precision of the 5.0-bit Q4_1 at 4.5 bits overall.'
 
 ['q4-k-budget.title']
-src_hash = '8d7cafd7'
-text = 'Q4_K: two-level scaling and the superblock'
-# src: Q4_K：两级缩放与超块
+src_hash = '371a6df4'
+text = 'The storage cost of Q4_K'
 
 ['q4-k-budget.table.1.cell.0.0']
 src_hash = '49ecd0e3'
 text = 'Field'
-# src: 字段
 
 ['q4-k-budget.table.1.cell.0.1']
-src_hash = '7a688306'
-text = 'Content'
-# src: 内容
+src_hash = 'b2643696'
+text = 'Contents'
 
 ['q4-k-budget.table.1.cell.0.2']
-src_hash = 'b1c5e73e'
+src_hash = 'f5a08785'
 text = 'Bytes'
-# src: 字节
 
 ['q4-k-budget.table.1.cell.1.0']
 src_hash = '2ca317f3'
 text = '`qs`'
-# src: `qs`
 
 ['q4-k-budget.table.1.cell.1.1']
-src_hash = '79b1c690'
-text = '256 four-bit codes'
-# src: 256 个 4 位编码
+src_hash = '7d815fd5'
+text = '256 four-bit weight codes'
 
 ['q4-k-budget.table.1.cell.1.2']
-src_hash = '2747b7c7'
-text = '128'
-# src: 128
+src_hash = '56dc298f'
+text = '128 bytes'
 
 ['q4-k-budget.table.1.cell.2.0']
 src_hash = '87f12aef'
 text = '`scales`'
-# src: `scales`
 
 ['q4-k-budget.table.1.cell.2.1']
-src_hash = '7d58277e'
-text = '8 steps and 8 offsets, 16 × 6 = 96 bits'
-# src: 8 个 6 位步长与 8 个 6 位偏移，16 × 6 = 96 位
+src_hash = '112fbbf9'
+text = '8 six-bit steps + 8 six-bit offsets (16 × 6 = 96 bits)'
 
 ['q4-k-budget.table.1.cell.2.2']
-src_hash = '6b51d431'
-text = '12'
-# src: 12
+src_hash = 'b394993e'
+text = '12 bytes'
 
 ['q4-k-budget.table.1.cell.3.0']
 src_hash = 'e3e269ca'
 text = '`d`, `dmin`'
-# src: `d`、`dmin`
 
 ['q4-k-budget.table.1.cell.3.1']
-src_hash = '1b01e785'
-text = 'two fp16 scales for the 6-bit coefficients'
-# src: 两个 fp16，16 个 6 位系数的公共缩放
+src_hash = 'bfde603b'
+text = 'Global step and offset scales of the superblock (2 FP16 values)'
 
 ['q4-k-budget.table.1.cell.3.2']
-src_hash = '4b227777'
-text = '4'
-# src: 4
+src_hash = '1f7ebe31'
+text = '4 bytes'
 
 ['q4-k-budget.table.1.cell.4.0']
 src_hash = 'e009c148'
 text = 'Total'
-# src: 合计
 
 ['q4-k-budget.table.1.cell.4.1']
-src_hash = 'c52d47bf'
-text = '256 weights'
-# src: 256 个权重
+src_hash = 'e94e16d3'
+text = 'One superblock (256 weights)'
 
 ['q4-k-budget.table.1.cell.4.2']
-src_hash = '5ec1a0c9'
-text = '144'
-# src: 144
+src_hash = '317fff79'
+text = '144 bytes'
 
 ['q4-k-budget.slide.1']
-src_hash = '99555f28'
+src_hash = 'c24dfeb7'
 text = '''
-- 144 × 8 ÷ 256 = <mark>4.5 bits per weight</mark>, as in Q4_0
-- With fp16 coefficients: 128 + 32 = 160 bytes, 5.0 bits, as in Q4_1
-- The 16-byte gap comes from 16-bit → 6-bit coefficients
+- Average width of a superblock: $144 \text{ bytes} \times 8 \div 256 = \mathbf{4.50} \text{ bits per weight}$, exactly the same as the symmetric Q4_0
+- If the 16 sub-block parameters were stored as uncompressed FP16, the superblock would grow to $128 + 32 = 160$ bytes (5.0 bits per weight, the same as Q4_1)
+- The 16 bytes saved come entirely from compressing the 16 parameters from 16 bits to 6 bits by second-level quantization
 '''
-# src:
-# 
-# - 144 × 8 ÷ 256 = <mark>4.5 位/权重</mark>，与 Q4_0 相同
-# - 这 16 个系数若按 fp16 存放，超块为 128 + 32 = 160 字节，合 5.0 位/权重，与 Q4_1 相同
-# - 两者之差 16 字节，全部来自把 16 个系数从 16 位压到 6 位
 
 ['q4-k-budget.highlight.1']
-src_hash = 'ea4ef826'
-text = "Quantized coefficients give Q4_1's fit at Q4_0's size."
-# src: 系数本身也被量化，Q4_1 的贴合程度因此落进了 Q4_0 的体积。
+src_hash = '6e8a30a3'
+text = 'By quantizing the quantization parameters themselves, Q4_K keeps the size of Q4_0 while reaching close to the precision of Q4_1.'
 
 ['q4-k-budget.notes.1']
 src_hash = '300b42b4'
@@ -4334,34 +6647,14 @@ text = '''
 
 The 160-byte figure is not hypothetical: a Q4_1 block is 32 weights in 20 bytes, and 8 such blocks are exactly 160 bytes, with the same number of coefficients. The only difference between Q4_K and Q4_1 is how those 16 coefficients are stored. The 4 bytes of `d` and `dmin` are the price paid for compressing the coefficients, which spread over 256 weights is 0.125 bits.
 '''
-# src:
-# 
-# 160 字节这一档不是假想的：Q4_1 的块是 32 个权重 20 字节，8 个块正好 160 字节，
-# 两者的系数数量也一样多。Q4_K 与 Q4_1 的区别只在这 16 个系数怎么存。
-# `d` 与 `dmin` 这 4 字节是为压缩系数而付出的代价，摊到 256 个权重上是 0.125 位。
 
 ['k-scales-layout.title']
-src_hash = '38180069'
-text = 'Q4_K: the byte representation of the 6-bit coefficients'
-# src: Q4_K：6 位量化系数的字节表示
+src_hash = 'a468315f'
+text = 'The bit layout of the Q4_K coefficients'
 
 ['k-scales-layout.slide.1']
-src_hash = 'a2672433'
-text = '''
-16 × 6 = 96 bits = 12 bytes. The first 8 bytes hold one 6-bit value each; their spare 2 bits hold the tops of the last 4 values.
-- 6 does not divide 8, so some values straddle bytes
-- The last 4 scales and 4 minimums split: upper 2 bits and lower 4 in different bytes
-'''
-# src:
-# 
-# **16 × 6 = 96 位，正好是 12 字节。前 8 个字节各放一个完整的 6 位值，剩下的两位借给后 4 个值的高半段。**
-# - 6 与 8 不整除，填满 12 字节就必须让一部分值跨字节存放
-# - 后 4 个 scale 与后 4 个 min 因此各分成两段，高 2 位与低 4 位存在不同的字节里
-
-['k-scales-layout.highlight.1']
-src_hash = 'cb54e519'
-text = 'No bit is empty, and no byte-wise reading gets it right.'
-# src: 没有一位是空的，也因此没有一种按字节的读法能直接读对。
+src_hash = 'e263cecf'
+text = '**16 six-bit parameters take 96 bits, exactly 12 bytes. To use every bit and leave nothing redundant, some parameters are stored across byte boundaries.**'
 
 ['k-scales-layout.notes.1']
 src_hash = 'eaa68275'
@@ -4369,34 +6662,37 @@ text = '''
 
 This is the densest use of this lecture's bitwise material in a real format: not a single bit is empty, so no convenient reading gets it right and the bits must be taken by definition. The place that is easy to get wrong is the last four values: their low 4 bits are in bytes 8 through 11 and their high 2 bits in bytes 0 through 7, the two pieces come from different bytes, and reversing the order of the concatenation raises no error, only making every reconstructed weight uniformly too large or too small.
 '''
-# src:
-# 
-# 这是本讲位运算内容在真实格式里最密的一处：没有任何一位是空的，
-# 因此也没有一种「顺手」的读法能读对，必须按定义取位。
-# 容易写错的地方是后四个值：它的低 4 位在第 8 到 11 字节，高 2 位在第 0 到 7 字节，
-# 两段来自不同的字节，拼接的顺序反了不会报错，只会让还原出的权重整体偏大或偏小。
+
+['k-scales-layout-cont.title']
+src_hash = 'a468315f'
+text = 'The bit layout of the Q4_K coefficients'
+
+['k-scales-layout-cont.slide.1']
+src_hash = '146d90e2'
+text = '''
+- A 6-bit field does not divide an 8-bit byte evenly, so packing them contiguously puts some fields across bytes
+- The low 6 bits of the first 8 bytes hold the first 4 steps and first 4 offsets; their spare top 2 bits hold the high bits of the last 4 steps and offsets
+- The last 4 steps and 4 offsets are split into a high 2 bits and a low 4 bits, stored in different bytes
+'''
+
+['k-scales-layout-cont.highlight.1']
+src_hash = 'c53952c9'
+text = 'Every bit of the layout is used, so unpacking must follow the masks and shifts exactly.'
 
 ['k-scales-code.title']
-src_hash = '5f76041a'
-text = 'Q4_K: extracting the coefficients of sub-block j'
-# src: Q4_K：取出第 j 个子块的系数
+src_hash = '988bb084'
+text = 'Decoding the Q4_K coefficients'
 
 ['k-scales-code.slide.1']
-src_hash = '294eff69'
+src_hash = '46ff9634'
 text = '''
-
-- The $sc$ and $m$ extracted are unsigned 6-bit integers and $d_{min}$ is non-negative, so the offset term $-d_{min} \cdot m$ is at most 0
-- The lowest level a sub-block can represent falls at 0 or below, a limitation of this format on weights that are all positive
+- The extracted sub-block parameters $sc$ and $m$ are 6-bit unsigned integers (range $0 \sim 63$), and the global scale $d_{\min} \ge 0$, so the offset term $-d_{\min} \cdot m \le 0$
+- The lower bound a sub-block can represent is therefore $\le 0$, a structural limitation of the format on all-positive weights
 '''
-# src:
-# 
-# - 取出的 $sc$ 与 $m$ 都是无符号的 6 位整数，$d_{min}$ 也非负，因此偏移项 $-d_{min} \cdot m$ 不大于 0
-# - 每个子块能表示的最低一级落在 0 或 0 以下，这是这个格式在全为正的权重上的一处限制
 
 ['k-scales-code.highlight.1']
-src_hash = 'ae961c97'
-text = '`& 63` takes the low six bits, `>> 6` takes the two lent bits, and `<< 4` moves them back to the upper half.'
-# src: `& 63` 取低六位，`>> 6` 取借出的两位，`<< 4` 把它移回高半段。
+src_hash = 'fc0bae9a'
+text = 'Decoding takes the low 6 bits with the mask `& 63` and rebuilds the high 2 bits stored in another byte with the shifts `>> 6` and `<< 4`.'
 
 ['k-scales-code.notes.1']
 src_hash = '9c95630c'
@@ -4404,135 +6700,101 @@ text = '''
 
 For an example: with `sc[0] = 63` and `sc[4] = 62`, byte 0 is `0xff`, whose low 6 bits are 63 and whose high 2 bits `11` are the top two bits of 62; the low 4 bits `e` of byte 8, `0x9e`, are the low four bits of 62. Writing and reading must come in pairs, and `examples/k_scales.c` holds both functions, ready to run if someone asks in class. That the offset is at most 0 follows jointly from llama.cpp's quantizer and this storage format: `make_qkx2_quants` contains the line `if (min > 0) min = 0;`, and the format itself can store only a non-negative `m`.
 '''
-# src:
-# 
-# 举一个例子：若 `sc[0] = 63`、`sc[4] = 62`，则第 0 字节是 `0xff`，低 6 位是 63，
-# 高 2 位 `11` 是 62 的高两位；第 8 字节 `0x9e` 的低 4 位 `e` 是 62 的低四位。
-# 写法与读法必须成对，`examples/k_scales.c` 里两个函数都在，课上有人问起可以现跑。
-# 偏移不大于 0 这一条是 llama.cpp 的量化器与这个存放格式共同决定的：
-# `make_qkx2_quants` 里有一句 `if (min > 0) min = 0;`，而格式本身也只能存非负的 `m`。
 
 ['q4-k-measured.title']
-src_hash = '23a67b59'
-text = 'The three 4-bit formats side by side'
-# src: 三种 4 位格式的对照
+src_hash = '04b91092'
+text = 'Comparing the 4-bit formats'
 
 ['q4-k-measured.table.1.cell.0.0']
-src_hash = '0e8b1c78'
+src_hash = 'c786210d'
 text = 'Format'
-# src: 格式
 
 ['q4-k-measured.table.1.cell.0.1']
-src_hash = '8754628f'
-text = 'Per block'
-# src: 每块
+src_hash = 'bbddc60e'
+text = 'Block and cost'
 
 ['q4-k-measured.table.1.cell.0.2']
-src_hash = 'f4ebc329'
-text = 'Bits per weight'
-# src: 位/权重
+src_hash = 'c4db3d63'
+text = 'Average width'
 
 ['q4-k-measured.table.1.cell.0.3']
-src_hash = '24f8b11c'
-text = 'Symmetric group'
-# src: 近似对称的一组
+src_hash = 'b1c167b7'
+text = 'Error, symmetric weights (ffn_down)'
 
 ['q4-k-measured.table.1.cell.0.4']
-src_hash = 'e12890a0'
-text = 'All-positive group'
-# src: 全为正的一组
+src_hash = 'bd93b78d'
+text = 'Error, asymmetric weights (norm)'
 
 ['q4-k-measured.table.1.cell.1.0']
 src_hash = '23e71bfb'
 text = 'Q4_0'
-# src: Q4_0
 
 ['q4-k-measured.table.1.cell.1.1']
 src_hash = '7943f227'
-text = '32 weights · 18 B'
-# src: 32 个权重 · 18 字节
+text = '32 weights · 18 bytes'
 
 ['q4-k-measured.table.1.cell.1.2']
-src_hash = 'd0536bcd'
-text = '4.50'
-# src: 4.50
+src_hash = '4bcba84f'
+text = '4.50 bits'
 
 ['q4-k-measured.table.1.cell.1.3']
 src_hash = '5a075619'
 text = '8.42%'
-# src: 8.42%
 
 ['q4-k-measured.table.1.cell.1.4']
 src_hash = 'db48ec42'
 text = '4.25%'
-# src: 4.25%
 
 ['q4-k-measured.table.1.cell.2.0']
 src_hash = 'c592d071'
 text = 'Q4_1'
-# src: Q4_1
 
 ['q4-k-measured.table.1.cell.2.1']
 src_hash = '382eebf9'
-text = '32 weights · 20 B'
-# src: 32 个权重 · 20 字节
+text = '32 weights · 20 bytes'
 
 ['q4-k-measured.table.1.cell.2.2']
-src_hash = '9ae1524b'
-text = '5.00'
-# src: 5.00
+src_hash = '593413a5'
+text = '5.00 bits'
 
 ['q4-k-measured.table.1.cell.2.3']
 src_hash = 'dc79833a'
 text = '7.69%'
-# src: 7.69%
 
 ['q4-k-measured.table.1.cell.2.4']
 src_hash = '2a322ef4'
 text = '0.94%'
-# src: 0.94%
 
 ['q4-k-measured.table.1.cell.3.0']
 src_hash = 'b7ee3551'
 text = 'Q4_K'
-# src: Q4_K
 
 ['q4-k-measured.table.1.cell.3.1']
 src_hash = '6ad27296'
-text = '256 weights · 144 B'
-# src: 256 个权重 · 144 字节
+text = '256 weights · 144 bytes'
 
 ['q4-k-measured.table.1.cell.3.2']
-src_hash = 'd0536bcd'
-text = '4.50'
-# src: 4.50
+src_hash = '4bcba84f'
+text = '4.50 bits'
 
 ['q4-k-measured.table.1.cell.3.3']
 src_hash = '14188f1f'
 text = '7.70%'
-# src: 7.70%
 
 ['q4-k-measured.table.1.cell.3.4']
 src_hash = 'b0db1d66'
 text = '2.16%'
-# src: 2.16%
 
 ['q4-k-measured.slide.1']
-src_hash = 'fe499503'
+src_hash = 'be536c91'
 text = '''
-
-- Q4_K comes close to Q4_1's accuracy on both sets while occupying the same space as Q4_0
-- It falls short of Q4_1 on the all-positive set: its offset is at most 0, so the lowest level lands at 0 or below
+- On symmetric data Q4_K reaches an error as low as Q4_1, while its size equals Q4_0 at 4.5 bits per weight
+- On all-positive data Q4_K errs more than Q4_1, mainly because the format forces its offset term to be non-positive
 '''
-# src:
-# 
-# - Q4_K 在两组数据上都接近 Q4_1 的精度，占的空间却与 Q4_0 相同
-# - 它在全为正的那一组上不及 Q4_1：它的偏移项不大于 0，最低一级必须落在 0 或 0 以下
 
 ['q4-k-measured.highlight.1']
-src_hash = '266c2866'
-text = 'At the same 4.5 bits, better organized coefficients err less.'
-# src: 同样是 4.5 位，把系数组织得更好就能换来更小的误差。
+src_hash = '2ec2b5c4'
+text = 'Under the same average width, a better organization of the parameters and second-level quantization narrow the error considerably.'
 
 ['q4-k-measured.notes.1']
 src_hash = 'da8332b0'
@@ -4540,141 +6802,105 @@ text = '''
 
 Restricting the offset to at most 0 is llama.cpp's choice (`if (min > 0) min = 0;`): almost every weight tensor straddles 0, releasing the restriction gains little, and with it in place 0 is always exactly representable. The two error columns on this page are the last three rows of the two earlier measurements. llama.cpp's actual Q4_K quantizer also searches over several candidate (step, offset) pairs, doing a little better than the version here that computes them directly from the minimum and the maximum.
 '''
-# src:
-# 
-# 偏移限制为不大于 0 是 llama.cpp 的选择（`if (min > 0) min = 0;`）：
-# 绝大多数权重张量都跨过 0，放开这个限制收益很小，而限制之后 0 一定可以被精确表示。
-# 本页两列误差就是前面两次实测的最后三行。
-# llama.cpp 真正的 Q4_K 量化器还会在几个候选的 (步长, 偏移) 上搜索，
-# 比这里按最小值与最大值直接算的版本再好一点。
 
 ['mixed-recipe.title']
-src_hash = '6fac1650'
-text = 'Q4_K_M: several formats in one weight file'
-# src: Q4_K_M：同一个权重文件里的多种格式
+src_hash = '7df1b24b'
+text = 'Mixed-precision quantization recipes'
 
 ['mixed-recipe.slide.1']
-src_hash = '34416661'
-text = 'The composition of the 1.9 GB file from `ollama pull llama3.2` in lecture 1.'
-# src:
-# 
-# 下表是第一讲用 `ollama pull llama3.2` 取到的那个 1.9 GB 文件的实际组成。
+src_hash = '31197b2e'
+text = 'The table shows the formats assigned to the tensors inside the Llama-3.2 weight file (1.9 GB) that was actually downloaded.'
 
 ['mixed-recipe.table.1.cell.0.0']
-src_hash = '735cba72'
-text = 'Tensor'
-# src: 张量
+src_hash = '2e93d044'
+text = 'Tensor type'
 
 ['mixed-recipe.table.1.cell.0.1']
-src_hash = 'aecccf8b'
-text = 'Parameters'
-# src: 占参数量
+src_hash = 'af3ae51c'
+text = 'Share of parameters'
 
 ['mixed-recipe.table.1.cell.0.2']
-src_hash = '0e8b1c78'
+src_hash = '44d72b88'
 text = 'Format'
-# src: 格式
 
 ['mixed-recipe.table.1.cell.0.3']
-src_hash = 'f4ebc329'
-text = 'Bits'
-# src: 位/权重
+src_hash = 'e5acff3b'
+text = 'Effective width'
 
 ['mixed-recipe.table.1.cell.1.0']
-src_hash = 'a2119183'
-text = 'token embedding `token_embd`'
-# src: 词嵌入表 `token_embd`
+src_hash = '4523fc25'
+text = 'Token embedding `token_embd`'
 
 ['mixed-recipe.table.1.cell.1.1']
-src_hash = 'ff3e0213'
-text = 'large'
-# src: 较大
+src_hash = 'adc92d83'
+text = 'Large'
 
 ['mixed-recipe.table.1.cell.1.2']
 src_hash = 'c69a8b8e'
 text = 'Q6_K'
-# src: Q6_K
 
 ['mixed-recipe.table.1.cell.1.3']
-src_hash = '064419ab'
-text = '6.56'
-# src: 6.56
+src_hash = '2e4198bc'
+text = '6.56 bits'
 
 ['mixed-recipe.table.1.cell.2.0']
-src_hash = 'c83d2edb'
-text = 'some `attn_v`, `ffn_down`'
-# src: 部分层的 `attn_v`、`ffn_down`
+src_hash = '6142d4d0'
+text = 'Some key attention and feed-forward layers (`attn_v`, `ffn_down`)'
 
 ['mixed-recipe.table.1.cell.2.1']
-src_hash = '2c0e78ff'
-text = 'about one sixth'
-# src: 约六分之一
+src_hash = '8b32c8b0'
+text = 'About 1/6'
 
 ['mixed-recipe.table.1.cell.2.2']
 src_hash = 'c69a8b8e'
 text = 'Q6_K'
-# src: Q6_K
 
 ['mixed-recipe.table.1.cell.2.3']
-src_hash = '064419ab'
-text = '6.56'
-# src: 6.56
+src_hash = '2e4198bc'
+text = '6.56 bits'
 
 ['mixed-recipe.table.1.cell.3.0']
-src_hash = '32410f85'
-text = 'other matrices'
-# src: 其余权重矩阵
+src_hash = 'cf53f5ff'
+text = 'Most other weight matrices'
 
 ['mixed-recipe.table.1.cell.3.1']
-src_hash = 'e255759f'
-text = 'most'
-# src: 绝大多数
+src_hash = 'e9e43a2b'
+text = 'The great majority'
 
 ['mixed-recipe.table.1.cell.3.2']
 src_hash = 'b7ee3551'
 text = 'Q4_K'
-# src: Q4_K
 
 ['mixed-recipe.table.1.cell.3.3']
-src_hash = 'd0536bcd'
-text = '4.50'
-# src: 4.50
+src_hash = '4bcba84f'
+text = '4.50 bits'
 
 ['mixed-recipe.table.1.cell.4.0']
-src_hash = '70c68903'
-text = 'normalization'
-# src: 归一化系数
+src_hash = '0df641f7'
+text = 'Layer normalization (`norm`)'
 
 ['mixed-recipe.table.1.cell.4.1']
-src_hash = 'c22907e0'
-text = 'very small'
-# src: 很小
+src_hash = 'f4e3bb9a'
+text = 'Very small'
 
 ['mixed-recipe.table.1.cell.4.2']
 src_hash = '82255aee'
 text = 'F32'
-# src: F32
 
 ['mixed-recipe.table.1.cell.4.3']
-src_hash = 'e29c9c18'
-text = '32'
-# src: 32
+src_hash = '1f472f19'
+text = '32.00 bits'
 
 ['mixed-recipe.slide.2']
-src_hash = '73cf44d6'
+src_hash = 'be21b9cd'
 text = '''
-- Average <mark>5.01 bits</mark>: 3.21 B params → 2.02 GB = 1.88 GiB, the 1.9G of `ls -lh`
-- Tensors most sensitive to error get 6 bits; the rest stay at 4
+- The weighted average over the whole model is <mark>5.01 bits per weight</mark>; 3.21B parameters take 2.02 GB (1.88 GiB, the 1.9 GB file)
+- The tensors most sensitive to quantization error are raised to 6 bits, while the main matrices stay in the compact 4-bit formats
 '''
-# src:
-# 
-# - 加权平均 <mark>5.01 位</mark>，3.21 B 参数合 2.02 GB = 1.88 GiB，即第一讲 `ls -lh` 显示的 1.9G
-# - 提到 6 位的是量化误差影响最大的那些张量，其余保持 4 位
 
 ['mixed-recipe.highlight.1']
-src_hash = '26426f7a'
-text = 'A recipe chooses a format per tensor.'
-# src: 配方的自由度在于为每个张量单独选择格式。
+src_hash = 'bb718f32'
+text = 'A mixed recipe assigns storage width per tensor according to how much each affects generation quality.'
 
 ['mixed-recipe.notes.1']
 src_hash = '6590ac77'
@@ -4682,80 +6908,48 @@ text = '''
 
 The data in the table comes from `examples/gguf_bits.py`, which by default reads the largest blob ollama downloaded, that is lecture 1's llama3.2 (3.21 B parameters), and counts 255 tensors, a weighted average of 5.009 bits, 2 011 539 712 bytes of tensor data and 7 837 658 bytes of metadata. The 255 tensors are 28 layers × 9 plus the token embedding, the output normalization and `rope_freqs`. In llama.cpp's naming, `_S`, `_M` and `_L` differ in how many tensors are raised in precision, and which tensors those are is found by trying them one at a time on a calibration set rather than derived from the format itself.
 '''
-# src:
-# 
-# 表中数据由 `examples/gguf_bits.py` 统计得到，它默认读 ollama 下载的最大的那个 blob，即第一讲的 llama3.2（3.21 B 参数），
-# 统计得到 255 个张量、加权平均 5.009 位、张量数据 2 011 539 712 字节、元数据 7 837 658 字节。
-# 255 个张量是 28 层 × 9 + 词嵌入 + 输出归一化 + `rope_freqs`。
-# llama.cpp 的命名里 `_S`、`_M`、`_L` 就是提精度的张量多少之别，
-# 选哪些张量提精度靠的是在校准集上逐张量试，不是从格式本身推出来的。
 
 ['quantization-cost.title']
 src_hash = 'd845d151'
-text = 'The cost and the limits of quantization'
-# src: 量化的代价与边界
+text = 'The cost and limits of quantization'
 
 ['quantization-cost.slide.1']
-src_hash = '1fb60034'
+src_hash = 'ab4f2ef3'
 text = '''
-
-- The error grows as the range within a group widens, and a few outliers raise the scale of the whole group
-- The finer the grouping, the more space the scales take and the higher the average bit count
-- Weights go to 4 bits, while activations and attention's intermediate results need more precision
-- Dequantization itself costs computation; the gain comes from the drop in memory traffic
+- Quantization error grows with the range of the data, and a few outliers widen the overall step
+- The finer the grouping, the more metadata the scales take, and the higher the average effective width
+- Static weights usually compress to 4 bits, while activations vary widely, and industry usually keeps them at 8-bit or 16-bit floating point
+- Dequantization adds computation; the speedup comes mainly from the large reduction in data read from memory
 '''
-# src:
-# 
-# - 误差随组内取值范围的扩大而增大，少数异常值会抬高整组的缩放系数
-# - 分组越细，缩放系数占用的空间越多，平均位数随之上升
-# - 权重可以量化到 4 位，激活值与注意力的中间结果通常需要更高精度
-# - 反量化本身消耗计算，收益来自访存量的下降
 
 ['quantization-cost.image.1.caption']
-src_hash = 'cee35e38'
-text = 'One industrial approach: a few outlier feature columns stay at 16 bits, the rest go through integer multiplication'
-# src: 工业界的一种做法：少数异常特征列保留 16 位，其余列按整数乘法完成
+src_hash = '71626512'
+text = 'LLM.int8() mixed-precision matrix multiplication: the feature columns containing outliers are computed in 16-bit floating point, the other columns in INT8'
 
 ['quantization-cost.image.1.footnote.1']
 src_hash = '5f20608f'
 text = 'Figure from Dettmers et al., LLM.int8() (NeurIPS 2022), Figure 2, CC BY 4.0.'
-# src: 图片来自 Dettmers et al., LLM.int8()（NeurIPS 2022）图 2，CC BY 4.0。
 
 ['quantization-methods.title']
-src_hash = 'b2a70d7a'
-text = 'Extension: linear quantization and what lies beyond it'
-# src: 拓展：线性量化以及它之外的做法
+src_hash = 'a532db22'
+text = 'A classification of advanced quantization methods'
 
 ['quantization-methods.slide.1']
-src_hash = '5a639673'
-text = '''
-
-The Q4_0 of this section is the most basic form: the levels are evenly spaced over the range and one group shares a single scale, which is called <mark>linear quantization</mark>. The methods used in practice are more elaborate in four directions.
-'''
-# src:
-# 
-# 本节给出的 Q4_0 是最基本的一种：级在取值区间上等距排列，一组权重共用一个缩放系数，这称为<mark>线性量化</mark>。实际使用的方法在四个方向上更复杂。
+src_hash = 'c71703d5'
+text = 'Basic uniform linear quantization divides the range into equal intervals; quantization of modern large models builds on it along four main directions:'
 
 ['quantization-methods.slide.2']
-src_hash = 'c39b0bb9'
+src_hash = '375925db'
 text = '''
-
-- **Zero point**: Q4_0's levels are symmetric about 0, while Q4_1 stores a minimum as well, so the levels can shift toward the interval the weights actually occupy
-- **Grouping**: Q4_K divides every 256 weights into 8 sub-blocks, each with its own scale and minimum, and these coefficients are themselves quantized
-- **Calibration**: GPTQ chooses levels by a layer-wise second-order error, and AWQ first scales by activation importance and then quantizes
-- **Non-uniform**: NF4 takes its levels at the quantiles of a normal distribution, unevenly spaced, for weights that are close to normal
+- **Adaptive zero point**: Q4_1 stores a separate minimum, avoiding wasted range when one-signed weights are quantized symmetrically
+- **Hierarchical superblocks**: Q4_K uses a layered superblock structure and quantizes the sub-block scales and offsets again to compress metadata
+- **Second-order and activation calibration**: GPTQ compensates quantization error using the second-order Hessian, and AWQ protects important channels according to activation salience
+- **Non-uniform grids**: NF4 (NormalFloat4) places unequally spaced levels at the quantiles of the normal distribution, maximizing the information entropy of the codes
 '''
-# src:
-# 
-# - **零点**：Q4_0 的级关于 0 对称，Q4_1 另存一个最小值，级可以偏向权重实际的分布区间
-# - **分组**：Q4_K 每 256 个权重再分 8 个子块，子块各有缩放与最小值，这些系数本身也被量化
-# - **校准**：GPTQ 按逐层的二阶误差选级，AWQ 先按激活的重要性缩放再量化
-# - **非均匀**：NF4 按正态分布的分位点取级，级不等距，用于权重接近正态的情形
 
 ['quantization-methods.highlight.1']
-src_hash = '82a989db'
-text = 'Linear quantization divides the range evenly with a single scale; the other methods each relax this rule.'
-# src: 线性量化只用一个缩放系数把区间等分，其余方法都在放宽这一条。
+src_hash = '6f97855d'
+text = 'Uniform linear quantization is built on an equally spaced grid; advanced methods keep pushing the precision limit through asymmetry, hierarchical representation, non-uniform grids and error compensation.'
 
 ['quantization-methods.notes.1']
 src_hash = 'd42fbe77'
@@ -4763,50 +6957,27 @@ text = '''
 
 The Q4_K_M measured on the previous page is a product of the grouping direction: on top of Q4_K, it raises the tensors where quantization error matters most to 6 bits. NF4 comes from QLoRA and takes its levels at the quantiles of the standard normal, giving a smaller error on weight blocks that have already been normalized. AWQ and GPTQ both need a small batch of calibration data and are forms of post-training quantization; quantization-aware training is a separate route whose cost is retraining, and this section does not cover it.
 '''
-# src:
-# 
-# 上一页实测到的 Q4_K_M 正是「分组」这一条的产物：它在 Q4_K 的基础上，
-# 把量化误差影响最大的那些张量整体提到 6 位。
-# NF4 出自 QLoRA，级取自标准正态的分位点，对已经归一化过的权重块误差更小。
-# AWQ 与 GPTQ 都需要一小批校准数据，属于训练后量化；量化感知训练是另一条路线，
-# 代价是要重新训练，本节不展开。
 
 ['lab-preview.title']
-src_hash = 'dfd5a8ad'
-text = 'Exercise: quantizing a BF16 model to 4 bits'
-# src: 练习：把一个 BF16 模型量化到 4 位
+src_hash = '843d027c'
+text = 'Lab: 4-bit model quantization'
 
 ['lab-preview.slide.1']
-src_hash = '4ff99f97'
-text = '''
-
-Fetch `Qwen/Qwen3-VL-2B-Instruct` from Hugging Face, read its safetensors file, quantize the 310 BF16 tensors in it into the three formats of this section, measure the error, and finally run one generation.
-'''
-# src:
-# 
-# 从 Hugging Face 取 `Qwen/Qwen3-VL-2B-Instruct`，读取它的 safetensors 文件，
-# 把其中 310 个 BF16 张量按本节的三种格式量化，度量误差，最后跑一次生成。
+src_hash = '126f486d'
+text = 'Fetch the safetensors weights of the `Qwen/Qwen3-VL-2B-Instruct` model from Hugging Face, convert its 310 BF16 tensors into the three quantization formats of this section, evaluate the quantization error, and verify by running generation.'
 
 ['lab-preview.slide.2']
-src_hash = '787c4d2e'
+src_hash = '6bfc8af2'
 text = '''
-
-- **Read**: the 8-byte header length is assembled little-endian, and the JSON header gives each tensor's type, shape and byte range
-- **Convert**: BF16 to FP32 is one left shift of 16 bits, covered in part five of this lecture
-- **Quantize**: write a `quantize` and a `dequantize` for each of Q4_0, Q4_1 and Q4_K
-- **Verify**: the accounting matches `ls -l` exactly, the error meets its bound, and a passage is generated from the student ID as input
+- **File parsing**: read the 8-byte little-endian unsigned header length, then the JSON header for each tensor's type, shape and offsets
+- **Type conversion**: widen BF16 to single-precision FP32 (from part 5: a left shift of 16 bits)
+- **Quantization**: implement `quantize` and `dequantize` for Q4_0, Q4_1 and Q4_K
+- **Verification**: check the byte size and checksum of the output file, verify the error bound, and run one step of inference
 '''
-# src:
-# 
-# - **读**：8 字节的头长度按小端合成，JSON 头给出每个张量的类型、形状与字节区间
-# - **转**：BF16 到 FP32 是一次左移 16 位，本讲第五部分讲过
-# - **量化**：Q4_0、Q4_1、Q4_K 各写一个 `quantize` 与 `dequantize`
-# - **验**：账目与 `ls -l` 精确相等，误差满足上界，最后以学号为输入生成一段文字
 
 ['lab-preview.highlight.1']
-src_hash = 'e3e13d0e'
-text = 'The framework is provided by the TAs; what students write themselves is reading bits, assembling bits, and quantizing.'
-# src: 框架由助教提供，需要自己写的是读位、拼位与量化这几步。
+src_hash = '00b00a84'
+text = 'The lab framework is provided; the core tasks are implementing the bit operations, byte packing and quantization algorithms.'
 
 ['lab-preview.notes.1']
 src_hash = '9821f93a'
@@ -4814,56 +6985,3 @@ text = '''
 
 The lab instructions are distributed separately. The model file is 4.25 GB under the Apache-2.0 licence with no application required, and on the campus network there is an internal mirror. The file holds 625 tensors, of which 315 belong to the vision tower, and the lab handles only the 310 of the language model. The product is about 1.10 GB. Generation uses greedy decoding, and the md5 of the output text is one per student, for self-checking. Every section of this lecture lands somewhere in the lab: little-endian assembly for part two, the bit layout of BF16 for part five, and masks and shifts for this section.
 '''
-# src:
-# 
-# 实验说明另发。模型文件 4.25 GB，Apache-2.0 许可，无需申请，校园网下用校内镜像。
-# 文件里 625 个张量，其中 315 个属于视觉塔，实验只处理语言模型的那 310 个。
-# 产物约 1.10 GB。生成用贪心解码，输出文本的 md5 每人一个，用来自查。
-# 这一讲的每一节在实验里都有一次落地：
-# 小端合成对应第二部分，BF16 的位布局对应第五部分，掩码与移位对应本节。
-
-['summary.title']
-src_hash = '1f7f8405'
-text = 'Summary'
-# src: 本节小结
-
-['summary.slide.1']
-src_hash = 'b7745a59'
-text = '''
-- **What a byte is**: 8 two-valued signals, written as two hexadecimal digits, the smallest addressable unit
-- **How a multi-byte object is arranged**: settled by byte order; GGUF and x86-64 both use little-endian
-- **How the same bits yield different values**: unsigned and signed numbers differ in the weight of the top bit, and conversions are where mistakes happen
-- **How real numbers are encoded**: bits divided among sign, exponent and fraction; quantization compresses a weight to around 4 bits
-'''
-# src:
-# 
-# - **一个字节是什么**：8 个两值信号，写作两位十六进制，是最小的可寻址单位
-# - **多字节对象如何排列**：由字节序规定；GGUF 与 x86-64 都采用小端
-# - **同一段位如何得到不同的值**：无符号数与有符号数的差别在最高位的权重，转换处最易出错
-# - **实数如何编码**：符号、阶码、尾数三段分配位数；量化把一个权重压到 4 位上下
-
-['summary.slide.2']
-src_hash = 'cfe0ddaf'
-text = '''
-
-Bits carry no meaning of their own; the meaning comes from the rule that interprets them, and the rules are written in format specifications, type systems and hardware conventions. Errors at a type conversion are not reported at compile time and have to be looked for when reading and reviewing code.
-'''
-# src:
-# 
-# 位本身没有含义，含义来自解释它的规则；规则写在格式规范、类型系统与硬件约定里。
-# 类型转换处的错误不会在编译时报告，需要在阅读与审查代码时主动检查。
-
-['summary.highlight.1']
-src_hash = '533bbf8c'
-text = 'Before reading a run of bytes, settle which rule to read them by.'
-# src: 读一段字节之前，先确定按什么规则读。
-
-['summary.notes.1']
-src_hash = '8cc177b2'
-text = 'These four together are all the conventions needed to read 1.9 GB of bytes as a model. One more sentence can connect them to what follows: in machine-level programs immediate values and addresses are likewise stored little-endian; in the memory hierarchy the bit width of the data directly sets the memory traffic per token; and the object files that linking and dynamic loading handle are equally byte sequences with a specification, approached the same way.'
-# src:
-# 
-# 这四条合起来就是把 1.9 GB 字节读成一个模型所需的全部约定。
-# 还可以补一句与后续内容的连接：机器级程序里立即数与地址同样按小端存放，
-# 存储层次一节里数据的位宽直接决定每个 token 的访存量，
-# 链接与动态加载处理的目标文件同样是有规范的字节序列，用的是同一套方法。

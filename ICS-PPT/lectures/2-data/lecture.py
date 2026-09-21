@@ -1,13 +1,15 @@
 """ICS 第二讲：数据的表示。
 
 结构安排：以上一讲留下的模型权重文件为观察对象，把「文件里的字节表示什么」
-拆成四个问题，每一节回答一个。位与字节、字节序、整数、浮点与量化各成一节，
-每一节的结论都落回同一个文件，最后一页收束到四个答案。
+拆成四个问题，每一节回答一个。位与字节、字节序、整数与浮点各成一节，
+每一节的结论都落回同一个文件。第五部分按 part-5.md 逐字照录；最后的量化专题按 quant.md 的五幕结构展开，
+页面内容在 quant_pages.py。
 """
 
 from lecturekit.dsl import Lecture
 
 import pages
+import quant_pages
 
 
 lecture = Lecture(
@@ -80,51 +82,71 @@ with lecture.section("第四部分 · 浮点数的编码", id="float") as s:
     s.page("special-values", body=pages.special_values)
     s.page("float-encoding", body=pages.float_encoding)
 
-lecture.bridge("第五部分 · 浮点数的精度与低精度格式\n可表示值的分布、舍入，以及更少位的浮点格式")
+lecture.bridge("第五部分 · 浮点数的精度特性与舍入机制")
 
-with lecture.section("第五部分 · 浮点数的精度与低精度格式", id="float-formats") as s:
-    s.page("float-distribution", body=pages.float_distribution)
-    s.page("float-rounding", body=pages.float_rounding)
-    s.page("rounding-modes", body=pages.rounding_modes)
-    s.page("binary-rounding", body=pages.binary_rounding)
-    s.page("patriot-missile", body=pages.patriot_missile)
-    s.page("float-not-real", body=pages.float_not_real)
-    s.page("float-casts", body=pages.float_casts)
-    s.page("precision-formats", body=pages.precision_formats)
-    s.page("bf16-truncation", body=pages.bf16_truncation)
-    s.page("bf16-classes", body=pages.bf16_classes)
-    s.page("range-and-precision", body=pages.range_and_precision)
-    s.page("model-size", body=pages.model_size)
+with lecture.section("第五部分 · 浮点数的精度特性与舍入机制",
+                     id="float-precision") as s:
+    s.page("ulp-distribution", body=pages.ulp_distribution)
+    s.page("ulp-distribution-cont", body=pages.ulp_distribution_cont)
+    s.page("fp-absorption", body=pages.fp_absorption)
+    s.page("fp-absorption-cont", body=pages.fp_absorption_cont)
+    s.page("ieee-rounding-modes", body=pages.rounding_modes)
+    s.page("ieee-rounding-modes-cont", body=pages.rounding_modes_cont)
+    s.page("round-bits", body=pages.round_bits)
+    s.page("round-bits-cont", body=pages.round_bits_cont)
+    s.page("cancellation", body=pages.cancellation)
+    s.page("cancellation-cont", body=pages.cancellation_cont)
+    s.page("casts-ub", body=pages.casts_ub)
+    s.page("casts-ub-cont", body=pages.casts_ub_cont)
+    s.page("patriot", body=pages.patriot)
+    s.page("patriot-cont", body=pages.patriot_cont)
+    s.page("bf16-tradeoff", body=pages.bf16_tradeoff)
+    s.page("bf16-tradeoff-cont", body=pages.bf16_tradeoff_cont)
+    s.page("bf16-mapping", body=pages.bf16_mapping)
 
-lecture.bridge("第六部分 · 量化\n用更少的位存放同一组权重")
+lecture.bridge("第六部分 · 大模型量化的底层系统原理\n从连续实数到离散低 Bit 网格的系统级跨越")
 
-with lecture.section("第六部分 · 量化：原理与 Q4_0", id="quantization") as s:
-    s.page("why-quantize", body=pages.why_quantize)
-    s.page("memory-bound-measured", body=pages.memory_bound_measured)
-    s.page("what-to-quantize", body=pages.what_to_quantize)
-    s.page("quantization-idea", body=pages.quantization_idea)
-    s.page("quantization-map", body=pages.quantization_map)
-    s.page("q4-block", body=pages.q4_block)
-    s.page("quantize-code", body=pages.quantize_code)
-    s.page("nibble-packing", body=pages.nibble_packing)
-    s.page("nibble-add", body=pages.nibble_add)
-    s.page("int4-hardware", body=pages.int4_hardware)
-    s.page("granularity", body=pages.granularity)
-    s.page("granularity-measured", body=pages.granularity_measured)
+with lecture.section("第六部分 · 大模型量化的底层系统原理", id="quant-crisis") as s:
+    s.page("topic-cover", body=quant_pages.topic_cover)
+    s.page("topic-cover-cont", body=quant_pages.topic_cover_cont)
+    s.page("fp32-myth", body=quant_pages.fp32_myth)
+    s.page("roofline-basics", body=quant_pages.roofline_basics)
+    s.page("bandwidth-ledger", body=quant_pages.bandwidth_ledger)
+    s.page("bandwidth-ledger-cont", body=quant_pages.bandwidth_ledger_cont)
+    s.page("memory-wall", body=quant_pages.memory_wall)
+    s.page("memory-wall-cont", body=quant_pages.memory_wall_cont)
+    s.page("alu-energy", body=quant_pages.alu_energy)
+    s.page("alu-energy-cont", body=quant_pages.alu_energy_cont)
 
-lecture.bridge("第七部分 · 量化格式\n偏移、两级缩放，以及混合量化")
+lecture.bridge("第七部分 · 数学映射与数据分布")
 
-with lecture.section("第七部分 · 量化格式：Q4_1 与 Q4_K", id="quant-formats") as s:
-    s.page("zero-point", body=pages.zero_point)
-    s.page("q4-1-measured", body=pages.q4_1_measured)
-    s.page("superblock", body=pages.superblock)
-    s.page("q4-k-budget", body=pages.q4_k_budget)
-    s.page("k-scales-layout", body=pages.k_scales_layout)
-    s.page("k-scales-code", body=pages.k_scales_code)
-    s.page("q4-k-measured", body=pages.q4_k_measured)
-    s.page("mixed-recipe", body=pages.mixed_recipe)
-    s.page("quantization-cost", body=pages.quantization_cost)
-    s.page("quantization-methods", body=pages.quantization_methods)
-    s.page("lab-preview", body=pages.lab_preview)
+with lecture.section("第七部分 · 数学映射与数据分布", id="quant-mapping") as s:
+    s.page("affine-mapping", body=quant_pages.affine_mapping)
+    s.page("affine-grid", body=quant_pages.affine_grid)
+    s.page("zero-point-cost", body=quant_pages.zero_point_cost)
+    s.page("zero-point-compute", body=quant_pages.zero_point_compute)
+    s.page("symmetric-failure", body=quant_pages.symmetric_failure)
+    s.page("symmetric-failure-grid", body=quant_pages.symmetric_failure_grid)
+    s.page("symmetric-failure-cont", body=quant_pages.symmetric_failure_cont)
+    s.page("clipping-tradeoff", body=quant_pages.clipping_tradeoff)
+
+lecture.bridge("第八部分 · GGUF 家族与二级量化")
+
+with lecture.section("第八部分 · GGUF 家族与二级量化", id="quant-gguf") as s:
+    s.page("granularity-spectrum", body=quant_pages.granularity_spectrum)
+    s.page("gguf-blocks", body=quant_pages.gguf_blocks)
+    s.page("gguf-blocks-cont", body=quant_pages.gguf_blocks_cont)
+    s.page("kquants-superblock", body=quant_pages.kquants_superblock)
+    s.page("kquants-superblock-cont", body=quant_pages.kquants_superblock_cont)
+    s.page("kquants-superblock-cont2", body=quant_pages.kquants_superblock_cont2)
+    s.page("scale-bits", body=quant_pages.scale_bits)
+    s.page("scale-bits-cont", body=quant_pages.scale_bits_cont)
+
+lecture.bridge("第九部分 · 前沿视野与实验")
+
+with lecture.section("第九部分 · 前沿视野与实验", id="quant-frontier") as s:
+    s.page("ai-float-formats", body=quant_pages.ai_float_formats)
+    s.page("nf4-lut", body=quant_pages.nf4_lut)
+    s.page("lab-release", body=quant_pages.lab_release)
 
 lecture.close("summary", body=pages.summary)

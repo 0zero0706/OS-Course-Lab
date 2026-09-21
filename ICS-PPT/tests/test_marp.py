@@ -31,6 +31,20 @@ def test_build_deck_builds_html_only_by_default():
     assert _outputs(run) == ["slides.html"]
 
 
+def test_marp_never_inherits_stdin():
+    # marp-cli reads stdin whenever it is not a TTY and converts only after EOF.
+    # Run from a background job or a pipe, an inherited stdin never closes and
+    # the build hangs with no output.
+    with tempfile.TemporaryDirectory() as tmp:
+        out = Path(tmp)
+        with patch("lecturekit.renderers.viewer.marp.subprocess.run") as run:
+            build_deck(out)
+            marp.render_pages_png(out)
+    assert run.call_args_list
+    for call in run.call_args_list:
+        assert call.kwargs.get("stdin") is marp.subprocess.DEVNULL
+
+
 def test_html_build_patches_slides_with_svg_scope():
     # A rendered bundle outlives the session that made it, and whoever opens it
     # in Safari pays for marpit-svg-polyfill, so the scoper is written into the

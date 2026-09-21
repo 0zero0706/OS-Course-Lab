@@ -73,7 +73,8 @@ Each press opens its own tab in that drawer and the runs go on side by side, so
 that one run, hiding the drawer leaves them all running, and turning the page
 stops them all. The page carries only a
 hash of the command, so the browser can ask for one the author wrote and nothing
-else.
+else. When the recorded output says more than the page needs, `bold=[5, 6]` sets
+those lines of it in bold, and the deck draws the rest light.
 
 `files=["examples/sizes.c"]` on the same block adds a button per file beside ▶.
 Pressing it opens that file, line-numbered, in a panel down the right-hand side

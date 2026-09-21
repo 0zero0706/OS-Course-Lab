@@ -64,16 +64,17 @@ section > .reveal-block > figure.lk-row > figcaption {
   color: var(--color-dk2);
 }
 
-/* Dim un-revealed blocks. A .reveal-block wrapper has no box (display:contents)
-   so its dim lands on its children; an annotation bubble carrying data-reveal is
-   a real box and is dimmed directly (the wrapper match below is a harmless
-   no-op on it). */
+/* Dim un-revealed blocks. A .reveal-block wrapper's dim lands on its children;
+   an annotation bubble carrying data-reveal is a real box and is dimmed
+   directly. The wrapper itself must never take the opacity: on a `p.gap` page
+   it keeps its box (.lk-gap-block, above), and opacity on both the wrapper and
+   its children multiplies to 0.16 x 0.16 -- the page reads as blank. */
 .reveal-block > *,
-[data-reveal] {
+[data-reveal]:not(.reveal-block) {
   transition: opacity 0.15s ease, filter 0.15s ease;
 }
 .reveal-block.reveal-dim > *,
-[data-reveal].reveal-dim {
+[data-reveal]:not(.reveal-block).reveal-dim {
   opacity: 0.16;
   filter: grayscale(1);
 }

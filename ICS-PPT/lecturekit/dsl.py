@@ -732,6 +732,7 @@ class PageBuilder:
         command: str,
         *,
         output: str | None = None,
+        bold: Iterable[int] | None = None,
         description: str | None = None,
         timeout: float | None = None,
         files: Iterable[str] | None = None,
@@ -757,17 +758,25 @@ class PageBuilder:
         a button beside the run button that opens the file in a panel, so the
         code being compiled can be read in the room. Shown under the same live
         preview as the run button, and inert everywhere else.
+
+        ``bold`` is a list of 1-based line numbers into ``output`` that render
+        bold, for the rows a long printout is shown for. The numbers count the
+        output as every target shows it — leading and trailing blank lines are
+        stripped first, as ``p.code(..., mark=...)`` counts its lines.
         """
+        content = {
+            "name": name,
+            "command": command,
+            "output": output,
+            "description": description,
+            "timeout": timeout,
+            "files": source.normalize(files),
+        }
+        if bold is not None:
+            content["bold"] = list(bold)
         return self._block(
             "demo",
-            {
-                "name": name,
-                "command": command,
-                "output": output,
-                "description": description,
-                "timeout": timeout,
-                "files": source.normalize(files),
-            },
+            content,
             only=only,
             except_=except_,
             key=key,

@@ -106,7 +106,7 @@ class LectureCliTest(unittest.TestCase):
                 exit_code = main(["view", LECTURE_SOURCE, "--watch", "--out", tmp, "--port", "4111"])
             self.assertEqual(exit_code, 0)
             serve.assert_called_once_with(
-                Path(LECTURE_SOURCE), Path(tmp), port=4111, reveal=True,
+                Path(LECTURE_SOURCE), Path(tmp), port=4111, reveal=False,
                 debounce_ms=DEFAULT_DEBOUNCE_MS, lang=None, strict=False,
                 demo_timeout_s=DEFAULT_DEMO_TIMEOUT_S,
             )
@@ -145,14 +145,21 @@ class LectureCliTest(unittest.TestCase):
             self.assertEqual(exit_code, 1)
             serve.assert_not_called()
 
-    def test_view_watch_no_reveal_disables_reveal(self):
+    def test_view_watch_is_plain_by_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch("lecturekit.cli.serve") as serve:
+                exit_code = main(["view", LECTURE_SOURCE, "--watch", "--out", tmp])
+            self.assertEqual(exit_code, 0)
+            self.assertFalse(serve.call_args.kwargs["reveal"])
+
+    def test_view_watch_reveal_enables_reveal(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch("lecturekit.cli.serve") as serve:
                 exit_code = main(
-                    ["view", LECTURE_SOURCE, "--watch", "--no-reveal", "--out", tmp]
+                    ["view", LECTURE_SOURCE, "--watch", "--reveal", "--out", tmp]
                 )
             self.assertEqual(exit_code, 0)
-            self.assertFalse(serve.call_args.kwargs["reveal"])
+            self.assertTrue(serve.call_args.kwargs["reveal"])
 
     def test_open_in_browser_uses_native_opener_on_macos(self):
         from lecturekit.cli import open_in_browser

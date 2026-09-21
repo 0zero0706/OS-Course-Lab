@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import queue
 import re
 import select
 import signal
@@ -32,7 +31,9 @@ from .renderers.viewer.marp import (
 LIVERELOAD_PATH = "/__livereload"
 DEMO_PATH = "/__demo"
 SOURCE_PATH = "/__source"
-RELOAD_MESSAGE = "reload"
+# How often a page asks whether it is stale. A save already waits out the render
+# debounce and marp's rebuild, so half a second more is not felt.
+LIVERELOAD_POLL_MS = 500
 
 # A demo request is an id and nothing else, so the body is tiny. Anything larger
 # is not one of ours and is refused before it is read.
@@ -61,10 +62,18 @@ MARP_GRACE_S = 20.0
 # forward only the lines that carry signal (warnings, errors, anything else).
 _MARP_INFO_LINE = re.compile(r"\[\s*INFO\s*\]")
 
+# The page is served knowing the generation it was built at (the %d); it asks
+# the server for the current one and reloads once the two differ. A server that
+# restarted counts from 0 again, which also differs, and a reload is right then.
 LIVERELOAD_CLIENT = (
     "<script>\n"
-    f"(function(){{var es=new EventSource({LIVERELOAD_PATH!r});"
-    "es.onmessage=function(){location.reload();};})();\n"
+    "(function(){var seen=%d;"
+    "function poll(){fetch(" + repr(LIVERELOAD_PATH) + ",{cache:'no-store'})"
+    ".then(function(r){return r.text();})"
+    ".then(function(t){if(parseInt(t,10)!==seen){location.reload();}"
+    "else{setTimeout(poll," + str(LIVERELOAD_POLL_MS) + ");}})"
+    ".catch(function(){setTimeout(poll," + str(LIVERELOAD_POLL_MS) + ");});}"
+    "setTimeout(poll," + str(LIVERELOAD_POLL_MS) + ");})();\n"
     "</script>"
 )
 
@@ -176,28 +185,27 @@ def purge_lecture_modules(lecture_dir: Path) -> None:
 
 
 class ReloadBroadcaster:
-    """Fan out reload signals to every connected SSE client."""
+    """Count rebuilds; a page reloads when the count moves past the one it has.
+
+    Pages poll for the count instead of holding a stream open. A browser allows
+    six HTTP/1.1 connections per host, and a viewer tab would hold two streams —
+    the outline shell and the deck iframe inside it — so with three tabs open the
+    next request, the deck an outline click loads, queues behind streams that
+    never end and the page stays blank. A poll returns at once and holds nothing.
+    """
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
-        self._subscribers: list[queue.Queue[str]] = []
+        self._generation = 0
 
-    def subscribe(self) -> queue.Queue[str]:
-        q: queue.Queue[str] = queue.Queue()
+    @property
+    def generation(self) -> int:
         with self._lock:
-            self._subscribers.append(q)
-        return q
-
-    def unsubscribe(self, q: queue.Queue[str]) -> None:
-        with self._lock:
-            if q in self._subscribers:
-                self._subscribers.remove(q)
+            return self._generation
 
     def broadcast(self) -> None:
         with self._lock:
-            subscribers = list(self._subscribers)
-        for q in subscribers:
-            q.put(RELOAD_MESSAGE)
+            self._generation += 1
 
 
 class DemoQuiet:
@@ -240,8 +248,9 @@ def make_handler(
 ):
     """Build a request handler that serves ``directory`` with live reload.
 
-    ``index.html`` is served with the SSE client injected; ``/__livereload`` is a
-    long-lived event stream; everything else is a plain static file.
+    ``index.html`` is served with the reload client injected; ``/__livereload``
+    answers with the current rebuild count (see ``ReloadBroadcaster``); everything
+    else is a plain static file.
     ``slides.html`` always carries the SVG-scoping controller (see
     ``marp.inject_svg_scope``), and carries the reveal-on-Enter controller when
     ``reveal`` is true.
@@ -395,11 +404,12 @@ def make_handler(
         def _stream_demo(self, spec):
             """Answer with one JSON object per line, flushed as the demo speaks.
 
-            Not SSE, though the reload channel next door is: there is no
-            reconnecting to do here — a demo that lost its listener is a demo
-            nobody is watching — and one line per event is the smaller thing to
-            parse. No Content-Length, so the browser reads to the end of the
-            connection, the same way `_serve_livereload` does.
+            Not SSE: there is no reconnecting to do here — a demo that lost its
+            listener is a demo nobody is watching — and one line per event is the
+            smaller thing to parse. No Content-Length, so the browser reads to the
+            end of the connection. This holds a connection only while the demo
+            runs, which is why the reload channel polls instead (see
+            `ReloadBroadcaster`).
 
             The listener leaving *is* the stop button. Its socket then refuses
             the next write, and closing the generator on the way out kills the
@@ -472,7 +482,7 @@ def make_handler(
             except OSError:
                 self.send_error(404)
                 return
-            body = inject_livereload(html).encode("utf-8")
+            body = inject_livereload(html, broadcaster.generation).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -489,7 +499,7 @@ def make_handler(
             # `marp --watch` owns slides.html on disk and rewrites it on every
             # rebuild, so both controllers are injected into the response body
             # rather than the file. The SVG scoper rides every deck; the reveal
-            # controller is the preview feature `--no-reveal` turns off.
+            # controller is the preview feature `--reveal` turns on.
             html = inject_svg_scope(html)
             if reveal:
                 html = inject_reveal(html)
@@ -498,7 +508,7 @@ def make_handler(
                 # which can tell a demo's build artifacts from an edit. Without
                 # the swap a demo that compiles anything refreshes the page a
                 # second later and takes its own output with it.
-                html = inject_livereload(strip_watch_client(html))
+                html = inject_livereload(strip_watch_client(html), broadcaster.generation)
                 html = inject_source(html)
                 html = inject_demo(html)
             body = html.encode("utf-8")
@@ -509,25 +519,12 @@ def make_handler(
             self.wfile.write(body)
 
         def _serve_livereload(self):
+            body = str(broadcaster.generation).encode("ascii")
             self.send_response(200)
-            self.send_header("Content-Type", "text/event-stream")
-            self.send_header("Connection", "keep-alive")
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
             self.end_headers()
-            q = broadcaster.subscribe()
-            try:
-                self.wfile.write(b": connected\n\n")
-                self.wfile.flush()
-                while True:
-                    try:
-                        q.get(timeout=15)
-                        self.wfile.write(f"data: {RELOAD_MESSAGE}\n\n".encode())
-                    except queue.Empty:
-                        self.wfile.write(b": ping\n\n")  # heartbeat
-                    self.wfile.flush()
-            except (BrokenPipeError, ConnectionResetError, ValueError):
-                pass
-            finally:
-                broadcaster.unsubscribe(q)
+            self.wfile.write(body)
 
     return LiveReloadHandler
 
@@ -535,7 +532,7 @@ def make_handler(
 class QuietHTTPServer(ThreadingHTTPServer):
     """A dev server that ignores routine client disconnects.
 
-    Browsers drop SSE and keep-alive connections constantly (every reload, every
+    Browsers drop keep-alive and streaming connections constantly (every reload, every
     tab close), which the stdlib server would otherwise dump as a traceback. Real
     errors still surface.
     """
@@ -801,13 +798,18 @@ def watch_marp_health(
         time.sleep(poll_s)
 
 
-def inject_livereload(html: str) -> str:
-    """Return ``html`` with the SSE live-reload client inserted before </body>."""
+def inject_livereload(html: str, generation: int = 0) -> str:
+    """Return ``html`` with the polling reload client inserted before </body>.
+
+    ``generation`` is the rebuild count the page is served at; the client reloads
+    once the server reports a different one.
+    """
+    client = LIVERELOAD_CLIENT % (generation,)
     marker = "</body>"
     idx = html.rfind(marker)
     if idx == -1:
-        return html + LIVERELOAD_CLIENT
-    return html[:idx] + LIVERELOAD_CLIENT + html[idx:]
+        return html + client
+    return html[:idx] + client + html[idx:]
 
 
 def _terminate_process_group(proc) -> None:
@@ -845,7 +847,7 @@ def serve(
     *,
     port: int = 3030,
     open_browser: bool = True,
-    reveal: bool = True,
+    reveal: bool = False,
     debounce_ms: int = DEFAULT_DEBOUNCE_MS,
     lang: str | None = None,
     strict: bool = False,
@@ -854,7 +856,7 @@ def serve(
     """Run the live-reload dev server until interrupted.
 
     Wires together the tested pieces: an initial render, a persistent
-    ``marp --watch`` subprocess, a static HTTP server with SSE live reload, and a
+    ``marp --watch`` subprocess, a static HTTP server with polled live reload, and a
     native filesystem event loop. The whole lecture is rendered every time; there
     is no page subset to keep in sync (see ``render_once``). ``reveal`` toggles
     the reveal-on-Enter preview (block wrappers + injected controller); pass

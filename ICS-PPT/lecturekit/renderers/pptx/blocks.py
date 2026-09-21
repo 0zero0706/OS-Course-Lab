@@ -578,6 +578,7 @@ def _demo(block, ctx: Ctx) -> None:
 
     vertical_pad_pt = 4
     rows = lines + outputs
+    bold = {len(lines) + number for number in content.get("bold") or ()}
     height = Emu(Pt(len(rows) * theme.CODE_PT * LINE_HEIGHT + 2 * vertical_pad_pt))
     box, tf = _textbox(ctx, height)
     _solid(box, theme.LT2)
@@ -590,7 +591,8 @@ def _demo(block, ctx: Ctx) -> None:
         first = False
         _set_line_spacing(p, theme.CODE_PT)
         _style_run(p.add_run(), line or " ", size_pt=theme.CODE_PT, mono=True,
-                   color=theme.ACCENT1 if number <= len(lines) else theme.FG)
+                   color=theme.ACCENT1 if number <= len(lines) else theme.FG,
+                   bold=number in bold)
     top = ctx.cursor.place(height)
     bar = _shape(ctx, MSO_SHAPE.RECTANGLE, ctx.layout.content_left, top,
                  Pt(4), height)

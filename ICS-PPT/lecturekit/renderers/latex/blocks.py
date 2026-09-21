@@ -347,6 +347,12 @@ def _sidenote(block: model.Block, ctx: Ctx) -> str:
     return "\\begin{booksidenote}{%s}\n%s\n\\end{booksidenote}" % (title, body)
 
 
+# Delimiter pairs for the weights of demo output lines under `bold=`, tried in
+# order; the first two the output does not contain are used. `listings` drops
+# them from the page.
+_WEIGHT_DELIMS = [("(@", "@)"), ("<@", "@>"), ("[@", "@]"), ("(!", "!)"), ("<!", "!>")]
+
+
 def _demo(block: model.Block, ctx: Ctx) -> str:
     """A command as the book has to print it: verbatim, with its output.
 
@@ -366,10 +372,26 @@ def _demo(block: model.Block, ctx: Ctx) -> str:
     if content.get("description"):
         lines.append(inline(content["description"]) + r"\\")
     transcript = demo_module.prompt_lines(str(content["command"]))
+    options = ""
     if content.get("output"):
-        transcript += str(content["output"]).strip("\n").split("\n")
+        outputs = str(content["output"]).strip("\n").split("\n")
+        bold = set(content.get("bold") or ())
+        if bold:
+            # `listings` sets what sits between two invisible delimiters in the
+            # style the pair names and prints everything else verbatim. The named
+            # lines go bold and the rest light, as on the slide; each style takes
+            # a pair the output lacks.
+            (bl, br), (ll, lr) = [pair for pair in _WEIGHT_DELIMS
+                                  if not any(d in content["output"] for d in pair)][:2]
+            options = ("[moredelim={[is][\\bfseries]{%s}{%s}},"
+                       "moredelim={[is][\\fontseries{l}\\selectfont]{%s}{%s}}]"
+                       % (bl, br, ll, lr))
+            outputs = [f"{bl}{line}{br}" if number in bold
+                       else f"{ll}{line}{lr}" if line else line
+                       for number, line in enumerate(outputs, start=1)]
+        transcript += outputs
     lines.append(
-        "\\begin{lstlisting}\n%s\n\\end{lstlisting}" % "\n".join(transcript)
+        "\\begin{lstlisting}%s\n%s\n\\end{lstlisting}" % (options, "\n".join(transcript))
     )
     lines.append(r"\end{tcolorbox}")
     return "\n".join(lines) + _footnotes(block, ctx)
