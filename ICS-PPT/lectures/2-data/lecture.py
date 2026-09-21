@@ -121,6 +121,7 @@ with lecture.section("第六部分 · 大模型量化的底层系统原理", id=
     s.page("memory-wall-cont", body=quant_pages.memory_wall_cont)
     s.page("alu-energy", body=quant_pages.alu_energy)
     s.page("alu-energy-cont", body=quant_pages.alu_energy_cont)
+    s.page("quant-overview", body=quant_pages.quant_overview)
 
 lecture.bridge("第七部分 · 数学映射与数据分布")
 
