@@ -83,6 +83,8 @@ with lecture.section("第四部分 · 浮点数的编码", id="float") as s:
     s.page("denormalized", body=pages.denormalized)
     s.page("special-values", body=pages.special_values)
     s.page("float-encoding", body=pages.float_encoding)
+    s.page("tiny-float", body=pages.tiny_float)
+    s.page("tiny-float-answer", body=pages.tiny_float_answer)
 
 lecture.bridge("第五部分 · 浮点数的精度特性与舍入机制")
 
