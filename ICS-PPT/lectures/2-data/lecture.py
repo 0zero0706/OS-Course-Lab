@@ -63,9 +63,11 @@ with lecture.section("第三部分 · 整数", id="integers") as s:
     s.page("kernel-bug-answer", body=pages.kernel_bug_answer, book="merge")
     s.page("mixed-width-comparison", body=pages.mixed_width_comparison)
     s.page("bit-operations", body=pages.bit_operations)
+    s.page("bit-operations-masks", body=pages.bit_operations_masks)
+    s.page("bit-operations-readonly", body=pages.bit_operations_readonly)
     s.page("shifts", body=pages.shifts)
-    s.page("operator-precedence", body=pages.operator_precedence)
     s.page("precedence-in-practice", body=pages.precedence_in_practice)
+    s.page("operator-precedence", body=pages.operator_precedence)
 
 lecture.bridge("第四部分 · 浮点数的编码\n有限位对实数的近似")
 

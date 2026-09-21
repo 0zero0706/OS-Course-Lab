@@ -1392,17 +1392,15 @@ text = 'Mixed comparisons: comparing operands of different widths'
 # src: 混合比较：宽度不同的操作数进行比较
 
 ['mixed-width-comparison.slide.1']
-src_hash = 'b52a872c'
+src_hash = '8d65225e'
 text = '''
-**A comparison takes two steps:**
 1. **Pick the target type**: first promote types narrower than `int` to `int`; after promotion, with different widths take the wider type, and with equal widths but different signedness take unsigned
-2. **Convert each operand**: <mark>the source type decides between zero and sign extension</mark>, and the resulting bits are read under the target type
+2. <mark>the source type decides between zero and sign extension</mark>, and the resulting bits are read under the target type
 '''
 # src:
 # 
-# **比较分两步进行：**
 # 1. **确定目标类型**：先把窄于 `int` 的类型提升为 `int`；提升后宽度不同取较宽者，宽度相同、符号不同取无符号
-# 2. **逐个转换**：<mark>补 0 还是补符号位由原类型决定</mark>，得到的位模式按目标类型解释
+# 2. <mark>补 0 还是补符号位由原类型决定</mark>，得到的位模式按目标类型解释
 
 ['mixed-width-comparison.table.1.cell.0.0']
 src_hash = 'fb8791a7'
@@ -1435,9 +1433,9 @@ text = 'int'
 # src: int
 
 ['mixed-width-comparison.table.1.cell.1.2']
-src_hash = 'd3840a84'
-text = '1 zero-extends to `0x00000001`, read as 1'
-# src: 1 补 0 得 `0x00000001`，读为 1
+src_hash = '141511dc'
+text = '1 zero-extends to `0x00000001`, value is 1'
+# src: 1 补 0 得 `0x00000001`，值为 1
 
 ['mixed-width-comparison.table.1.cell.1.3']
 src_hash = '6b86b273'
@@ -1475,9 +1473,9 @@ text = 'unsigned'
 # src: unsigned
 
 ['mixed-width-comparison.table.1.cell.3.2']
-src_hash = 'dc2993c9'
-text = '−1 sign-extends to `0xffffffff`, read as $2^{32}-1$'
-# src: −1 补符号位得 `0xffffffff`，读为 $2^{32}-1$
+src_hash = '15bcc132'
+text = '−1 sign-extends to `0xffffffff`, value is $2^{32}-1$'
+# src: −1 补符号位得 `0xffffffff`，值为 $2^{32}-1$
 
 ['mixed-width-comparison.table.1.cell.3.3']
 src_hash = '5feceb66'
@@ -1495,9 +1493,9 @@ text = 'unsigned long long'
 # src: unsigned long long
 
 ['mixed-width-comparison.table.1.cell.4.2']
-src_hash = '429857f3'
-text = '−1 sign-extends to 64 ones, read as $2^{64}-1$'
-# src: −1 补符号位得 64 个 1，读为 $2^{64}-1$
+src_hash = '473c9a92'
+text = '−1 sign-extends to 64 ones, value is $2^{64}-1$'
+# src: −1 补符号位得 64 个 1，值为 $2^{64}-1$
 
 ['mixed-width-comparison.table.1.cell.4.3']
 src_hash = '5feceb66'
@@ -1515,9 +1513,9 @@ text = 'long long'
 # src: long long
 
 ['mixed-width-comparison.table.1.cell.5.2']
-src_hash = '529186ae'
-text = '1 zero-extends to a 64-bit 1, read as 1'
-# src: 1 补 0 得 64 位的 1，读为 1
+src_hash = 'e3afa898'
+text = '1 zero-extends to a 64-bit 1, value is 1'
+# src: 1 补 0 得 64 位的 1，值为 1
 
 ['mixed-width-comparison.table.1.cell.5.3']
 src_hash = '6b86b273'
@@ -1641,10 +1639,124 @@ src_hash = '1d98054d'
 text = 'symmetric difference'
 # src: 对称差
 
-['bit-operations.aside.1']
+['bit-operations.slide.1']
+src_hash = '752e4153'
+text = '''
+Low 4 bits, high to low: ICS, compilers, OS, computer graphics. A is `1101`, B is `0110`.
+- Intersection `1101 & 0110 = 0100`: both took compilers
+- Union `1101 | 0110 = 1111`: together they cover all four
+- Complement (these 4 bits only) `~1101 = 0010`: A did not take OS
+- Symmetric difference `1101 ^ 0110 = 1011`: courses only one of them took
+'''
+# src:
+# 
+# 低 4 位从高到低：ICS、编译、操作系统、计算机图形学。甲 `1101`，乙 `0110`。
+# - 交集 `1101 & 0110 = 0100`：都选了编译
+# - 并集 `1101 | 0110 = 1111`：两人合起来四门都有
+# - 补集（只看这 4 位）`~1101 = 0010`：甲没选操作系统
+# - 对称差 `1101 ^ 0110 = 1011`：只一人选的课
+
+['bit-operations-masks.title']
+src_hash = '645025cd'
+text = 'Bitwise operations: mask calculations'
+# src: 位运算：掩码计算
+
+['bit-operations-masks.slide.1']
+src_hash = '4a3d8391'
+text = '''
+Two IPs are on the same LAN if each ANDed with the mask gives the same network.
+Mask `255.255.255.0` keeps the top 24 bits and clears the low 8, the same as `x & 0xffffff00`.
+'''
+# src:
+# 
+# 两个 IP 各自与掩码相与，结果相同则在同一局域网。
+# 掩码 `255.255.255.0` 留下前 24 位，清掉后 8 位，与 `x & 0xffffff00` 相同。
+
+['bit-operations-masks.table.1.cell.0.0']
+src_hash = 'bf550517'
+text = 'IP'
+# src: IP
+
+['bit-operations-masks.table.1.cell.0.1']
+src_hash = 'bafae8fa'
+text = '`IP & 255.255.255.0`'
+# src: `IP & 255.255.255.0`
+
+['bit-operations-masks.table.1.cell.0.2']
+src_hash = '15c58df5'
+text = 'Verdict'
+# src: 判定
+
+['bit-operations-masks.table.1.cell.1.0']
+src_hash = '2a39f1ee'
+text = '192.168.1.100'
+# src: 192.168.1.100
+
+['bit-operations-masks.table.1.cell.1.1']
+src_hash = '67e0142b'
+text = '192.168.1.0'
+# src: 192.168.1.0
+
+['bit-operations-masks.table.1.cell.1.2']
+src_hash = 'eb87b70a'
+text = 'same LAN'
+# src: 同一局域网
+
+['bit-operations-masks.table.1.cell.2.0']
+src_hash = 'ad446715'
+text = '192.168.1.200'
+# src: 192.168.1.200
+
+['bit-operations-masks.table.1.cell.2.1']
+src_hash = '67e0142b'
+text = '192.168.1.0'
+# src: 192.168.1.0
+
+['bit-operations-masks.table.1.cell.2.2']
+src_hash = 'eb87b70a'
+text = 'same LAN'
+# src: 同一局域网
+
+['bit-operations-masks.table.1.cell.3.0']
+src_hash = 'aeb463e9'
+text = '192.168.2.10'
+# src: 192.168.2.10
+
+['bit-operations-masks.table.1.cell.3.1']
+src_hash = 'e7e4f97b'
+text = '192.168.2.0'
+# src: 192.168.2.0
+
+['bit-operations-masks.table.1.cell.3.2']
+src_hash = '5c8b75d3'
+text = 'different network'
+# src: 不同网段
+
+['bit-operations-masks.aside.1']
 src_hash = '2b4fed7a'
 text = 'Bitwise operations differ from the logical `&&` `||` `!`: the latter treat any non-zero value as true, yield only 0 or 1, and short-circuit.'
 # src: 位运算与逻辑运算 `&&` `||` `!` 不同：后者把非零值视为真，结果只有 0 或 1，并且会短路求值。
+
+['bit-operations-readonly.title']
+src_hash = '2460f432'
+text = 'Bitwise operations: file permissions'
+# src: 位运算：文件权限
+
+['bit-operations-readonly.slide.1']
+src_hash = '966f3b64'
+text = '''
+Permissions are 9 bits in three groups of 3: owner, group, others. In one group, read = 4, write = 2, execute = 1, so `r--` = 4.
+A new file defaults to `-rw-r--r--`. After `chmod 444` it is `-r--r--r--`, write bit 0; writing is then refused by the kernel.
+'''
+# src:
+# 
+# 权限是 9 个比特，每 3 位一组：所有者、所属组、其他人。一组之内读 = 4、写 = 2、执行 = 1，`r--` = 4。
+# 新建文件默认是 `-rw-r--r--`。`chmod 444` 后变成 `-r--r--r--`，写位为 0，再写入会被内核拒绝。
+
+['bit-operations-readonly.demo.1.name']
+src_hash = 'f81ce506'
+text = 'Inspect permissions, then write'
+# src: 查看权限并写入
 
 ['shifts.title']
 src_hash = 'ab09f814'
@@ -1841,14 +1953,32 @@ Every form in the last three rows has appeared in real code. The ordering has a 
 # 把这一点列为遗留的缺陷。记忆规则不如括号可靠。
 
 ['precedence-in-practice.title']
-src_hash = '553bbf12'
-text = 'What missing parentheses can lead to'
-# src: 缺少括号可能造成的结果
+src_hash = 'a85fa56f'
+text = 'Bitwise-operator precedence'
+# src: 位运算优先级
+
+['precedence-in-practice.slide.1']
+src_hash = '7a516f9d'
+text = 'Let `x = 6`. What does each of these expressions evaluate to?'
+# src: 设 `x = 6`。这几个式子分别等于多少？
+
+['precedence-in-practice.slide.2']
+src_hash = '942ea49c'
+text = '''
+- `x & 1 == 0`
+- `x << 1 + 2`
+- `x & 3 | 4`
+'''
+# src:
+# 
+# - `x & 1 == 0`
+# - `x << 1 + 2`
+# - `x & 3 | 4`
 
 ['precedence-in-practice.demo.1.name']
-src_hash = '4c63f056'
-text = 'The actual result of three expressions, and what the compiler says'
-# src: 三个表达式的实际结果，以及编译器的提示
+src_hash = '9603d4c3'
+text = 'Compile and run precedence.c'
+# src: 编译并运行 precedence.c
 
 ['precedence-in-practice.highlight.1']
 src_hash = '10eaded4'

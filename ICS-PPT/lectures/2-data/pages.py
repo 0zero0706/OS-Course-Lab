@@ -567,18 +567,17 @@ def kernel_bug_answer(p):
 def mixed_width_comparison(p):
     p.title("混合比较：宽度不同的操作数进行比较")
     p.slide("""
-比较分两步进行：
 1. **确定目标类型**：先把窄于 `int` 的类型提升为 `int`；提升后宽度不同取较宽者，宽度相同、符号不同取无符号
-2. **逐个转换**：==补 0 还是补符号位由原类型决定==，得到的位模式按目标类型解释
+2. ==补 0 还是补符号位由原类型决定==，得到的位模式按目标类型解释
 """)
     p.table(
         headers=["比较", "目标类型", "被转换的操作数", "结果"],
         rows=[
-            ["int −1 < unsigned short 1", "int", "1 补 0 得 `0x00000001`，读为 1", "1"],
+            ["int −1 < unsigned short 1", "int", "1 补 0 得 `0x00000001`，值为 1", "1"],
             ["short −1 < unsigned short 1", "int", "两侧都提升为 `int`：−1 补符号位，1 补 0", "1"],
-            ["short −1 < unsigned 1", "unsigned", "−1 补符号位得 `0xffffffff`，读为 $2^{32}-1$", "0"],
-            ["int −1 < unsigned long long 1", "unsigned long long", "−1 补符号位得 64 个 1，读为 $2^{64}-1$", "0"],
-            ["long long −1 < unsigned 1", "long long", "1 补 0 得 64 位的 1，读为 1", "1"],
+            ["short −1 < unsigned 1", "unsigned", "−1 补符号位得 `0xffffffff`，值为 $2^{32}-1$", "0"],
+            ["int −1 < unsigned long long 1", "unsigned long long", "−1 补符号位得 64 个 1，值为 $2^{64}-1$", "0"],
+            ["long long −1 < unsigned 1", "long long", "1 补 0 得 64 位的 1，值为 1", "1"],
         ],
         align=["left", "left", "left", "center"],
     )
@@ -601,8 +600,53 @@ def bit_operations(p):
         ],
         align=["center", "left", "left", "left"],
     )
+    p.slide("""
+低 4 位从高到低：ICS、编译、操作系统、计算机图形学。甲 `1101`，乙 `0110`。
+- 交集 `1101 & 0110 = 0100`：都选了编译
+- 并集 `1101 | 0110 = 1111`：两人合起来四门都有
+- 补集（只看这 4 位）`~1101 = 0010`：甲没选操作系统
+- 对称差 `1101 ^ 0110 = 1011`：只一人选的课
+""")
+
+
+def bit_operations_masks(p):
+    p.title("位运算：掩码计算")
     p.code("c", MASK_SAMPLE)
+    p.slide("""
+两个 IP 各自与掩码相与，结果相同则在同一局域网。
+掩码 `255.255.255.0` 留下前 24 位，清掉后 8 位，与 `x & 0xffffff00` 相同。
+""")
+    p.table(
+        headers=["IP", "`IP & 255.255.255.0`", "判定"],
+        rows=[
+            ["192.168.1.100", "192.168.1.0", "同一局域网"],
+            ["192.168.1.200", "192.168.1.0", "同一局域网"],
+            ["192.168.2.10", "192.168.2.0", "不同网段"],
+        ],
+        align=["left", "left", "left"],
+    )
     p.aside("位运算与逻辑运算 `&&` `||` `!` 不同：后者把非零值视为真，结果只有 0 或 1，并且会短路求值。")
+
+
+def bit_operations_readonly(p):
+    p.title("位运算：文件权限")
+    p.slide("""
+权限是 9 个比特，每 3 位一组：所有者、所属组、其他人。一组之内读 = 4、写 = 2、执行 = 1，`r--` = 4。
+新建文件默认是 `-rw-r--r--`。`chmod 444` 后变成 `-r--r--r--`，写位为 0，再写入会被内核拒绝。
+""")
+    p.demo("查看权限并写入", """rm -f /tmp/ics-readonly.txt
+printf 'hello\\n' > /tmp/ics-readonly.txt
+echo before:
+ls -lh /tmp/ics-readonly.txt
+chmod 444 /tmp/ics-readonly.txt
+echo after:
+ls -lh /tmp/ics-readonly.txt
+printf 'more\\n' >> /tmp/ics-readonly.txt""",
+           output="""before:
+-rw-r--r--  1 user  staff     6B Sep 21 21:43 /tmp/ics-readonly.txt
+after:
+-r--r--r--  1 user  staff     6B Sep 21 21:43 /tmp/ics-readonly.txt
+sh: /tmp/ics-readonly.txt: Permission denied""")
 
 
 def shifts(p):
@@ -651,18 +695,16 @@ def operator_precedence(p):
 
 
 def precedence_in_practice(p):
-    p.title("缺少括号可能造成的结果")
-    p.demo("三个表达式的实际结果，以及编译器的提示", """cd examples
+    p.title("位运算符的优先级")
+    p.slide("设 `x = 6`。这几个式子分别等于多少？")
+    p.slide("""
+- `x & 1 == 0`
+- `x << 1 + 2`
+- `x & 3 | 4`
+""", reveal="items")
+    p.demo("编译并运行 precedence.c", """cd examples
 gcc -O1 -Wall -o precedence precedence.c 2>&1 | grep -o 'warning.*'
 ./precedence""",
-           output="""warning: suggest parentheses around comparison in operand of ‘&’ [-Wparentheses]
-warning: suggest parentheses around ‘+’ inside ‘<<’ [-Wparentheses]
-warning: suggest parentheses around arithmetic in operand of ‘|’ [-Wparentheses]
-x & 1 == 0      0      parses as x & (1 == 0)
-(x & 1) == 0    1      what was meant
-x << 1 + 2      48     parses as x << (1 + 2)
-(x << 1) + 2    14     what was meant
-x & 3 | 4       6      parses as (x & 3) | 4""",
            files=["examples/precedence.c"])
     p.highlight("`-Wall` 能报出这三处错误，但建议含位运算的表达式一律加括号。", tone="orange")
     p.notes("""
